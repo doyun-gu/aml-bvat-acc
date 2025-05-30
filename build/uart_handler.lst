@@ -1,0 +1,155 @@
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc8xEKeP.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"uart_handler.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/uart_handler/uart_handler.c"
+  20              		.section	.text.MX_USART2_UART_Init,"ax",%progbits
+  21              		.align	1
+  22              		.global	MX_USART2_UART_Init
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	MX_USART2_UART_Init:
+  28              	.LFB134:
+   1:Core/Src/uart_handler/uart_handler.c **** #include "uart_handler.h"
+   2:Core/Src/uart_handler/uart_handler.c **** 
+   3:Core/Src/uart_handler/uart_handler.c **** /**
+   4:Core/Src/uart_handler/uart_handler.c ****   * @brief USART2 Initialization Function
+   5:Core/Src/uart_handler/uart_handler.c ****   * @param None
+   6:Core/Src/uart_handler/uart_handler.c ****   * @retval None
+   7:Core/Src/uart_handler/uart_handler.c ****   */
+   8:Core/Src/uart_handler/uart_handler.c **** void MX_USART2_UART_Init(void)
+   9:Core/Src/uart_handler/uart_handler.c **** {
+  29              		.loc 1 9 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+  10:Core/Src/uart_handler/uart_handler.c **** 
+  11:Core/Src/uart_handler/uart_handler.c ****   /* USER CODE BEGIN USART2_Init 0 */
+  12:Core/Src/uart_handler/uart_handler.c **** 
+  13:Core/Src/uart_handler/uart_handler.c ****   /* USER CODE END USART2_Init 0 */
+  14:Core/Src/uart_handler/uart_handler.c **** 
+  15:Core/Src/uart_handler/uart_handler.c ****   /* USER CODE BEGIN USART2_Init 1 */
+  16:Core/Src/uart_handler/uart_handler.c **** 
+  17:Core/Src/uart_handler/uart_handler.c ****   /* USER CODE END USART2_Init 1 */
+  18:Core/Src/uart_handler/uart_handler.c ****   huart2.Instance = USART2;
+  38              		.loc 1 18 3 view .LVU1
+  39              		.loc 1 18 19 is_stmt 0 view .LVU2
+  40 0002 0A48     		ldr	r0, .L5
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc8xEKeP.s 			page 2
+
+
+  41 0004 0A4B     		ldr	r3, .L5+4
+  42 0006 0360     		str	r3, [r0]
+  19:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.BaudRate = 115200;
+  43              		.loc 1 19 3 is_stmt 1 view .LVU3
+  44              		.loc 1 19 24 is_stmt 0 view .LVU4
+  45 0008 4FF4E133 		mov	r3, #115200
+  46 000c 4360     		str	r3, [r0, #4]
+  20:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  47              		.loc 1 20 3 is_stmt 1 view .LVU5
+  48              		.loc 1 20 26 is_stmt 0 view .LVU6
+  49 000e 0023     		movs	r3, #0
+  50 0010 8360     		str	r3, [r0, #8]
+  21:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.StopBits = UART_STOPBITS_1;
+  51              		.loc 1 21 3 is_stmt 1 view .LVU7
+  52              		.loc 1 21 24 is_stmt 0 view .LVU8
+  53 0012 C360     		str	r3, [r0, #12]
+  22:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.Parity = UART_PARITY_NONE;
+  54              		.loc 1 22 3 is_stmt 1 view .LVU9
+  55              		.loc 1 22 22 is_stmt 0 view .LVU10
+  56 0014 0361     		str	r3, [r0, #16]
+  23:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.Mode = UART_MODE_TX_RX;
+  57              		.loc 1 23 3 is_stmt 1 view .LVU11
+  58              		.loc 1 23 20 is_stmt 0 view .LVU12
+  59 0016 0C22     		movs	r2, #12
+  60 0018 4261     		str	r2, [r0, #20]
+  24:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  61              		.loc 1 24 3 is_stmt 1 view .LVU13
+  62              		.loc 1 24 25 is_stmt 0 view .LVU14
+  63 001a 8361     		str	r3, [r0, #24]
+  25:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  64              		.loc 1 25 3 is_stmt 1 view .LVU15
+  65              		.loc 1 25 28 is_stmt 0 view .LVU16
+  66 001c C361     		str	r3, [r0, #28]
+  26:Core/Src/uart_handler/uart_handler.c ****   if (HAL_UART_Init(&huart2) != HAL_OK)
+  67              		.loc 1 26 3 is_stmt 1 view .LVU17
+  68              		.loc 1 26 7 is_stmt 0 view .LVU18
+  69 001e FFF7FEFF 		bl	HAL_UART_Init
+  70              	.LVL0:
+  71              		.loc 1 26 6 discriminator 1 view .LVU19
+  72 0022 00B9     		cbnz	r0, .L4
+  73              	.L1:
+  27:Core/Src/uart_handler/uart_handler.c ****   {
+  28:Core/Src/uart_handler/uart_handler.c ****     Error_Handler();
+  29:Core/Src/uart_handler/uart_handler.c ****   }
+  30:Core/Src/uart_handler/uart_handler.c ****   /* USER CODE BEGIN USART2_Init 2 */
+  31:Core/Src/uart_handler/uart_handler.c **** 
+  32:Core/Src/uart_handler/uart_handler.c ****   /* USER CODE END USART2_Init 2 */
+  33:Core/Src/uart_handler/uart_handler.c **** 
+  34:Core/Src/uart_handler/uart_handler.c **** }...
+  74              		.loc 1 34 1 view .LVU20
+  75 0024 08BD     		pop	{r3, pc}
+  76              	.L4:
+  77              	.LBB2:
+  28:Core/Src/uart_handler/uart_handler.c ****     Error_Handler();
+  78              		.loc 1 28 5 is_stmt 1 view .LVU21
+  79 0026 FFF7FEFF 		bl	Error_Handler
+  80              	.LVL1:
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc8xEKeP.s 			page 3
+
+
+  81              	.LBE2:
+  82              		.loc 1 34 1 is_stmt 0 view .LVU22
+  83 002a FBE7     		b	.L1
+  84              	.L6:
+  85              		.align	2
+  86              	.L5:
+  87 002c 00000000 		.word	huart2
+  88 0030 00440040 		.word	1073759232
+  89              		.cfi_endproc
+  90              	.LFE134:
+  92              		.text
+  93              	.Letext0:
+  94              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+  95              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+  96              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
+  97              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+  98              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+  99              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 100              		.file 8 "Core/Src/uart_handler/uart_handler.h"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc8xEKeP.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 uart_handler.c
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc8xEKeP.s:21     .text.MX_USART2_UART_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc8xEKeP.s:27     .text.MX_USART2_UART_Init:00000000 MX_USART2_UART_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc8xEKeP.s:87     .text.MX_USART2_UART_Init:0000002c $d
+
+UNDEFINED SYMBOLS
+HAL_UART_Init
+Error_Handler
+huart2

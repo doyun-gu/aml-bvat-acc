@@ -3,24 +3,24 @@
 static u32 command_timer = 0;
 char UART_buffer[64];
 
-// TODO 1.: Timestamp logging -> Write to a file not just UART
-// TODo 2.: Another Loop that will handle file management
+//TODO: SD Card needs to be discussed -> Not available with the current setup
+//* What would be better to log data to SD card or just UART?
 
-void log_to_sd(u32 timestamp, u8 x, u8 y, u8 z) {
-    FIL file;
-    UINT bytes_written;
-    char buffer[64];
+// void log_to_sd(u32 timestamp, u8 x, u8 y, u8 z) {
+//     FIL file;
+//     UINT bytes_written;
+//     char buffer[64];
 
-    if (f_open(&file, "data.csv", FA_OPEN_APPEND | FA_WRITE) != FR_OK) {
-        WriteUART("SD file open failed.\n");
-        return;
-    }
+//     if (f_open(&file, "data.csv", FA_OPEN_APPEND | FA_WRITE) != FR_OK) {
+//         WriteUART("SD file open failed.\n");
+//         return;
+//     }
 
-    snprintf(buffer, sizeof(buffer), "%lu, %d, %d, %d\n", timestamp, x, y, z);
-    f_write(&file, buffer, strlen(buffer), &bytes_written);
+//     snprintf(buffer, sizeof(buffer), "%lu, %d, %d, %d\n", timestamp, x, y, z);
+//     f_write(&file, buffer, strlen(buffer), &bytes_written);
 
-    f_close(&file);
-}
+//     f_close(&file);
+// }
 
 void measure_loop(void) {
     if (timer_handler(1000, &command_timer)) {
@@ -34,7 +34,7 @@ void measure_loop(void) {
         snprintf(UART_buffer, sizeof(UART_buffer), "X: %d, Y: %d, Z: %d\n", x, y, z);
         WriteUART(UART_buffer);
 
-        // SD Logging
-        log_to_sd(timestamp, x, y, z);
+        // // SD Logging
+        // log_to_sd(timestamp, x, y, z);
     }
 }

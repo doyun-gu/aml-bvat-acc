@@ -1,7 +1,7 @@
 #include "gpio_handler.h"
 
 /**
-  * @brief GPIO Initialization Function
+  * @brief GPIO Initialisation Function
   * @param None
   * @retval None
   */
@@ -15,6 +15,12 @@ void MX_GPIO_Init(void)
     __HAL_RCC_GPIOC_CLK_ENABLE();
     __HAL_RCC_GPIOH_CLK_ENABLE();
 }
+
+/**
+ * @brief Digital Output ----------------------------------------------------------
+ * @param pin Pin structure containing port and pin number
+ * @retval None
+ */
 
 void AssignDigitalOut (Pin pin) {
     DigitalOut digital_out;
@@ -44,3 +50,10 @@ void ToggleDigitalOut(DigitalOut *digital_out) {
     HAL_GPIO_TogglePin(digital_out->pin.port, digital_out->pin.pin); // Toggle GPIO pin
 }
 
+/**
+ * @brief Analogue Input ----------------------------------------------------------
+ * @param pin Pin structure containing port and pin number
+ * @retval None
+ */
+
+ 

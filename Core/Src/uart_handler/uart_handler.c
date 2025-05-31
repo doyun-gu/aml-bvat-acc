@@ -7,14 +7,6 @@
   */
 void MX_USART2_UART_Init(void)
 {
-
-  /* USER CODE BEGIN USART2_Init 0 */
-
-  /* USER CODE END USART2_Init 0 */
-
-  /* USER CODE BEGIN USART2_Init 1 */
-
-  /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
   huart2.Init.BaudRate = 115200;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
@@ -27,8 +19,24 @@ void MX_USART2_UART_Init(void)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN USART2_Init 2 */
+}
 
-  /* USER CODE END USART2_Init 2 */
+void WriteUART (const char *message) {
+    HAL_UART_Transmit_IT (&huart2, (u8 *)message, strlen(message));
+}
 
+//! No need for now
+// void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+//     if (huart->Instance == USART2) {
+//         // Handle received data here
+//         // For example, you can read the received data from huart->pRxBuffPtr
+//         // and process it as needed.
+//     }
+// }
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
+    if (huart->Instance == USART2) {
+        // Handle transmission complete here
+        // For example, you can set a flag or perform other actions after transmission.
+    }
 }

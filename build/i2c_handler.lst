@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccIWjWw0.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLjvUSA.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -20,11 +20,31 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccIWjWw0.s 			page 1
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
   19              		.file 1 "Core/Src/i2c_handler/i2c_handler.c"
-  20              	.Letext0:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccIWjWw0.s 			page 2
+  20              		.global	regValue
+  21              		.section	.bss.regValue,"aw",%nobits
+  24              	regValue:
+  25 0000 00       		.space	1
+  26              		.global	regADDR
+  27              		.section	.data.regADDR,"aw"
+  30              	regADDR:
+  31 0000 20       		.byte	32
+  32              		.global	accelorometerADDR
+  33              		.section	.data.accelorometerADDR,"aw"
+  36              	accelorometerADDR:
+  37 0000 30       		.byte	48
+  38              		.text
+  39              	.Letext0:
+  40              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+  41              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+  42              		.file 4 "Core/Src/library/aml_hal.h"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLjvUSA.s 			page 2
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 i2c_handler.c
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLjvUSA.s:24     .bss.regValue:00000000 regValue
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLjvUSA.s:25     .bss.regValue:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLjvUSA.s:30     .data.regADDR:00000000 regADDR
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLjvUSA.s:36     .data.accelorometerADDR:00000000 accelorometerADDR
 
 NO UNDEFINED SYMBOLS

@@ -15,13 +15,8 @@
  */
  
 void AML_Init(void) {
-    // Initialize the HAL Library
     HAL_Init();
-
-    // Configure the system clock
     SystemClock_Config();
-
-    // Initialize all configured peripherals
     MX_GPIO_Init();
     MX_USART2_UART_Init();
     MX_I2C1_Init();

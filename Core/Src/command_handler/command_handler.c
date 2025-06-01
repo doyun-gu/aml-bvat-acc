@@ -3,6 +3,12 @@
 static u32 command_timer = 0;
 char UART_buffer[64];
 
+void BVAT_Init(void) {
+    AML_Init();                         // Handles all HAL init
+    command_timer = HAL_GetTick();      // Set command timer
+    I2C_ACC_Enable();                   // Enable sensor
+}
+
 //TODO: SD Card needs to be discussed -> Not available with the current setup
 //* What would be better to log data to SD card or just UART?
 
@@ -30,6 +36,11 @@ void log_to_uart(u32 timestamp, u8 x, u8 y, u8 z) {
 }
 
 void measure_loop(void) {
+    if (!acc_enabled) {
+        I2C_ACC_Enable();
+        acc_enabled = true;
+    }
+
     if (timer_handler(1000, &command_timer)) {
         u8 x = readACC(0x28);
         u8 y = readACC(0x29);
@@ -39,6 +50,8 @@ void measure_loop(void) {
 
         // UART Output
         snprintf(UART_buffer, sizeof(UART_buffer), "X: %d, Y: %d, Z: %d\n", x, y, z);
+
+        //* To write to UART -> deactivated to prevent double logging
         // WriteUART(UART_buffer);
 
         // // SD Logging

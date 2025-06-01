@@ -39,6 +39,7 @@ C_SOURCES =  \
 Core/Src/main.c \
 Core/Src/library/aml_hal.c \
 Core/Src/global/global.c \
+Core/Src/gpio_handler/gpio_handler.c \
 Core/Src/i2c_handler/i2c_handler.c \
 Core/Src/timer/timer.c \
 Core/Src/uart_handler/uart_handler.c \
@@ -128,6 +129,7 @@ C_INCLUDES =  \
 -ICore/Src \
 -ICore/Src/library \
 -ICore/Src/global \
+-ICore/Src/gpio_handler \
 -ICore/Src/i2c_handler \
 -ICore/Src/timer \
 -ICore/Src/uart_handler \

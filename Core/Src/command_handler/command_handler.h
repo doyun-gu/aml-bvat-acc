@@ -11,5 +11,6 @@
 #include <stdio.h>
 #include <string.h>
 
-// void log_to_sd(u32 timestamp, u8 x, u8 y, u8 z);
+void BVAT_Init(void);
+void log_to_uart(u32 timestamp, u8 x, u8 y, u8 z);
 void measure_loop(void);

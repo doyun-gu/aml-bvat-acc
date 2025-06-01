@@ -1,29 +1,36 @@
 #include "i2c_handler.h"
 
-u8 accelerometerADDR = 0x18 << 1;
-u8 regADDR = 0x20;
-u8 regValue;
+volatile bool acc_enabled = false;
 
-u8 sensor_data[6];
-u8 sensorADDR = 0x19 << 1;
-u8 registerADDR = 0x28;
+/**
+ * Accelerometer I2C address and register definitions
+ */
 
-u8 sensordata_ready = 0;
+void I2C_ACC_Enable(void) {
+    static u8 ctrl1 = ACC_CTRL1_VALUE;
 
-u8 regValue = 0; // Global or static buffer to store read value
+    HAL_I2C_Mem_Write_IT(&hi2c1,
+                         ACC_I2C_ADDR,
+                         ACC_CTRL1_REG,
+                         I2C_MEMADD_SIZE_8BIT,
+                         &ctrl1,
+                         1);
+}
 
-u8 readACC(u8 regADDR) {
-    u8 data = 0;
-    u8 addr = 0x18 << 1;
+void I2C_Read_ACC(void) {
+    HAL_I2C_Mem_Read_IT(&hi2c1,
+                        ACC_I2C_ADDR,
+                        ACC_DATA_START,
+                        I2C_MEMADD_SIZE_8BIT,
+                        rawData,
+                        6);
+}
 
-    HAL_I2C_Mem_Read(&hi2c1,
-                     addr,
-                     regADDR,
-                     I2C_MEMADD_SIZE_8BIT,
-                     &data,
-                     1,
-                     HAL_MAX_DELAY);
-    return data;
+// Write complete callback
+void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *hi2c) {
+    if (hi2c->Instance == I2C1) {
+        // acc_enabled = true;
+    }
 }
 
 //* Will be called when the I2C memory read operation is complete

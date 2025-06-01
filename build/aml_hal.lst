@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccs4mEDS.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccagdTYY.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -54,40 +54,35 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccs4mEDS.s 			page 1
   35              		.cfi_def_cfa_offset 8
   36              		.cfi_offset 3, -8
   37              		.cfi_offset 14, -4
-  18:Core/Src/library/aml_hal.c ****     // Initialize the HAL Library
-  19:Core/Src/library/aml_hal.c ****     HAL_Init();
-  38              		.loc 1 19 5 view .LVU1
+  18:Core/Src/library/aml_hal.c ****     HAL_Init();
+  38              		.loc 1 18 5 view .LVU1
   39 0002 FFF7FEFF 		bl	HAL_Init
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccs4mEDS.s 			page 2
-
-
   40              	.LVL0:
-  20:Core/Src/library/aml_hal.c **** 
-  21:Core/Src/library/aml_hal.c ****     // Configure the system clock
-  22:Core/Src/library/aml_hal.c ****     SystemClock_Config();
-  41              		.loc 1 22 5 view .LVU2
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccagdTYY.s 			page 2
+
+
+  19:Core/Src/library/aml_hal.c ****     SystemClock_Config();
+  41              		.loc 1 19 5 view .LVU2
   42 0006 FFF7FEFF 		bl	SystemClock_Config
   43              	.LVL1:
-  23:Core/Src/library/aml_hal.c **** 
-  24:Core/Src/library/aml_hal.c ****     // Initialize all configured peripherals
-  25:Core/Src/library/aml_hal.c ****     MX_GPIO_Init();
-  44              		.loc 1 25 5 view .LVU3
+  20:Core/Src/library/aml_hal.c ****     MX_GPIO_Init();
+  44              		.loc 1 20 5 view .LVU3
   45 000a FFF7FEFF 		bl	MX_GPIO_Init
   46              	.LVL2:
-  26:Core/Src/library/aml_hal.c ****     MX_USART2_UART_Init();
-  47              		.loc 1 26 5 view .LVU4
+  21:Core/Src/library/aml_hal.c ****     MX_USART2_UART_Init();
+  47              		.loc 1 21 5 view .LVU4
   48 000e FFF7FEFF 		bl	MX_USART2_UART_Init
   49              	.LVL3:
-  27:Core/Src/library/aml_hal.c ****     MX_I2C1_Init();
-  50              		.loc 1 27 5 view .LVU5
+  22:Core/Src/library/aml_hal.c ****     MX_I2C1_Init();
+  50              		.loc 1 22 5 view .LVU5
   51 0012 FFF7FEFF 		bl	MX_I2C1_Init
   52              	.LVL4:
-  28:Core/Src/library/aml_hal.c ****     MX_TIM2_Init();
-  53              		.loc 1 28 5 view .LVU6
+  23:Core/Src/library/aml_hal.c ****     MX_TIM2_Init();
+  53              		.loc 1 23 5 view .LVU6
   54 0016 FFF7FEFF 		bl	MX_TIM2_Init
   55              	.LVL5:
-  29:Core/Src/library/aml_hal.c **** }
-  56              		.loc 1 29 1 is_stmt 0 view .LVU7
+  24:Core/Src/library/aml_hal.c **** }
+  56              		.loc 1 24 1 is_stmt 0 view .LVU7
   57 001a 08BD     		pop	{r3, pc}
   58              		.cfi_endproc
   59              	.LFE134:
@@ -96,13 +91,13 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccs4mEDS.s 			page 1
   63              		.file 2 "Core/Src/library/aml_hal.h"
   64              		.file 3 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
   65              		.file 4 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccs4mEDS.s 			page 3
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccagdTYY.s 			page 3
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 aml_hal.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccs4mEDS.s:21     .text.AML_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccs4mEDS.s:27     .text.AML_Init:00000000 AML_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccagdTYY.s:21     .text.AML_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccagdTYY.s:27     .text.AML_Init:00000000 AML_Init
 
 UNDEFINED SYMBOLS
 HAL_Init

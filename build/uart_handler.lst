@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3TeQyJ.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3TeQyJ.s 			page 1
   45 0008 4FF4E133 		mov	r3, #115200
   46 000c 4360     		str	r3, [r0, #4]
   12:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.WordLength = UART_WORDLENGTH_8B;
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3TeQyJ.s 			page 2
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s 			page 2
 
 
   47              		.loc 1 12 3 is_stmt 1 view .LVU5
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3TeQyJ.s 			page 1
   90              	.LFE134:
   92              		.section	.text.WriteUART,"ax",%progbits
   93              		.align	1
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3TeQyJ.s 			page 3
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s 			page 3
 
 
   94              		.global	WriteUART
@@ -173,31 +173,32 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3TeQyJ.s 			page 1
  142              	.LVL6:
  143              	.LFB136:
   27:Core/Src/uart_handler/uart_handler.c **** 
-  28:Core/Src/uart_handler/uart_handler.c **** // void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-  29:Core/Src/uart_handler/uart_handler.c **** //     if (huart->Instance == USART2) {
-  30:Core/Src/uart_handler/uart_handler.c **** //         // Handle received data here
-  31:Core/Src/uart_handler/uart_handler.c **** //         // For example, you can read the received data from huart->pRxBuffPtr
-  32:Core/Src/uart_handler/uart_handler.c **** //         // and process it as needed.
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3TeQyJ.s 			page 4
+  28:Core/Src/uart_handler/uart_handler.c **** //! No need for now
+  29:Core/Src/uart_handler/uart_handler.c **** // void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+  30:Core/Src/uart_handler/uart_handler.c **** //     if (huart->Instance == USART2) {
+  31:Core/Src/uart_handler/uart_handler.c **** //         // Handle received data here
+  32:Core/Src/uart_handler/uart_handler.c **** //         // For example, you can read the received data from huart->pRxBuffPtr
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s 			page 4
 
 
-  33:Core/Src/uart_handler/uart_handler.c **** //     }
-  34:Core/Src/uart_handler/uart_handler.c **** // }
-  35:Core/Src/uart_handler/uart_handler.c **** 
-  36:Core/Src/uart_handler/uart_handler.c **** void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
- 144              		.loc 1 36 57 is_stmt 1 view -0
+  33:Core/Src/uart_handler/uart_handler.c **** //         // and process it as needed.
+  34:Core/Src/uart_handler/uart_handler.c **** //     }
+  35:Core/Src/uart_handler/uart_handler.c **** // }
+  36:Core/Src/uart_handler/uart_handler.c **** 
+  37:Core/Src/uart_handler/uart_handler.c **** void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
+ 144              		.loc 1 37 57 is_stmt 1 view -0
  145              		.cfi_startproc
  146              		@ args = 0, pretend = 0, frame = 0
  147              		@ frame_needed = 0, uses_anonymous_args = 0
  148              		@ link register save eliminated.
-  37:Core/Src/uart_handler/uart_handler.c ****     if (huart->Instance == USART2) {
- 149              		.loc 1 37 5 view .LVU31
-  38:Core/Src/uart_handler/uart_handler.c ****         // Handle transmission complete here
-  39:Core/Src/uart_handler/uart_handler.c ****         // For example, you can set a flag or perform other actions after transmission.
-  40:Core/Src/uart_handler/uart_handler.c ****     }
- 150              		.loc 1 40 5 view .LVU32
-  41:Core/Src/uart_handler/uart_handler.c **** }...
- 151              		.loc 1 41 1 is_stmt 0 view .LVU33
+  38:Core/Src/uart_handler/uart_handler.c ****     if (huart->Instance == USART2) {
+ 149              		.loc 1 38 5 view .LVU31
+  39:Core/Src/uart_handler/uart_handler.c ****         // Handle transmission complete here
+  40:Core/Src/uart_handler/uart_handler.c ****         // For example, you can set a flag or perform other actions after transmission.
+  41:Core/Src/uart_handler/uart_handler.c ****     }
+ 150              		.loc 1 41 5 view .LVU32
+  42:Core/Src/uart_handler/uart_handler.c **** }...
+ 151              		.loc 1 42 1 is_stmt 0 view .LVU33
  152 0000 7047     		bx	lr
  153              		.cfi_endproc
  154              	.LFE136:
@@ -213,19 +214,19 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3TeQyJ.s 			page 1
  165              		.file 9 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/string.h"
  166              		.file 10 "Core/Src/library/aml_hal.h"
  167              		.file 11 "Core/Src/uart_handler/uart_handler.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3TeQyJ.s 			page 5
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s 			page 5
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 uart_handler.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3TeQyJ.s:21     .text.MX_USART2_UART_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3TeQyJ.s:27     .text.MX_USART2_UART_Init:00000000 MX_USART2_UART_Init
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3TeQyJ.s:87     .text.MX_USART2_UART_Init:0000002c $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3TeQyJ.s:93     .text.WriteUART:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3TeQyJ.s:99     .text.WriteUART:00000000 WriteUART
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3TeQyJ.s:130    .text.WriteUART:00000014 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3TeQyJ.s:135    .text.HAL_UART_TxCpltCallback:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3TeQyJ.s:141    .text.HAL_UART_TxCpltCallback:00000000 HAL_UART_TxCpltCallback
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s:21     .text.MX_USART2_UART_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s:27     .text.MX_USART2_UART_Init:00000000 MX_USART2_UART_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s:87     .text.MX_USART2_UART_Init:0000002c $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s:93     .text.WriteUART:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s:99     .text.WriteUART:00000000 WriteUART
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s:130    .text.WriteUART:00000014 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s:135    .text.HAL_UART_TxCpltCallback:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s:141    .text.HAL_UART_TxCpltCallback:00000000 HAL_UART_TxCpltCallback
 
 UNDEFINED SYMBOLS
 HAL_UART_Init

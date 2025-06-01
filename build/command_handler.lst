@@ -1,0 +1,405 @@
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"command_handler.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/command_handler/command_handler.c"
+  20              		.section	.text.BVAT_Init,"ax",%progbits
+  21              		.align	1
+  22              		.global	BVAT_Init
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	BVAT_Init:
+  28              	.LFB137:
+   1:Core/Src/command_handler/command_handler.c **** #include "command_handler.h"
+   2:Core/Src/command_handler/command_handler.c **** 
+   3:Core/Src/command_handler/command_handler.c **** static u32 command_timer = 0;
+   4:Core/Src/command_handler/command_handler.c **** char UART_buffer[64];
+   5:Core/Src/command_handler/command_handler.c **** 
+   6:Core/Src/command_handler/command_handler.c **** void BVAT_Init(void) {
+  29              		.loc 1 6 22 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+   7:Core/Src/command_handler/command_handler.c ****     AML_Init();                         // Handles all HAL init
+  38              		.loc 1 7 5 view .LVU1
+  39 0002 FFF7FEFF 		bl	AML_Init
+  40              	.LVL0:
+   8:Core/Src/command_handler/command_handler.c ****     command_timer = HAL_GetTick();      // Set command timer
+  41              		.loc 1 8 5 view .LVU2
+  42              		.loc 1 8 21 is_stmt 0 view .LVU3
+  43 0006 FFF7FEFF 		bl	HAL_GetTick
+  44              	.LVL1:
+  45              		.loc 1 8 19 discriminator 1 view .LVU4
+  46 000a 024B     		ldr	r3, .L3
+  47 000c 1860     		str	r0, [r3]
+   9:Core/Src/command_handler/command_handler.c ****     I2C_ACC_Enable();                   // Enable sensor
+  48              		.loc 1 9 5 is_stmt 1 view .LVU5
+  49 000e FFF7FEFF 		bl	I2C_ACC_Enable
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 2
+
+
+  50              	.LVL2:
+  10:Core/Src/command_handler/command_handler.c **** }
+  51              		.loc 1 10 1 is_stmt 0 view .LVU6
+  52 0012 08BD     		pop	{r3, pc}
+  53              	.L4:
+  54              		.align	2
+  55              	.L3:
+  56 0014 00000000 		.word	command_timer
+  57              		.cfi_endproc
+  58              	.LFE137:
+  60              		.section	.rodata.log_to_uart.str1.4,"aMS",%progbits,1
+  61              		.align	2
+  62              	.LC0:
+  63 0000 256C752C 		.ascii	"%lu, %d, %d, %d\012\000"
+  63      2025642C 
+  63      2025642C 
+  63      2025640A 
+  63      00
+  64              		.section	.text.log_to_uart,"ax",%progbits
+  65              		.align	1
+  66              		.global	log_to_uart
+  67              		.syntax unified
+  68              		.thumb
+  69              		.thumb_func
+  71              	log_to_uart:
+  72              	.LVL3:
+  73              	.LFB138:
+  11:Core/Src/command_handler/command_handler.c **** 
+  12:Core/Src/command_handler/command_handler.c **** //TODO: SD Card needs to be discussed -> Not available with the current setup
+  13:Core/Src/command_handler/command_handler.c **** //* What would be better to log data to SD card or just UART?
+  14:Core/Src/command_handler/command_handler.c **** 
+  15:Core/Src/command_handler/command_handler.c **** // void log_to_sd(u32 timestamp, u8 x, u8 y, u8 z) {
+  16:Core/Src/command_handler/command_handler.c **** //     FIL file;
+  17:Core/Src/command_handler/command_handler.c **** //     UINT bytes_written;
+  18:Core/Src/command_handler/command_handler.c **** //     char buffer[64];
+  19:Core/Src/command_handler/command_handler.c **** 
+  20:Core/Src/command_handler/command_handler.c **** //     if (f_open(&file, "data.csv", FA_OPEN_APPEND | FA_WRITE) != FR_OK) {
+  21:Core/Src/command_handler/command_handler.c **** //         WriteUART("SD file open failed.\n");
+  22:Core/Src/command_handler/command_handler.c **** //         return;
+  23:Core/Src/command_handler/command_handler.c **** //     }
+  24:Core/Src/command_handler/command_handler.c **** 
+  25:Core/Src/command_handler/command_handler.c **** //     snprintf(buffer, sizeof(buffer), "%lu, %d, %d, %d\n", timestamp, x, y, z);
+  26:Core/Src/command_handler/command_handler.c **** //     f_write(&file, buffer, strlen(buffer), &bytes_written);
+  27:Core/Src/command_handler/command_handler.c **** 
+  28:Core/Src/command_handler/command_handler.c **** //     f_close(&file);
+  29:Core/Src/command_handler/command_handler.c **** // }
+  30:Core/Src/command_handler/command_handler.c **** 
+  31:Core/Src/command_handler/command_handler.c **** //! This is temporarily function to log data via UART
+  32:Core/Src/command_handler/command_handler.c **** 
+  33:Core/Src/command_handler/command_handler.c **** void log_to_uart(u32 timestamp, u8 x, u8 y, u8 z) {
+  74              		.loc 1 33 51 is_stmt 1 view -0
+  75              		.cfi_startproc
+  76              		@ args = 0, pretend = 0, frame = 0
+  77              		@ frame_needed = 0, uses_anonymous_args = 0
+  78              		.loc 1 33 51 is_stmt 0 view .LVU8
+  79 0000 10B5     		push	{r4, lr}
+  80              	.LCFI1:
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 3
+
+
+  81              		.cfi_def_cfa_offset 8
+  82              		.cfi_offset 4, -8
+  83              		.cfi_offset 14, -4
+  84 0002 84B0     		sub	sp, sp, #16
+  85              	.LCFI2:
+  86              		.cfi_def_cfa_offset 24
+  34:Core/Src/command_handler/command_handler.c ****     snprintf(UART_buffer, sizeof(UART_buffer), "%lu, %d, %d, %d\n", timestamp, x, y, z);
+  87              		.loc 1 34 5 is_stmt 1 view .LVU9
+  88 0004 074C     		ldr	r4, .L7
+  89 0006 0293     		str	r3, [sp, #8]
+  90 0008 0192     		str	r2, [sp, #4]
+  91 000a 0091     		str	r1, [sp]
+  92 000c 0346     		mov	r3, r0
+  93              	.LVL4:
+  94              		.loc 1 34 5 is_stmt 0 view .LVU10
+  95 000e 064A     		ldr	r2, .L7+4
+  96              	.LVL5:
+  97              		.loc 1 34 5 view .LVU11
+  98 0010 4021     		movs	r1, #64
+  99              	.LVL6:
+ 100              		.loc 1 34 5 view .LVU12
+ 101 0012 2046     		mov	r0, r4
+ 102              	.LVL7:
+ 103              		.loc 1 34 5 view .LVU13
+ 104 0014 FFF7FEFF 		bl	snprintf
+ 105              	.LVL8:
+  35:Core/Src/command_handler/command_handler.c ****     WriteUART(UART_buffer);
+ 106              		.loc 1 35 5 is_stmt 1 view .LVU14
+ 107 0018 2046     		mov	r0, r4
+ 108 001a FFF7FEFF 		bl	WriteUART
+ 109              	.LVL9:
+  36:Core/Src/command_handler/command_handler.c **** }
+ 110              		.loc 1 36 1 is_stmt 0 view .LVU15
+ 111 001e 04B0     		add	sp, sp, #16
+ 112              	.LCFI3:
+ 113              		.cfi_def_cfa_offset 8
+ 114              		@ sp needed
+ 115 0020 10BD     		pop	{r4, pc}
+ 116              	.L8:
+ 117 0022 00BF     		.align	2
+ 118              	.L7:
+ 119 0024 00000000 		.word	UART_buffer
+ 120 0028 00000000 		.word	.LC0
+ 121              		.cfi_endproc
+ 122              	.LFE138:
+ 124              		.section	.rodata.measure_loop.str1.4,"aMS",%progbits,1
+ 125              		.align	2
+ 126              	.LC1:
+ 127 0000 583A2025 		.ascii	"X: %d, Y: %d, Z: %d\012\000"
+ 127      642C2059 
+ 127      3A202564 
+ 127      2C205A3A 
+ 127      2025640A 
+ 128              		.section	.text.measure_loop,"ax",%progbits
+ 129              		.align	1
+ 130              		.global	measure_loop
+ 131              		.syntax unified
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 4
+
+
+ 132              		.thumb
+ 133              		.thumb_func
+ 135              	measure_loop:
+ 136              	.LFB139:
+  37:Core/Src/command_handler/command_handler.c **** 
+  38:Core/Src/command_handler/command_handler.c **** void measure_loop(void) {
+ 137              		.loc 1 38 25 is_stmt 1 view -0
+ 138              		.cfi_startproc
+ 139              		@ args = 0, pretend = 0, frame = 0
+ 140              		@ frame_needed = 0, uses_anonymous_args = 0
+ 141 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 142              	.LCFI4:
+ 143              		.cfi_def_cfa_offset 20
+ 144              		.cfi_offset 4, -20
+ 145              		.cfi_offset 5, -16
+ 146              		.cfi_offset 6, -12
+ 147              		.cfi_offset 7, -8
+ 148              		.cfi_offset 14, -4
+ 149 0002 83B0     		sub	sp, sp, #12
+ 150              	.LCFI5:
+ 151              		.cfi_def_cfa_offset 32
+  39:Core/Src/command_handler/command_handler.c ****     if (!acc_enabled) {
+ 152              		.loc 1 39 5 view .LVU17
+ 153              		.loc 1 39 9 is_stmt 0 view .LVU18
+ 154 0004 174B     		ldr	r3, .L15
+ 155 0006 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 156              		.loc 1 39 8 view .LVU19
+ 157 0008 3BB1     		cbz	r3, .L13
+ 158              	.L10:
+  40:Core/Src/command_handler/command_handler.c ****         I2C_ACC_Enable();
+  41:Core/Src/command_handler/command_handler.c ****         acc_enabled = true;
+  42:Core/Src/command_handler/command_handler.c ****     }
+  43:Core/Src/command_handler/command_handler.c **** 
+  44:Core/Src/command_handler/command_handler.c ****     if (timer_handler(1000, &command_timer)) {
+ 159              		.loc 1 44 5 is_stmt 1 view .LVU20
+ 160              		.loc 1 44 9 is_stmt 0 view .LVU21
+ 161 000a 1749     		ldr	r1, .L15+4
+ 162 000c 4FF47A70 		mov	r0, #1000
+ 163 0010 FFF7FEFF 		bl	timer_handler
+ 164              	.LVL10:
+ 165              		.loc 1 44 8 discriminator 1 view .LVU22
+ 166 0014 38B9     		cbnz	r0, .L14
+ 167              	.L9:
+  45:Core/Src/command_handler/command_handler.c ****         u8 x = readACC(0x28);
+  46:Core/Src/command_handler/command_handler.c ****         u8 y = readACC(0x29);
+  47:Core/Src/command_handler/command_handler.c ****         u8 z = readACC(0x2A);
+  48:Core/Src/command_handler/command_handler.c **** 
+  49:Core/Src/command_handler/command_handler.c ****         u32 timestamp = HAL_GetTick();
+  50:Core/Src/command_handler/command_handler.c **** 
+  51:Core/Src/command_handler/command_handler.c ****         // UART Output
+  52:Core/Src/command_handler/command_handler.c ****         snprintf(UART_buffer, sizeof(UART_buffer), "X: %d, Y: %d, Z: %d\n", x, y, z);
+  53:Core/Src/command_handler/command_handler.c **** 
+  54:Core/Src/command_handler/command_handler.c ****         //* To write to UART -> deactivated to prevent double logging
+  55:Core/Src/command_handler/command_handler.c ****         // WriteUART(UART_buffer);
+  56:Core/Src/command_handler/command_handler.c **** 
+  57:Core/Src/command_handler/command_handler.c ****         // // SD Logging
+  58:Core/Src/command_handler/command_handler.c ****         // log_to_sd(timestamp, x, y, z);
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 5
+
+
+  59:Core/Src/command_handler/command_handler.c ****         log_to_uart(timestamp, x, y, z);
+  60:Core/Src/command_handler/command_handler.c ****     }
+  61:Core/Src/command_handler/command_handler.c **** }
+ 168              		.loc 1 61 1 view .LVU23
+ 169 0016 03B0     		add	sp, sp, #12
+ 170              	.LCFI6:
+ 171              		.cfi_remember_state
+ 172              		.cfi_def_cfa_offset 20
+ 173              		@ sp needed
+ 174 0018 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 175              	.L13:
+ 176              	.LCFI7:
+ 177              		.cfi_restore_state
+ 178              	.LBB2:
+  40:Core/Src/command_handler/command_handler.c ****         I2C_ACC_Enable();
+ 179              		.loc 1 40 9 is_stmt 1 view .LVU24
+ 180 001a FFF7FEFF 		bl	I2C_ACC_Enable
+ 181              	.LVL11:
+  41:Core/Src/command_handler/command_handler.c ****     }
+ 182              		.loc 1 41 9 view .LVU25
+  41:Core/Src/command_handler/command_handler.c ****     }
+ 183              		.loc 1 41 21 is_stmt 0 view .LVU26
+ 184 001e 114B     		ldr	r3, .L15
+ 185 0020 0122     		movs	r2, #1
+ 186 0022 1A70     		strb	r2, [r3]
+ 187 0024 F1E7     		b	.L10
+ 188              	.L14:
+ 189              	.LBE2:
+ 190              	.LBB3:
+  45:Core/Src/command_handler/command_handler.c ****         u8 x = readACC(0x28);
+ 191              		.loc 1 45 9 is_stmt 1 view .LVU27
+  45:Core/Src/command_handler/command_handler.c ****         u8 x = readACC(0x28);
+ 192              		.loc 1 45 16 is_stmt 0 view .LVU28
+ 193 0026 2820     		movs	r0, #40
+ 194 0028 FFF7FEFF 		bl	readACC
+ 195              	.LVL12:
+  45:Core/Src/command_handler/command_handler.c ****         u8 x = readACC(0x28);
+ 196              		.loc 1 45 12 discriminator 1 view .LVU29
+ 197 002c C4B2     		uxtb	r4, r0
+ 198              	.LVL13:
+  46:Core/Src/command_handler/command_handler.c ****         u8 z = readACC(0x2A);
+ 199              		.loc 1 46 9 is_stmt 1 view .LVU30
+  46:Core/Src/command_handler/command_handler.c ****         u8 z = readACC(0x2A);
+ 200              		.loc 1 46 16 is_stmt 0 view .LVU31
+ 201 002e 2920     		movs	r0, #41
+ 202 0030 FFF7FEFF 		bl	readACC
+ 203              	.LVL14:
+  46:Core/Src/command_handler/command_handler.c ****         u8 z = readACC(0x2A);
+ 204              		.loc 1 46 12 discriminator 1 view .LVU32
+ 205 0034 C5B2     		uxtb	r5, r0
+ 206              	.LVL15:
+  47:Core/Src/command_handler/command_handler.c **** 
+ 207              		.loc 1 47 9 is_stmt 1 view .LVU33
+  47:Core/Src/command_handler/command_handler.c **** 
+ 208              		.loc 1 47 16 is_stmt 0 view .LVU34
+ 209 0036 2A20     		movs	r0, #42
+ 210 0038 FFF7FEFF 		bl	readACC
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 6
+
+
+ 211              	.LVL16:
+  47:Core/Src/command_handler/command_handler.c **** 
+ 212              		.loc 1 47 12 discriminator 1 view .LVU35
+ 213 003c C6B2     		uxtb	r6, r0
+ 214              	.LVL17:
+  49:Core/Src/command_handler/command_handler.c **** 
+ 215              		.loc 1 49 9 is_stmt 1 view .LVU36
+  49:Core/Src/command_handler/command_handler.c **** 
+ 216              		.loc 1 49 25 is_stmt 0 view .LVU37
+ 217 003e FFF7FEFF 		bl	HAL_GetTick
+ 218              	.LVL18:
+ 219 0042 0746     		mov	r7, r0
+ 220              	.LVL19:
+  52:Core/Src/command_handler/command_handler.c **** 
+ 221              		.loc 1 52 9 is_stmt 1 view .LVU38
+ 222 0044 0196     		str	r6, [sp, #4]
+ 223 0046 0095     		str	r5, [sp]
+ 224 0048 2346     		mov	r3, r4
+ 225 004a 084A     		ldr	r2, .L15+8
+ 226 004c 4021     		movs	r1, #64
+ 227 004e 0848     		ldr	r0, .L15+12
+ 228              	.LVL20:
+  52:Core/Src/command_handler/command_handler.c **** 
+ 229              		.loc 1 52 9 is_stmt 0 view .LVU39
+ 230 0050 FFF7FEFF 		bl	snprintf
+ 231              	.LVL21:
+  59:Core/Src/command_handler/command_handler.c ****     }
+ 232              		.loc 1 59 9 is_stmt 1 view .LVU40
+ 233 0054 3346     		mov	r3, r6
+ 234 0056 2A46     		mov	r2, r5
+ 235 0058 2146     		mov	r1, r4
+ 236 005a 3846     		mov	r0, r7
+ 237 005c FFF7FEFF 		bl	log_to_uart
+ 238              	.LVL22:
+ 239              	.LBE3:
+ 240              		.loc 1 61 1 is_stmt 0 view .LVU41
+ 241 0060 D9E7     		b	.L9
+ 242              	.L16:
+ 243 0062 00BF     		.align	2
+ 244              	.L15:
+ 245 0064 00000000 		.word	acc_enabled
+ 246 0068 00000000 		.word	command_timer
+ 247 006c 00000000 		.word	.LC1
+ 248 0070 00000000 		.word	UART_buffer
+ 249              		.cfi_endproc
+ 250              	.LFE139:
+ 252              		.global	UART_buffer
+ 253              		.section	.bss.UART_buffer,"aw",%nobits
+ 254              		.align	2
+ 257              	UART_buffer:
+ 258 0000 00000000 		.space	64
+ 258      00000000 
+ 258      00000000 
+ 258      00000000 
+ 258      00000000 
+ 259              		.section	.bss.command_timer,"aw",%nobits
+ 260              		.align	2
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 7
+
+
+ 263              	command_timer:
+ 264 0000 00000000 		.space	4
+ 265              		.text
+ 266              	.Letext0:
+ 267              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+ 268              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 269              		.file 4 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/13.3.1/includ
+ 270              		.file 5 "Core/Src/library/aml_hal.h"
+ 271              		.file 6 "Core/Src/i2c_handler/i2c_handler.h"
+ 272              		.file 7 "Core/Src/timer/timer.h"
+ 273              		.file 8 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdio.h"
+ 274              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 command_handler.c
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:21     .text.BVAT_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:27     .text.BVAT_Init:00000000 BVAT_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:56     .text.BVAT_Init:00000014 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:263    .bss.command_timer:00000000 command_timer
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:61     .rodata.log_to_uart.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:65     .text.log_to_uart:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:71     .text.log_to_uart:00000000 log_to_uart
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:119    .text.log_to_uart:00000024 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:257    .bss.UART_buffer:00000000 UART_buffer
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:125    .rodata.measure_loop.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:129    .text.measure_loop:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:135    .text.measure_loop:00000000 measure_loop
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:245    .text.measure_loop:00000064 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:254    .bss.UART_buffer:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:260    .bss.command_timer:00000000 $d
+
+UNDEFINED SYMBOLS
+AML_Init
+HAL_GetTick
+I2C_ACC_Enable
+snprintf
+WriteUART
+timer_handler
+readACC
+acc_enabled

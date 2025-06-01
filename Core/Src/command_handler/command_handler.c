@@ -22,6 +22,13 @@ char UART_buffer[64];
 //     f_close(&file);
 // }
 
+//! This is temporarily function to log data via UART
+
+void log_to_uart(u32 timestamp, u8 x, u8 y, u8 z) {
+    snprintf(UART_buffer, sizeof(UART_buffer), "%lu, %d, %d, %d\n", timestamp, x, y, z);
+    WriteUART(UART_buffer);
+}
+
 void measure_loop(void) {
     if (timer_handler(1000, &command_timer)) {
         u8 x = readACC(0x28);
@@ -32,9 +39,11 @@ void measure_loop(void) {
 
         // UART Output
         snprintf(UART_buffer, sizeof(UART_buffer), "X: %d, Y: %d, Z: %d\n", x, y, z);
-        WriteUART(UART_buffer);
+        // WriteUART(UART_buffer);
 
         // // SD Logging
         // log_to_sd(timestamp, x, y, z);
+        log_to_uart(timestamp, x, y, z);
     }
 }
+

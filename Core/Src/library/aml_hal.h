@@ -1,5 +1,6 @@
 #pragma once 
 
+#include <stdint.h>
 #include "stm32f4xx_hal.h"
 
 /** ----------------------------------------Data Declaration--------------------------------------------  
@@ -163,7 +164,8 @@ typedef struct {
  * @brief Functions to initialise
  */
 void AML_Init(void);
-void SystemClock_Config(void);
-static void MX_GPIO_Init(void);
+//* See timer.h
+// void SystemClock_Config(void);
+//* See gpio_handler.h -> No static anymore
+// static void MX_GPIO_Init(void);
 
-void MX_I2C1_Init(void);

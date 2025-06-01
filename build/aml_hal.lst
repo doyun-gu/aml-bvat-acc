@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccagdTYY.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccM33vqi.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccagdTYY.s 			page 1
   38              		.loc 1 18 5 view .LVU1
   39 0002 FFF7FEFF 		bl	HAL_Init
   40              	.LVL0:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccagdTYY.s 			page 2
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccM33vqi.s 			page 2
 
 
   19:Core/Src/library/aml_hal.c ****     SystemClock_Config();
@@ -88,16 +88,15 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccagdTYY.s 			page 1
   59              	.LFE134:
   61              		.text
   62              	.Letext0:
-  63              		.file 2 "Core/Src/library/aml_hal.h"
-  64              		.file 3 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
-  65              		.file 4 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccagdTYY.s 			page 3
+  63              		.file 2 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+  64              		.file 3 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccM33vqi.s 			page 3
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 aml_hal.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccagdTYY.s:21     .text.AML_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccagdTYY.s:27     .text.AML_Init:00000000 AML_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccM33vqi.s:21     .text.AML_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccM33vqi.s:27     .text.AML_Init:00000000 AML_Init
 
 UNDEFINED SYMBOLS
 HAL_Init

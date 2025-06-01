@@ -46,13 +46,30 @@ void SystemClock_Config(void)
   }
 }
 
+TIM_HandleTypeDef htim2;
+
+void MX_TIM2_Init(void) {
+    __HAL_RCC_TIM2_CLK_ENABLE();
+
+    htim2.Instance = TIM2;
+    htim2.Init.Prescaler = 8399;  // Adjust based on your clock
+    htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+    htim2.Init.Period = 9999;     // 1 second if APB1 = 84 MHz
+    htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+    htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+
+    if (HAL_TIM_Base_Init(&htim2) != HAL_OK) {
+        Error_Handler();
+    }
+}
+
 bool timer_handler (u32 interval, u32 *timer)
 {
     u32 current_time = HAL_GetTick(); // Get the current time in milliseconds
 
     if ((current_time - *timer) >= interval) {
         *timer = current_time; // Reset the timer to the current time
-        
+
         return true; // Timer expired
     }
 

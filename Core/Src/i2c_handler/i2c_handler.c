@@ -2,6 +2,50 @@
 
 volatile bool acc_enabled = false;
 
+void MX_I2C1_Init(void) {
+    hi2c1.Instance = I2C1;
+    hi2c1.Init.ClockSpeed = 100000;
+    hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
+    hi2c1.Init.OwnAddress1 = 0;
+    hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+    hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+    hi2c1.Init.OwnAddress2 = 0;
+    hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+    hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+
+    if (HAL_I2C_Init(&hi2c1) != HAL_OK) {
+        Error_Handler();
+    }
+}
+
+// void I2C_connectivity_check (void) {
+//     HAL_StatusTypeDef status;
+//     u8 deviceADDR = 0x18 << 1;      // LIS3DH address shifted
+
+//     status = HAL_I2C_IsDeviceReady(&hi2c1, deviceADDR, 3, 1000);
+
+//     if (status == HAL_OK) {
+//         WriteUART("I2C device is ready.\n");
+//     } else {
+//         WriteUART("I2C device not found.\n");
+//     }
+// }
+
+bool I2C_connectivity_check (void) {
+    HAL_StatusTypeDef status;
+    u8 deviceADDR = 0x18 << 1; // LIS3DH address shifted
+
+    status = HAL_I2C_IsDeviceReady(&hi2c1, deviceADDR, 3, 1000);
+
+    if (status == HAL_OK) {
+        WriteUART("I2C device is ready.\n");
+        return true; // Device is ready
+    } else {
+        WriteUART("I2C device not found.\n");
+        return false; // Device not found
+    }
+}
+
 /**
  * Accelerometer I2C address and register definitions
  */

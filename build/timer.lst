@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvUTq48.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvUTq48.s 			page 1
   10:Core/Src/timer/timer.c ****   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
   47              		.loc 1 10 3 is_stmt 1 view .LVU3
   48              		.loc 1 10 22 is_stmt 0 view .LVU4
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvUTq48.s 			page 2
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s 			page 2
 
 
   49 000e 0023     		movs	r3, #0
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvUTq48.s 			page 1
   21:Core/Src/timer/timer.c ****   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   93              		.loc 1 21 3 is_stmt 1 view .LVU19
   94              		.loc 1 21 30 is_stmt 0 view .LVU20
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvUTq48.s 			page 3
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s 			page 3
 
 
   95 004a 0122     		movs	r2, #1
@@ -178,7 +178,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvUTq48.s 			page 1
   38:Core/Src/timer/timer.c ****   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
  133              		.loc 1 38 3 is_stmt 1 view .LVU40
  134              		.loc 1 38 34 is_stmt 0 view .LVU41
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvUTq48.s 			page 4
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s 			page 4
 
 
  135 0070 0221     		movs	r1, #2
@@ -238,7 +238,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvUTq48.s 			page 1
  178              		.loc 1 47 1 is_stmt 0 view .LVU54
  179 0098 F6E7     		b	.L1
  180              	.L8:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvUTq48.s 			page 5
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s 			page 5
 
 
  181 009a 00BF     		.align	2
@@ -247,106 +247,237 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvUTq48.s 			page 1
  184 00a0 00700040 		.word	1073770496
  185              		.cfi_endproc
  186              	.LFE134:
- 188              		.section	.text.timer_handler,"ax",%progbits
+ 188              		.section	.text.MX_TIM2_Init,"ax",%progbits
  189              		.align	1
- 190              		.global	timer_handler
+ 190              		.global	MX_TIM2_Init
  191              		.syntax unified
  192              		.thumb
  193              		.thumb_func
- 195              	timer_handler:
- 196              	.LVL5:
- 197              	.LFB135:
+ 195              	MX_TIM2_Init:
+ 196              	.LFB135:
   48:Core/Src/timer/timer.c **** 
-  49:Core/Src/timer/timer.c **** bool timer_handler (u32 interval, u32 *timer)
-  50:Core/Src/timer/timer.c **** {
- 198              		.loc 1 50 1 is_stmt 1 view -0
- 199              		.cfi_startproc
- 200              		@ args = 0, pretend = 0, frame = 0
- 201              		@ frame_needed = 0, uses_anonymous_args = 0
- 202              		.loc 1 50 1 is_stmt 0 view .LVU56
- 203 0000 38B5     		push	{r3, r4, r5, lr}
- 204              	.LCFI4:
- 205              		.cfi_def_cfa_offset 16
- 206              		.cfi_offset 3, -16
- 207              		.cfi_offset 4, -12
- 208              		.cfi_offset 5, -8
- 209              		.cfi_offset 14, -4
- 210 0002 0546     		mov	r5, r0
- 211 0004 0C46     		mov	r4, r1
-  51:Core/Src/timer/timer.c ****     u32 current_time = HAL_GetTick(); // Get the current time in milliseconds
- 212              		.loc 1 51 5 is_stmt 1 view .LVU57
- 213              		.loc 1 51 24 is_stmt 0 view .LVU58
- 214 0006 FFF7FEFF 		bl	HAL_GetTick
- 215              	.LVL6:
-  52:Core/Src/timer/timer.c **** 
-  53:Core/Src/timer/timer.c ****     if ((current_time - *timer) >= interval) {
- 216              		.loc 1 53 5 is_stmt 1 view .LVU59
- 217              		.loc 1 53 25 is_stmt 0 view .LVU60
- 218 000a 2368     		ldr	r3, [r4]
- 219              		.loc 1 53 23 view .LVU61
- 220 000c C31A     		subs	r3, r0, r3
- 221              		.loc 1 53 8 view .LVU62
- 222 000e AB42     		cmp	r3, r5
- 223 0010 01D2     		bcs	.L13
-  54:Core/Src/timer/timer.c ****         *timer = current_time; // Reset the timer to the current time
-  55:Core/Src/timer/timer.c ****         
-  56:Core/Src/timer/timer.c ****         return true; // Timer expired
-  57:Core/Src/timer/timer.c ****     }
-  58:Core/Src/timer/timer.c **** 
-  59:Core/Src/timer/timer.c ****         return false; // Timer not expired
- 224              		.loc 1 59 16 view .LVU63
- 225 0012 0020     		movs	r0, #0
- 226              	.LVL7:
- 227              	.L10:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvUTq48.s 			page 6
+  49:Core/Src/timer/timer.c **** TIM_HandleTypeDef htim2;
+  50:Core/Src/timer/timer.c **** 
+  51:Core/Src/timer/timer.c **** void MX_TIM2_Init(void) {
+ 197              		.loc 1 51 25 is_stmt 1 view -0
+ 198              		.cfi_startproc
+ 199              		@ args = 0, pretend = 0, frame = 8
+ 200              		@ frame_needed = 0, uses_anonymous_args = 0
+ 201 0000 00B5     		push	{lr}
+ 202              	.LCFI4:
+ 203              		.cfi_def_cfa_offset 4
+ 204              		.cfi_offset 14, -4
+ 205 0002 83B0     		sub	sp, sp, #12
+ 206              	.LCFI5:
+ 207              		.cfi_def_cfa_offset 16
+  52:Core/Src/timer/timer.c ****     __HAL_RCC_TIM2_CLK_ENABLE();
+ 208              		.loc 1 52 5 view .LVU56
+ 209              	.LBB6:
+ 210              		.loc 1 52 5 view .LVU57
+ 211 0004 0023     		movs	r3, #0
+ 212 0006 0193     		str	r3, [sp, #4]
+ 213              		.loc 1 52 5 view .LVU58
+ 214 0008 0F4A     		ldr	r2, .L13
+ 215 000a 116C     		ldr	r1, [r2, #64]
+ 216 000c 41F00101 		orr	r1, r1, #1
+ 217 0010 1164     		str	r1, [r2, #64]
+ 218              		.loc 1 52 5 view .LVU59
+ 219 0012 126C     		ldr	r2, [r2, #64]
+ 220 0014 02F00102 		and	r2, r2, #1
+ 221 0018 0192     		str	r2, [sp, #4]
+ 222              		.loc 1 52 5 view .LVU60
+ 223 001a 019A     		ldr	r2, [sp, #4]
+ 224              	.LBE6:
+ 225              		.loc 1 52 5 view .LVU61
+  53:Core/Src/timer/timer.c **** 
+  54:Core/Src/timer/timer.c ****     htim2.Instance = TIM2;
+ 226              		.loc 1 54 5 view .LVU62
+ 227              		.loc 1 54 20 is_stmt 0 view .LVU63
+ 228 001c 0B48     		ldr	r0, .L13+4
+ 229 001e 4FF08042 		mov	r2, #1073741824
+ 230 0022 0260     		str	r2, [r0]
+  55:Core/Src/timer/timer.c ****     htim2.Init.Prescaler = 8399;  // Adjust based on your clock
+ 231              		.loc 1 55 5 is_stmt 1 view .LVU64
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s 			page 6
 
 
-  60:Core/Src/timer/timer.c **** }
- 228              		.loc 1 60 1 view .LVU64
- 229 0014 38BD     		pop	{r3, r4, r5, pc}
- 230              	.LVL8:
- 231              	.L13:
-  54:Core/Src/timer/timer.c ****         *timer = current_time; // Reset the timer to the current time
- 232              		.loc 1 54 9 is_stmt 1 view .LVU65
-  54:Core/Src/timer/timer.c ****         *timer = current_time; // Reset the timer to the current time
- 233              		.loc 1 54 16 is_stmt 0 view .LVU66
- 234 0016 2060     		str	r0, [r4]
-  56:Core/Src/timer/timer.c ****     }
- 235              		.loc 1 56 9 is_stmt 1 view .LVU67
-  56:Core/Src/timer/timer.c ****     }
- 236              		.loc 1 56 16 is_stmt 0 view .LVU68
- 237 0018 0120     		movs	r0, #1
- 238              	.LVL9:
-  56:Core/Src/timer/timer.c ****     }
- 239              		.loc 1 56 16 view .LVU69
- 240 001a FBE7     		b	.L10
- 241              		.cfi_endproc
- 242              	.LFE135:
- 244              		.text
- 245              	.Letext0:
- 246              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
- 247              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
- 248              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
- 249              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
- 250              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h"
- 251              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h"
- 252              		.file 8 "Core/Src/library/aml_hal.h"
- 253              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
- 254              		.file 10 "<built-in>"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvUTq48.s 			page 7
+ 232              		.loc 1 55 26 is_stmt 0 view .LVU65
+ 233 0024 42F2CF02 		movw	r2, #8399
+ 234 0028 4260     		str	r2, [r0, #4]
+  56:Core/Src/timer/timer.c ****     htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+ 235              		.loc 1 56 5 is_stmt 1 view .LVU66
+ 236              		.loc 1 56 28 is_stmt 0 view .LVU67
+ 237 002a 8360     		str	r3, [r0, #8]
+  57:Core/Src/timer/timer.c ****     htim2.Init.Period = 9999;     // 1 second if APB1 = 84 MHz
+ 238              		.loc 1 57 5 is_stmt 1 view .LVU68
+ 239              		.loc 1 57 23 is_stmt 0 view .LVU69
+ 240 002c 42F20F72 		movw	r2, #9999
+ 241 0030 C260     		str	r2, [r0, #12]
+  58:Core/Src/timer/timer.c ****     htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+ 242              		.loc 1 58 5 is_stmt 1 view .LVU70
+ 243              		.loc 1 58 30 is_stmt 0 view .LVU71
+ 244 0032 0361     		str	r3, [r0, #16]
+  59:Core/Src/timer/timer.c ****     htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+ 245              		.loc 1 59 5 is_stmt 1 view .LVU72
+ 246              		.loc 1 59 34 is_stmt 0 view .LVU73
+ 247 0034 8361     		str	r3, [r0, #24]
+  60:Core/Src/timer/timer.c **** 
+  61:Core/Src/timer/timer.c ****     if (HAL_TIM_Base_Init(&htim2) != HAL_OK) {
+ 248              		.loc 1 61 5 is_stmt 1 view .LVU74
+ 249              		.loc 1 61 9 is_stmt 0 view .LVU75
+ 250 0036 FFF7FEFF 		bl	HAL_TIM_Base_Init
+ 251              	.LVL5:
+ 252              		.loc 1 61 8 discriminator 1 view .LVU76
+ 253 003a 10B9     		cbnz	r0, .L12
+ 254              	.L9:
+  62:Core/Src/timer/timer.c ****         Error_Handler();
+  63:Core/Src/timer/timer.c ****     }
+  64:Core/Src/timer/timer.c **** }
+ 255              		.loc 1 64 1 view .LVU77
+ 256 003c 03B0     		add	sp, sp, #12
+ 257              	.LCFI6:
+ 258              		.cfi_remember_state
+ 259              		.cfi_def_cfa_offset 4
+ 260              		@ sp needed
+ 261 003e 5DF804FB 		ldr	pc, [sp], #4
+ 262              	.L12:
+ 263              	.LCFI7:
+ 264              		.cfi_restore_state
+ 265              	.LBB7:
+  62:Core/Src/timer/timer.c ****         Error_Handler();
+ 266              		.loc 1 62 9 is_stmt 1 view .LVU78
+ 267 0042 FFF7FEFF 		bl	Error_Handler
+ 268              	.LVL6:
+ 269              	.LBE7:
+ 270              		.loc 1 64 1 is_stmt 0 view .LVU79
+ 271 0046 F9E7     		b	.L9
+ 272              	.L14:
+ 273              		.align	2
+ 274              	.L13:
+ 275 0048 00380240 		.word	1073887232
+ 276 004c 00000000 		.word	htim2
+ 277              		.cfi_endproc
+ 278              	.LFE135:
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s 			page 7
+
+
+ 280              		.section	.text.timer_handler,"ax",%progbits
+ 281              		.align	1
+ 282              		.global	timer_handler
+ 283              		.syntax unified
+ 284              		.thumb
+ 285              		.thumb_func
+ 287              	timer_handler:
+ 288              	.LVL7:
+ 289              	.LFB136:
+  65:Core/Src/timer/timer.c **** 
+  66:Core/Src/timer/timer.c **** bool timer_handler (u32 interval, u32 *timer)
+  67:Core/Src/timer/timer.c **** {
+ 290              		.loc 1 67 1 is_stmt 1 view -0
+ 291              		.cfi_startproc
+ 292              		@ args = 0, pretend = 0, frame = 0
+ 293              		@ frame_needed = 0, uses_anonymous_args = 0
+ 294              		.loc 1 67 1 is_stmt 0 view .LVU81
+ 295 0000 38B5     		push	{r3, r4, r5, lr}
+ 296              	.LCFI8:
+ 297              		.cfi_def_cfa_offset 16
+ 298              		.cfi_offset 3, -16
+ 299              		.cfi_offset 4, -12
+ 300              		.cfi_offset 5, -8
+ 301              		.cfi_offset 14, -4
+ 302 0002 0546     		mov	r5, r0
+ 303 0004 0C46     		mov	r4, r1
+  68:Core/Src/timer/timer.c ****     u32 current_time = HAL_GetTick(); // Get the current time in milliseconds
+ 304              		.loc 1 68 5 is_stmt 1 view .LVU82
+ 305              		.loc 1 68 24 is_stmt 0 view .LVU83
+ 306 0006 FFF7FEFF 		bl	HAL_GetTick
+ 307              	.LVL8:
+  69:Core/Src/timer/timer.c **** 
+  70:Core/Src/timer/timer.c ****     if ((current_time - *timer) >= interval) {
+ 308              		.loc 1 70 5 is_stmt 1 view .LVU84
+ 309              		.loc 1 70 25 is_stmt 0 view .LVU85
+ 310 000a 2368     		ldr	r3, [r4]
+ 311              		.loc 1 70 23 view .LVU86
+ 312 000c C31A     		subs	r3, r0, r3
+ 313              		.loc 1 70 8 view .LVU87
+ 314 000e AB42     		cmp	r3, r5
+ 315 0010 01D2     		bcs	.L19
+  71:Core/Src/timer/timer.c ****         *timer = current_time; // Reset the timer to the current time
+  72:Core/Src/timer/timer.c **** 
+  73:Core/Src/timer/timer.c ****         return true; // Timer expired
+  74:Core/Src/timer/timer.c ****     }
+  75:Core/Src/timer/timer.c **** 
+  76:Core/Src/timer/timer.c ****         return false; // Timer not expired
+ 316              		.loc 1 76 16 view .LVU88
+ 317 0012 0020     		movs	r0, #0
+ 318              	.LVL9:
+ 319              	.L16:
+  77:Core/Src/timer/timer.c **** }
+ 320              		.loc 1 77 1 view .LVU89
+ 321 0014 38BD     		pop	{r3, r4, r5, pc}
+ 322              	.LVL10:
+ 323              	.L19:
+  71:Core/Src/timer/timer.c ****         *timer = current_time; // Reset the timer to the current time
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s 			page 8
+
+
+ 324              		.loc 1 71 9 is_stmt 1 view .LVU90
+  71:Core/Src/timer/timer.c ****         *timer = current_time; // Reset the timer to the current time
+ 325              		.loc 1 71 16 is_stmt 0 view .LVU91
+ 326 0016 2060     		str	r0, [r4]
+  73:Core/Src/timer/timer.c ****     }
+ 327              		.loc 1 73 9 is_stmt 1 view .LVU92
+  73:Core/Src/timer/timer.c ****     }
+ 328              		.loc 1 73 16 is_stmt 0 view .LVU93
+ 329 0018 0120     		movs	r0, #1
+ 330              	.LVL11:
+  73:Core/Src/timer/timer.c ****     }
+ 331              		.loc 1 73 16 view .LVU94
+ 332 001a FBE7     		b	.L16
+ 333              		.cfi_endproc
+ 334              	.LFE136:
+ 336              		.global	htim2
+ 337              		.section	.bss.htim2,"aw",%nobits
+ 338              		.align	2
+ 341              	htim2:
+ 342 0000 00000000 		.space	72
+ 342      00000000 
+ 342      00000000 
+ 342      00000000 
+ 342      00000000 
+ 343              		.text
+ 344              	.Letext0:
+ 345              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+ 346              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 347              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
+ 348              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 349              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h"
+ 350              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h"
+ 351              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 352              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 353              		.file 10 "Core/Src/library/aml_hal.h"
+ 354              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 355              		.file 12 "<built-in>"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s 			page 9
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 timer.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvUTq48.s:21     .text.SystemClock_Config:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvUTq48.s:27     .text.SystemClock_Config:00000000 SystemClock_Config
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvUTq48.s:183    .text.SystemClock_Config:0000009c $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvUTq48.s:189    .text.timer_handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvUTq48.s:195    .text.timer_handler:00000000 timer_handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s:21     .text.SystemClock_Config:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s:27     .text.SystemClock_Config:00000000 SystemClock_Config
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s:183    .text.SystemClock_Config:0000009c $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s:189    .text.MX_TIM2_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s:195    .text.MX_TIM2_Init:00000000 MX_TIM2_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s:275    .text.MX_TIM2_Init:00000048 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s:341    .bss.htim2:00000000 htim2
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s:281    .text.timer_handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s:287    .text.timer_handler:00000000 timer_handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdQec41.s:338    .bss.htim2:00000000 $d
 
 UNDEFINED SYMBOLS
 memset
 HAL_RCC_OscConfig
 HAL_RCC_ClockConfig
 Error_Handler
+HAL_TIM_Base_Init
 HAL_GetTick

@@ -3,9 +3,12 @@
 static u32 command_timer = 0;
 char UART_buffer[64];
 
+bool i2c_ready = false;
+
 void BVAT_Init(void) {
     AML_Init();                         // Handles all HAL init
     command_timer = HAL_GetTick();      // Set command timer
+    i2c_ready = I2C_connectivity_check();
     I2C_ACC_Enable();                   // Enable sensor
 }
 
@@ -36,6 +39,11 @@ void log_to_uart(u32 timestamp, u8 x, u8 y, u8 z) {
 }
 
 void measure_loop(void) {
+    if (!i2c_ready) {
+        WriteUART("I2C not available, skipping measurement.\n");
+        return;
+    }
+
     if (!acc_enabled) {
         I2C_ACC_Enable();
         acc_enabled = true;

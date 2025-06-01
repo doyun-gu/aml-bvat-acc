@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 1
    9:Core/Src/command_handler/command_handler.c ****     I2C_ACC_Enable();                   // Enable sensor
   48              		.loc 1 9 5 is_stmt 1 view .LVU5
   49 000e FFF7FEFF 		bl	I2C_ACC_Enable
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 2
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s 			page 2
 
 
   50              	.LVL2:
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 1
   78              		.loc 1 33 51 is_stmt 0 view .LVU8
   79 0000 10B5     		push	{r4, lr}
   80              	.LCFI1:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 3
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s 			page 3
 
 
   81              		.cfi_def_cfa_offset 8
@@ -178,7 +178,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 1
  129              		.align	1
  130              		.global	measure_loop
  131              		.syntax unified
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 4
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s 			page 4
 
 
  132              		.thumb
@@ -238,7 +238,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 1
   56:Core/Src/command_handler/command_handler.c **** 
   57:Core/Src/command_handler/command_handler.c ****         // // SD Logging
   58:Core/Src/command_handler/command_handler.c ****         // log_to_sd(timestamp, x, y, z);
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 5
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s 			page 5
 
 
   59:Core/Src/command_handler/command_handler.c ****         log_to_uart(timestamp, x, y, z);
@@ -298,7 +298,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 1
  208              		.loc 1 47 16 is_stmt 0 view .LVU34
  209 0036 2A20     		movs	r0, #42
  210 0038 FFF7FEFF 		bl	readACC
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 6
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s 			page 6
 
 
  211              	.LVL16:
@@ -358,7 +358,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 1
  258      00000000 
  259              		.section	.bss.command_timer,"aw",%nobits
  260              		.align	2
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 7
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s 			page 7
 
 
  263              	command_timer:
@@ -373,26 +373,26 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 1
  272              		.file 7 "Core/Src/timer/timer.h"
  273              		.file 8 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdio.h"
  274              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s 			page 8
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 command_handler.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:21     .text.BVAT_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:27     .text.BVAT_Init:00000000 BVAT_Init
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:56     .text.BVAT_Init:00000014 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:263    .bss.command_timer:00000000 command_timer
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:61     .rodata.log_to_uart.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:65     .text.log_to_uart:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:71     .text.log_to_uart:00000000 log_to_uart
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:119    .text.log_to_uart:00000024 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:257    .bss.UART_buffer:00000000 UART_buffer
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:125    .rodata.measure_loop.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:129    .text.measure_loop:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:135    .text.measure_loop:00000000 measure_loop
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:245    .text.measure_loop:00000064 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:254    .bss.UART_buffer:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccPqUIBc.s:260    .bss.command_timer:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s:21     .text.BVAT_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s:27     .text.BVAT_Init:00000000 BVAT_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s:56     .text.BVAT_Init:00000014 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s:263    .bss.command_timer:00000000 command_timer
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s:61     .rodata.log_to_uart.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s:65     .text.log_to_uart:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s:71     .text.log_to_uart:00000000 log_to_uart
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s:119    .text.log_to_uart:00000024 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s:257    .bss.UART_buffer:00000000 UART_buffer
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s:125    .rodata.measure_loop.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s:129    .text.measure_loop:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s:135    .text.measure_loop:00000000 measure_loop
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s:245    .text.measure_loop:00000064 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s:254    .bss.UART_buffer:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccW1Pm3i.s:260    .bss.command_timer:00000000 $d
 
 UNDEFINED SYMBOLS
 AML_Init

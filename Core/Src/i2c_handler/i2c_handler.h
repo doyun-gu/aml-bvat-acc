@@ -6,6 +6,9 @@
 
 extern I2C_HandleTypeDef hi2c1;
 
+void MX_TIM2_Init(void);
+void MX_I2C1_Init(void);
+
 // === LIS3DH Accelerometer Constants ===
 #define ACC_I2C_ADDR      (0x18 << 1)   // LIS3DH default 7-bit address shifted left
 #define ACC_CTRL1_REG     0x20          // Control register for power + axes
@@ -16,3 +19,10 @@ extern u8 rawData[6]; // Accessible from other files if needed
 extern volatile bool acc_enabled;
 
 extern volatile bool acc_enabled;
+
+// void I2C_connectivity_check(void);
+bool I2C_connectivity_check(void);
+void I2C_ACC_Enable(void);
+void I2C_Read_ACC(void);
+void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *hi2c);
+void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c);

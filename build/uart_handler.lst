@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccXhdDnf.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s 			page 1
   45 0008 4FF4E133 		mov	r3, #115200
   46 000c 4360     		str	r3, [r0, #4]
   12:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.WordLength = UART_WORDLENGTH_8B;
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s 			page 2
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccXhdDnf.s 			page 2
 
 
   47              		.loc 1 12 3 is_stmt 1 view .LVU5
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s 			page 1
   90              	.LFE134:
   92              		.section	.text.WriteUART,"ax",%progbits
   93              		.align	1
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s 			page 3
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccXhdDnf.s 			page 3
 
 
   94              		.global	WriteUART
@@ -178,7 +178,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s 			page 1
   30:Core/Src/uart_handler/uart_handler.c **** //     if (huart->Instance == USART2) {
   31:Core/Src/uart_handler/uart_handler.c **** //         // Handle received data here
   32:Core/Src/uart_handler/uart_handler.c **** //         // For example, you can read the received data from huart->pRxBuffPtr
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s 			page 4
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccXhdDnf.s 			page 4
 
 
   33:Core/Src/uart_handler/uart_handler.c **** //         // and process it as needed.
@@ -214,19 +214,19 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s 			page 1
  165              		.file 9 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/string.h"
  166              		.file 10 "Core/Src/library/aml_hal.h"
  167              		.file 11 "Core/Src/uart_handler/uart_handler.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s 			page 5
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccXhdDnf.s 			page 5
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 uart_handler.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s:21     .text.MX_USART2_UART_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s:27     .text.MX_USART2_UART_Init:00000000 MX_USART2_UART_Init
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s:87     .text.MX_USART2_UART_Init:0000002c $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s:93     .text.WriteUART:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s:99     .text.WriteUART:00000000 WriteUART
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s:130    .text.WriteUART:00000014 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s:135    .text.HAL_UART_TxCpltCallback:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccccGtBA.s:141    .text.HAL_UART_TxCpltCallback:00000000 HAL_UART_TxCpltCallback
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccXhdDnf.s:21     .text.MX_USART2_UART_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccXhdDnf.s:27     .text.MX_USART2_UART_Init:00000000 MX_USART2_UART_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccXhdDnf.s:87     .text.MX_USART2_UART_Init:0000002c $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccXhdDnf.s:93     .text.WriteUART:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccXhdDnf.s:99     .text.WriteUART:00000000 WriteUART
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccXhdDnf.s:130    .text.WriteUART:00000014 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccXhdDnf.s:135    .text.HAL_UART_TxCpltCallback:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccXhdDnf.s:141    .text.HAL_UART_TxCpltCallback:00000000 HAL_UART_TxCpltCallback
 
 UNDEFINED SYMBOLS
 HAL_UART_Init

@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccq9mvgf.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -20,15 +20,14 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccq9mvgf.s 			page 1
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
   19              		.file 1 "Core/Src/gpio_handler/gpio_handler.c"
-  20              		.section	.text.WriteDigitalOut,"ax",%progbits
+  20              		.section	.text.MX_GPIO_Init,"ax",%progbits
   21              		.align	1
-  22              		.global	WriteDigitalOut
+  22              		.global	MX_GPIO_Init
   23              		.syntax unified
   24              		.thumb
   25              		.thumb_func
-  27              	WriteDigitalOut:
-  28              	.LVL0:
-  29              	.LFB136:
+  27              	MX_GPIO_Init:
+  28              	.LFB134:
    1:Core/Src/gpio_handler/gpio_handler.c **** #include "gpio_handler.h"
    2:Core/Src/gpio_handler/gpio_handler.c **** 
    3:Core/Src/gpio_handler/gpio_handler.c **** /**
@@ -38,14 +37,122 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccq9mvgf.s 			page 1
    7:Core/Src/gpio_handler/gpio_handler.c ****   */
    8:Core/Src/gpio_handler/gpio_handler.c **** void MX_GPIO_Init(void)
    9:Core/Src/gpio_handler/gpio_handler.c **** {
+  29              		.loc 1 9 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 40
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34 0000 8AB0     		sub	sp, sp, #40
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 40
   10:Core/Src/gpio_handler/gpio_handler.c ****     GPIO_InitTypeDef GPIO_InitStruct = {0};
+  37              		.loc 1 10 5 view .LVU1
+  38              		.loc 1 10 22 is_stmt 0 view .LVU2
+  39 0002 0022     		movs	r2, #0
+  40 0004 0592     		str	r2, [sp, #20]
+  41 0006 0692     		str	r2, [sp, #24]
+  42 0008 0792     		str	r2, [sp, #28]
+  43 000a 0892     		str	r2, [sp, #32]
+  44 000c 0992     		str	r2, [sp, #36]
   11:Core/Src/gpio_handler/gpio_handler.c **** 
   12:Core/Src/gpio_handler/gpio_handler.c ****     // Just enable all necessary ports
   13:Core/Src/gpio_handler/gpio_handler.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
+  45              		.loc 1 13 5 is_stmt 1 view .LVU3
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 2
+
+
+  46              	.LBB2:
+  47              		.loc 1 13 5 view .LVU4
+  48 000e 0192     		str	r2, [sp, #4]
+  49              		.loc 1 13 5 view .LVU5
+  50 0010 144B     		ldr	r3, .L3
+  51 0012 196B     		ldr	r1, [r3, #48]
+  52 0014 41F00101 		orr	r1, r1, #1
+  53 0018 1963     		str	r1, [r3, #48]
+  54              		.loc 1 13 5 view .LVU6
+  55 001a 196B     		ldr	r1, [r3, #48]
+  56 001c 01F00101 		and	r1, r1, #1
+  57 0020 0191     		str	r1, [sp, #4]
+  58              		.loc 1 13 5 view .LVU7
+  59 0022 0199     		ldr	r1, [sp, #4]
+  60              	.LBE2:
+  61              		.loc 1 13 5 view .LVU8
   14:Core/Src/gpio_handler/gpio_handler.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+  62              		.loc 1 14 5 view .LVU9
+  63              	.LBB3:
+  64              		.loc 1 14 5 view .LVU10
+  65 0024 0292     		str	r2, [sp, #8]
+  66              		.loc 1 14 5 view .LVU11
+  67 0026 196B     		ldr	r1, [r3, #48]
+  68 0028 41F00201 		orr	r1, r1, #2
+  69 002c 1963     		str	r1, [r3, #48]
+  70              		.loc 1 14 5 view .LVU12
+  71 002e 196B     		ldr	r1, [r3, #48]
+  72 0030 01F00201 		and	r1, r1, #2
+  73 0034 0291     		str	r1, [sp, #8]
+  74              		.loc 1 14 5 view .LVU13
+  75 0036 0299     		ldr	r1, [sp, #8]
+  76              	.LBE3:
+  77              		.loc 1 14 5 view .LVU14
   15:Core/Src/gpio_handler/gpio_handler.c ****     __HAL_RCC_GPIOC_CLK_ENABLE();
+  78              		.loc 1 15 5 view .LVU15
+  79              	.LBB4:
+  80              		.loc 1 15 5 view .LVU16
+  81 0038 0392     		str	r2, [sp, #12]
+  82              		.loc 1 15 5 view .LVU17
+  83 003a 196B     		ldr	r1, [r3, #48]
+  84 003c 41F00401 		orr	r1, r1, #4
+  85 0040 1963     		str	r1, [r3, #48]
+  86              		.loc 1 15 5 view .LVU18
+  87 0042 196B     		ldr	r1, [r3, #48]
+  88 0044 01F00401 		and	r1, r1, #4
+  89 0048 0391     		str	r1, [sp, #12]
+  90              		.loc 1 15 5 view .LVU19
+  91 004a 0399     		ldr	r1, [sp, #12]
+  92              	.LBE4:
+  93              		.loc 1 15 5 view .LVU20
   16:Core/Src/gpio_handler/gpio_handler.c ****     __HAL_RCC_GPIOH_CLK_ENABLE();
+  94              		.loc 1 16 5 view .LVU21
+  95              	.LBB5:
+  96              		.loc 1 16 5 view .LVU22
+  97 004c 0492     		str	r2, [sp, #16]
+  98              		.loc 1 16 5 view .LVU23
+  99 004e 1A6B     		ldr	r2, [r3, #48]
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 3
+
+
+ 100 0050 42F08002 		orr	r2, r2, #128
+ 101 0054 1A63     		str	r2, [r3, #48]
+ 102              		.loc 1 16 5 view .LVU24
+ 103 0056 1B6B     		ldr	r3, [r3, #48]
+ 104 0058 03F08003 		and	r3, r3, #128
+ 105 005c 0493     		str	r3, [sp, #16]
+ 106              		.loc 1 16 5 view .LVU25
+ 107 005e 049B     		ldr	r3, [sp, #16]
+ 108              	.LBE5:
+ 109              		.loc 1 16 5 view .LVU26
   17:Core/Src/gpio_handler/gpio_handler.c **** }
+ 110              		.loc 1 17 1 is_stmt 0 view .LVU27
+ 111 0060 0AB0     		add	sp, sp, #40
+ 112              	.LCFI1:
+ 113              		.cfi_def_cfa_offset 0
+ 114              		@ sp needed
+ 115 0062 7047     		bx	lr
+ 116              	.L4:
+ 117              		.align	2
+ 118              	.L3:
+ 119 0064 00380240 		.word	1073887232
+ 120              		.cfi_endproc
+ 121              	.LFE134:
+ 123              		.section	.text.WriteDigitalOut,"ax",%progbits
+ 124              		.align	1
+ 125              		.global	WriteDigitalOut
+ 126              		.syntax unified
+ 127              		.thumb
+ 128              		.thumb_func
+ 130              	WriteDigitalOut:
+ 131              	.LVL0:
+ 132              	.LFB136:
   18:Core/Src/gpio_handler/gpio_handler.c **** 
   19:Core/Src/gpio_handler/gpio_handler.c **** /**
   20:Core/Src/gpio_handler/gpio_handler.c ****  * @brief Digital Output ----------------------------------------------------------
@@ -58,9 +165,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccq9mvgf.s 			page 1
   27:Core/Src/gpio_handler/gpio_handler.c ****     digital_out.pin = pin;
   28:Core/Src/gpio_handler/gpio_handler.c ****     digital_out.state = GPIO_PIN_RESET; // Initialize state to LOW
   29:Core/Src/gpio_handler/gpio_handler.c **** 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccq9mvgf.s 			page 2
-
-
   30:Core/Src/gpio_handler/gpio_handler.c ****     GPIO_InitTypeDef GPIO_InitStruct = {0};
   31:Core/Src/gpio_handler/gpio_handler.c **** 
   32:Core/Src/gpio_handler/gpio_handler.c ****     GPIO_InitStruct.Pin = digital_out.pin.pin;
@@ -74,197 +178,203 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccq9mvgf.s 			page 1
   40:Core/Src/gpio_handler/gpio_handler.c ****     WriteDigitalOut(&digital_out, 0);
   41:Core/Src/gpio_handler/gpio_handler.c **** }
   42:Core/Src/gpio_handler/gpio_handler.c **** 
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 4
+
+
   43:Core/Src/gpio_handler/gpio_handler.c **** void WriteDigitalOut(DigitalOut *digital_out, u8 state) {
-  30              		.loc 1 43 57 view -0
-  31              		.cfi_startproc
-  32              		@ args = 0, pretend = 0, frame = 0
-  33              		@ frame_needed = 0, uses_anonymous_args = 0
-  34              		.loc 1 43 57 is_stmt 0 view .LVU1
-  35 0000 08B5     		push	{r3, lr}
-  36              	.LCFI0:
-  37              		.cfi_def_cfa_offset 8
-  38              		.cfi_offset 3, -8
-  39              		.cfi_offset 14, -4
-  40 0002 0A46     		mov	r2, r1
+ 133              		.loc 1 43 57 is_stmt 1 view -0
+ 134              		.cfi_startproc
+ 135              		@ args = 0, pretend = 0, frame = 0
+ 136              		@ frame_needed = 0, uses_anonymous_args = 0
+ 137              		.loc 1 43 57 is_stmt 0 view .LVU29
+ 138 0000 08B5     		push	{r3, lr}
+ 139              	.LCFI2:
+ 140              		.cfi_def_cfa_offset 8
+ 141              		.cfi_offset 3, -8
+ 142              		.cfi_offset 14, -4
+ 143 0002 0A46     		mov	r2, r1
   44:Core/Src/gpio_handler/gpio_handler.c ****     digital_out->state = state;
-  41              		.loc 1 44 5 is_stmt 1 view .LVU2
-  42              		.loc 1 44 24 is_stmt 0 view .LVU3
-  43 0004 0172     		strb	r1, [r0, #8]
+ 144              		.loc 1 44 5 is_stmt 1 view .LVU30
+ 145              		.loc 1 44 24 is_stmt 0 view .LVU31
+ 146 0004 0172     		strb	r1, [r0, #8]
   45:Core/Src/gpio_handler/gpio_handler.c ****     HAL_GPIO_WritePin(digital_out->pin.port, digital_out->pin.pin, state);
-  44              		.loc 1 45 5 is_stmt 1 view .LVU4
-  45 0006 8188     		ldrh	r1, [r0, #4]
-  46              	.LVL1:
-  47              		.loc 1 45 5 is_stmt 0 view .LVU5
-  48 0008 0068     		ldr	r0, [r0]
-  49              	.LVL2:
-  50              		.loc 1 45 5 view .LVU6
-  51 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
-  52              	.LVL3:
+ 147              		.loc 1 45 5 is_stmt 1 view .LVU32
+ 148 0006 8188     		ldrh	r1, [r0, #4]
+ 149              	.LVL1:
+ 150              		.loc 1 45 5 is_stmt 0 view .LVU33
+ 151 0008 0068     		ldr	r0, [r0]
+ 152              	.LVL2:
+ 153              		.loc 1 45 5 view .LVU34
+ 154 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 155              	.LVL3:
   46:Core/Src/gpio_handler/gpio_handler.c **** }
-  53              		.loc 1 46 1 view .LVU7
-  54 000e 08BD     		pop	{r3, pc}
-  55              		.cfi_endproc
-  56              	.LFE136:
-  58              		.section	.text.AssignDigitalOut,"ax",%progbits
-  59              		.align	1
-  60              		.global	AssignDigitalOut
-  61              		.syntax unified
-  62              		.thumb
-  63              		.thumb_func
-  65              	AssignDigitalOut:
-  66              	.LFB135:
+ 156              		.loc 1 46 1 view .LVU35
+ 157 000e 08BD     		pop	{r3, pc}
+ 158              		.cfi_endproc
+ 159              	.LFE136:
+ 161              		.section	.text.AssignDigitalOut,"ax",%progbits
+ 162              		.align	1
+ 163              		.global	AssignDigitalOut
+ 164              		.syntax unified
+ 165              		.thumb
+ 166              		.thumb_func
+ 168              	AssignDigitalOut:
+ 169              	.LFB135:
   25:Core/Src/gpio_handler/gpio_handler.c ****     DigitalOut digital_out;
-  67              		.loc 1 25 33 is_stmt 1 view -0
-  68              		.cfi_startproc
-  69              		@ args = 0, pretend = 0, frame = 40
-  70              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccq9mvgf.s 			page 3
-
-
-  71 0000 30B5     		push	{r4, r5, lr}
-  72              	.LCFI1:
-  73              		.cfi_def_cfa_offset 12
-  74              		.cfi_offset 4, -12
-  75              		.cfi_offset 5, -8
-  76              		.cfi_offset 14, -4
-  77 0002 8BB0     		sub	sp, sp, #44
-  78              	.LCFI2:
-  79              		.cfi_def_cfa_offset 56
-  80 0004 6B46     		mov	r3, sp
-  81 0006 83E80300 		stm	r3, {r0, r1}
+ 170              		.loc 1 25 33 is_stmt 1 view -0
+ 171              		.cfi_startproc
+ 172              		@ args = 0, pretend = 0, frame = 40
+ 173              		@ frame_needed = 0, uses_anonymous_args = 0
+ 174 0000 30B5     		push	{r4, r5, lr}
+ 175              	.LCFI3:
+ 176              		.cfi_def_cfa_offset 12
+ 177              		.cfi_offset 4, -12
+ 178              		.cfi_offset 5, -8
+ 179              		.cfi_offset 14, -4
+ 180 0002 8BB0     		sub	sp, sp, #44
+ 181              	.LCFI4:
+ 182              		.cfi_def_cfa_offset 56
+ 183 0004 6B46     		mov	r3, sp
+ 184 0006 83E80300 		stm	r3, {r0, r1}
   26:Core/Src/gpio_handler/gpio_handler.c ****     digital_out.pin = pin;
-  82              		.loc 1 26 5 view .LVU9
+ 185              		.loc 1 26 5 view .LVU37
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 5
+
+
   27:Core/Src/gpio_handler/gpio_handler.c ****     digital_out.state = GPIO_PIN_RESET; // Initialize state to LOW
-  83              		.loc 1 27 5 view .LVU10
+ 186              		.loc 1 27 5 view .LVU38
   27:Core/Src/gpio_handler/gpio_handler.c ****     digital_out.state = GPIO_PIN_RESET; // Initialize state to LOW
-  84              		.loc 1 27 21 is_stmt 0 view .LVU11
-  85 000a 07AD     		add	r5, sp, #28
-  86 000c 93E80300 		ldm	r3, {r0, r1}
-  87 0010 85E80300 		stm	r5, {r0, r1}
+ 187              		.loc 1 27 21 is_stmt 0 view .LVU39
+ 188 000a 07AD     		add	r5, sp, #28
+ 189 000c 93E80300 		ldm	r3, {r0, r1}
+ 190 0010 85E80300 		stm	r5, {r0, r1}
   28:Core/Src/gpio_handler/gpio_handler.c **** 
-  88              		.loc 1 28 5 is_stmt 1 view .LVU12
+ 191              		.loc 1 28 5 is_stmt 1 view .LVU40
   28:Core/Src/gpio_handler/gpio_handler.c **** 
-  89              		.loc 1 28 23 is_stmt 0 view .LVU13
-  90 0014 0024     		movs	r4, #0
-  91 0016 8DF82440 		strb	r4, [sp, #36]
+ 192              		.loc 1 28 23 is_stmt 0 view .LVU41
+ 193 0014 0024     		movs	r4, #0
+ 194 0016 8DF82440 		strb	r4, [sp, #36]
   30:Core/Src/gpio_handler/gpio_handler.c **** 
-  92              		.loc 1 30 5 is_stmt 1 view .LVU14
+ 195              		.loc 1 30 5 is_stmt 1 view .LVU42
   30:Core/Src/gpio_handler/gpio_handler.c **** 
-  93              		.loc 1 30 22 is_stmt 0 view .LVU15
-  94 001a 0294     		str	r4, [sp, #8]
-  95 001c 0394     		str	r4, [sp, #12]
-  96 001e 0494     		str	r4, [sp, #16]
-  97 0020 0594     		str	r4, [sp, #20]
-  98 0022 0694     		str	r4, [sp, #24]
+ 196              		.loc 1 30 22 is_stmt 0 view .LVU43
+ 197 001a 0294     		str	r4, [sp, #8]
+ 198 001c 0394     		str	r4, [sp, #12]
+ 199 001e 0494     		str	r4, [sp, #16]
+ 200 0020 0594     		str	r4, [sp, #20]
+ 201 0022 0694     		str	r4, [sp, #24]
   32:Core/Src/gpio_handler/gpio_handler.c ****     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;     // Set as push-pull output
-  99              		.loc 1 32 5 is_stmt 1 view .LVU16
+ 202              		.loc 1 32 5 is_stmt 1 view .LVU44
   32:Core/Src/gpio_handler/gpio_handler.c ****     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;     // Set as push-pull output
- 100              		.loc 1 32 42 is_stmt 0 view .LVU17
- 101 0024 BDF82030 		ldrh	r3, [sp, #32]
+ 203              		.loc 1 32 42 is_stmt 0 view .LVU45
+ 204 0024 BDF82030 		ldrh	r3, [sp, #32]
   32:Core/Src/gpio_handler/gpio_handler.c ****     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;     // Set as push-pull output
- 102              		.loc 1 32 25 view .LVU18
- 103 0028 0293     		str	r3, [sp, #8]
+ 205              		.loc 1 32 25 view .LVU46
+ 206 0028 0293     		str	r3, [sp, #8]
   33:Core/Src/gpio_handler/gpio_handler.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;             // No pull-up or pull-down
- 104              		.loc 1 33 5 is_stmt 1 view .LVU19
+ 207              		.loc 1 33 5 is_stmt 1 view .LVU47
   33:Core/Src/gpio_handler/gpio_handler.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;             // No pull-up or pull-down
- 105              		.loc 1 33 26 is_stmt 0 view .LVU20
- 106 002a 0123     		movs	r3, #1
- 107 002c 0393     		str	r3, [sp, #12]
+ 208              		.loc 1 33 26 is_stmt 0 view .LVU48
+ 209 002a 0123     		movs	r3, #1
+ 210 002c 0393     		str	r3, [sp, #12]
   34:Core/Src/gpio_handler/gpio_handler.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM; // Set speed to low
- 108              		.loc 1 34 5 is_stmt 1 view .LVU21
+ 211              		.loc 1 34 5 is_stmt 1 view .LVU49
   35:Core/Src/gpio_handler/gpio_handler.c **** 
- 109              		.loc 1 35 5 view .LVU22
+ 212              		.loc 1 35 5 view .LVU50
   35:Core/Src/gpio_handler/gpio_handler.c **** 
- 110              		.loc 1 35 27 is_stmt 0 view .LVU23
- 111 002e 0593     		str	r3, [sp, #20]
+ 213              		.loc 1 35 27 is_stmt 0 view .LVU51
+ 214 002e 0593     		str	r3, [sp, #20]
   37:Core/Src/gpio_handler/gpio_handler.c **** 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccq9mvgf.s 			page 4
-
-
- 112              		.loc 1 37 5 is_stmt 1 view .LVU24
- 113 0030 02A9     		add	r1, sp, #8
- 114 0032 FFF7FEFF 		bl	HAL_GPIO_Init
- 115              	.LVL4:
+ 215              		.loc 1 37 5 is_stmt 1 view .LVU52
+ 216 0030 02A9     		add	r1, sp, #8
+ 217 0032 FFF7FEFF 		bl	HAL_GPIO_Init
+ 218              	.LVL4:
   40:Core/Src/gpio_handler/gpio_handler.c **** }
- 116              		.loc 1 40 5 view .LVU25
- 117 0036 2146     		mov	r1, r4
- 118 0038 2846     		mov	r0, r5
- 119 003a FFF7FEFF 		bl	WriteDigitalOut
- 120              	.LVL5:
+ 219              		.loc 1 40 5 view .LVU53
+ 220 0036 2146     		mov	r1, r4
+ 221 0038 2846     		mov	r0, r5
+ 222 003a FFF7FEFF 		bl	WriteDigitalOut
+ 223              	.LVL5:
   41:Core/Src/gpio_handler/gpio_handler.c **** 
- 121              		.loc 1 41 1 is_stmt 0 view .LVU26
- 122 003e 0BB0     		add	sp, sp, #44
- 123              	.LCFI3:
- 124              		.cfi_def_cfa_offset 12
- 125              		@ sp needed
- 126 0040 30BD     		pop	{r4, r5, pc}
- 127              		.cfi_endproc
- 128              	.LFE135:
- 130              		.section	.text.ToggleDigitalOut,"ax",%progbits
- 131              		.align	1
- 132              		.global	ToggleDigitalOut
- 133              		.syntax unified
- 134              		.thumb
- 135              		.thumb_func
- 137              	ToggleDigitalOut:
- 138              	.LVL6:
- 139              	.LFB137:
+ 224              		.loc 1 41 1 is_stmt 0 view .LVU54
+ 225 003e 0BB0     		add	sp, sp, #44
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 6
+
+
+ 226              	.LCFI5:
+ 227              		.cfi_def_cfa_offset 12
+ 228              		@ sp needed
+ 229 0040 30BD     		pop	{r4, r5, pc}
+ 230              		.cfi_endproc
+ 231              	.LFE135:
+ 233              		.section	.text.ToggleDigitalOut,"ax",%progbits
+ 234              		.align	1
+ 235              		.global	ToggleDigitalOut
+ 236              		.syntax unified
+ 237              		.thumb
+ 238              		.thumb_func
+ 240              	ToggleDigitalOut:
+ 241              	.LVL6:
+ 242              	.LFB137:
   47:Core/Src/gpio_handler/gpio_handler.c **** 
   48:Core/Src/gpio_handler/gpio_handler.c **** void ToggleDigitalOut(DigitalOut *digital_out) {
- 140              		.loc 1 48 48 is_stmt 1 view -0
- 141              		.cfi_startproc
- 142              		@ args = 0, pretend = 0, frame = 0
- 143              		@ frame_needed = 0, uses_anonymous_args = 0
- 144              		.loc 1 48 48 is_stmt 0 view .LVU28
- 145 0000 08B5     		push	{r3, lr}
- 146              	.LCFI4:
- 147              		.cfi_def_cfa_offset 8
- 148              		.cfi_offset 3, -8
- 149              		.cfi_offset 14, -4
+ 243              		.loc 1 48 48 is_stmt 1 view -0
+ 244              		.cfi_startproc
+ 245              		@ args = 0, pretend = 0, frame = 0
+ 246              		@ frame_needed = 0, uses_anonymous_args = 0
+ 247              		.loc 1 48 48 is_stmt 0 view .LVU56
+ 248 0000 08B5     		push	{r3, lr}
+ 249              	.LCFI6:
+ 250              		.cfi_def_cfa_offset 8
+ 251              		.cfi_offset 3, -8
+ 252              		.cfi_offset 14, -4
   49:Core/Src/gpio_handler/gpio_handler.c ****     digital_out->state = !digital_out->state;       // Toggle state
- 150              		.loc 1 49 5 is_stmt 1 view .LVU29
- 151              		.loc 1 49 38 is_stmt 0 view .LVU30
- 152 0002 037A     		ldrb	r3, [r0, #8]	@ zero_extendqisi2
- 153              		.loc 1 49 26 view .LVU31
- 154 0004 B3FA83F3 		clz	r3, r3
- 155 0008 5B09     		lsrs	r3, r3, #5
- 156              		.loc 1 49 24 view .LVU32
- 157 000a 0372     		strb	r3, [r0, #8]
+ 253              		.loc 1 49 5 is_stmt 1 view .LVU57
+ 254              		.loc 1 49 38 is_stmt 0 view .LVU58
+ 255 0002 037A     		ldrb	r3, [r0, #8]	@ zero_extendqisi2
+ 256              		.loc 1 49 26 view .LVU59
+ 257 0004 B3FA83F3 		clz	r3, r3
+ 258 0008 5B09     		lsrs	r3, r3, #5
+ 259              		.loc 1 49 24 view .LVU60
+ 260 000a 0372     		strb	r3, [r0, #8]
   50:Core/Src/gpio_handler/gpio_handler.c ****     HAL_GPIO_TogglePin(digital_out->pin.port, digital_out->pin.pin); // Toggle GPIO pin
- 158              		.loc 1 50 5 is_stmt 1 view .LVU33
- 159 000c 8188     		ldrh	r1, [r0, #4]
- 160 000e 0068     		ldr	r0, [r0]
- 161              	.LVL7:
- 162              		.loc 1 50 5 is_stmt 0 view .LVU34
- 163 0010 FFF7FEFF 		bl	HAL_GPIO_TogglePin
- 164              	.LVL8:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccq9mvgf.s 			page 5
-
-
+ 261              		.loc 1 50 5 is_stmt 1 view .LVU61
+ 262 000c 8188     		ldrh	r1, [r0, #4]
+ 263 000e 0068     		ldr	r0, [r0]
+ 264              	.LVL7:
+ 265              		.loc 1 50 5 is_stmt 0 view .LVU62
+ 266 0010 FFF7FEFF 		bl	HAL_GPIO_TogglePin
+ 267              	.LVL8:
   51:Core/Src/gpio_handler/gpio_handler.c **** }
- 165              		.loc 1 51 1 view .LVU35
- 166 0014 08BD     		pop	{r3, pc}
- 167              		.cfi_endproc
- 168              	.LFE137:
- 170              		.text
- 171              	.Letext0:
- 172              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
- 173              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
- 174              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
- 175              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
- 176              		.file 6 "Core/Src/library/aml_hal.h"
- 177              		.file 7 "Core/Src/gpio_handler/gpio_handler.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccq9mvgf.s 			page 6
+ 268              		.loc 1 51 1 view .LVU63
+ 269 0014 08BD     		pop	{r3, pc}
+ 270              		.cfi_endproc
+ 271              	.LFE137:
+ 273              		.text
+ 274              	.Letext0:
+ 275              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+ 276              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 277              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
+ 278              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 279              		.file 6 "Core/Src/library/aml_hal.h"
+ 280              		.file 7 "Core/Src/gpio_handler/gpio_handler.h"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 7
+
+
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 gpio_handler.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccq9mvgf.s:21     .text.WriteDigitalOut:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccq9mvgf.s:27     .text.WriteDigitalOut:00000000 WriteDigitalOut
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccq9mvgf.s:59     .text.AssignDigitalOut:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccq9mvgf.s:65     .text.AssignDigitalOut:00000000 AssignDigitalOut
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccq9mvgf.s:131    .text.ToggleDigitalOut:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccq9mvgf.s:137    .text.ToggleDigitalOut:00000000 ToggleDigitalOut
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:21     .text.MX_GPIO_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:27     .text.MX_GPIO_Init:00000000 MX_GPIO_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:119    .text.MX_GPIO_Init:00000064 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:124    .text.WriteDigitalOut:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:130    .text.WriteDigitalOut:00000000 WriteDigitalOut
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:162    .text.AssignDigitalOut:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:168    .text.AssignDigitalOut:00000000 AssignDigitalOut
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:234    .text.ToggleDigitalOut:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:240    .text.ToggleDigitalOut:00000000 ToggleDigitalOut
 
 UNDEFINED SYMBOLS
 HAL_GPIO_WritePin

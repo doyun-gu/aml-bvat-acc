@@ -169,3 +169,8 @@ void AML_Init(void);
 //* See gpio_handler.h -> No static anymore
 // static void MX_GPIO_Init(void);
 
+void Error_Handler(void);
+
+#ifdef USE_FULL_ASSERT // You can make the prototype conditional as well
+void assert_failed(uint8_t *file, uint32_t line);
+#endif /* USE_FULL_ASSERT */

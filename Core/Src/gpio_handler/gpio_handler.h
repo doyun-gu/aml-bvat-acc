@@ -10,6 +10,13 @@ typedef struct {
 
 // Function prototypes for UART initialization and handling
 void MX_GPIO_Init(void);
-void AssignDigitalOut(Pin pin);
+DigitalOut AssignDigitalOut(Pin pin);
 void WriteDigitalOut(DigitalOut *digital_out, u8 state);
 void ToggleDigitalOut(DigitalOut *digital_out);
+void BuiltinLED_Init(void);
+void indicate_setup_with_blinks(int num_blinks, u32 dealy_ms);
+void ToggleLED(DigitalOut *led, u32 interval, u32 *last_tick_timer);
+
+// Extern declarations for global variables
+extern DigitalOut g_builtinLed;
+extern u32 g_ledToggleTimer;

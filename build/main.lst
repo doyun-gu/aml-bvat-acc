@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -27,7 +27,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
   24              		.thumb
   25              		.thumb_func
   27              	main:
-  28              	.LFB134:
+  28              	.LFB137:
    1:Core/Src/main.c **** /* USER CODE BEGIN Header */
    2:Core/Src/main.c **** /**
    3:Core/Src/main.c ****   ******************************************************************************
@@ -47,80 +47,91 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
   17:Core/Src/main.c ****   */
   18:Core/Src/main.c **** /* Includes ------------------------------------------------------------------*/
   19:Core/Src/main.c **** #include "main.h"
-  20:Core/Src/main.c **** 
-  21:Core/Src/main.c **** /* Private variables ---------------------------------------------------------*/
-  22:Core/Src/main.c **** UART_HandleTypeDef huart2;
-  23:Core/Src/main.c **** 
-  24:Core/Src/main.c **** /**
-  25:Core/Src/main.c ****   * @brief  The application entry point.
-  26:Core/Src/main.c ****   * @retval int
-  27:Core/Src/main.c ****   */
-  28:Core/Src/main.c **** int main(void)
-  29:Core/Src/main.c **** {
-  29              		.loc 1 29 1 view -0
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 2
+  20:Core/Src/main.c **** #include "aml_hal.h"
+  21:Core/Src/main.c **** #include "gpio_handler.h"
+  22:Core/Src/main.c **** #include "uart_handler.h"
+  23:Core/Src/main.c **** #include "timer.h"
+  24:Core/Src/main.c **** #include "command_handler.h"
+  25:Core/Src/main.c **** #include "i2c_handler.h"
+  26:Core/Src/main.c **** #include "uart_handler.h"
+  27:Core/Src/main.c **** 
+  28:Core/Src/main.c **** /* Private variables ---------------------------------------------------------*/
+  29:Core/Src/main.c **** // UART_HandleTypeDef huart2;
+  30:Core/Src/main.c **** 
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 2
 
 
+  31:Core/Src/main.c **** /**
+  32:Core/Src/main.c ****   * @brief  The application entry point.
+  33:Core/Src/main.c ****   * @retval int
+  34:Core/Src/main.c ****   */
+  35:Core/Src/main.c **** int main(void)
+  36:Core/Src/main.c **** {
+  29              		.loc 1 36 1 view -0
   30              		.cfi_startproc
   31              		@ Volatile: function does not return.
   32              		@ args = 0, pretend = 0, frame = 0
   33              		@ frame_needed = 0, uses_anonymous_args = 0
-  34              		@ link register save eliminated.
-  35              	.L2:
-  30:Core/Src/main.c ****   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  31:Core/Src/main.c ****   // HAL_Init();
-  32:Core/Src/main.c **** 
-  33:Core/Src/main.c ****   /* Configure the system clock */
-  34:Core/Src/main.c ****   // SystemClock_Config();
-  35:Core/Src/main.c **** 
-  36:Core/Src/main.c ****   /* Initialize all configured peripherals */
-  37:Core/Src/main.c ****   // MX_GPIO_Init();
-  38:Core/Src/main.c ****   // MX_USART2_UART_Init();
+  34 0000 08B5     		push	{r3, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 3, -8
+  38              		.cfi_offset 14, -4
+  37:Core/Src/main.c ****   // HAL initialization
+  38:Core/Src/main.c ****   BVAT_Init();
+  39              		.loc 1 38 3 view .LVU1
+  40 0002 FFF7FEFF 		bl	BVAT_Init
+  41              	.LVL0:
+  42              	.L2:
   39:Core/Src/main.c **** 
-  40:Core/Src/main.c ****   /* USER CODE BEGIN WHILE */
-  41:Core/Src/main.c ****   while (1) {}
-  36              		.loc 1 41 3 view .LVU1
-  37              		.loc 1 41 14 view .LVU2
-  38              		.loc 1 41 9 view .LVU3
-  39 0000 FEE7     		b	.L2
-  40              		.cfi_endproc
-  41              	.LFE134:
-  43              		.section	.text.Error_Handler,"ax",%progbits
-  44              		.align	1
-  45              		.global	Error_Handler
-  46              		.syntax unified
-  47              		.thumb
-  48              		.thumb_func
-  50              	Error_Handler:
-  51              	.LFB135:
-  42:Core/Src/main.c **** }
-  43:Core/Src/main.c **** 
+  40:Core/Src/main.c ****   while (1) {
+  43              		.loc 1 40 3 view .LVU2
+  41:Core/Src/main.c ****     measure_loop(); // Main measurement loop
+  44              		.loc 1 41 5 discriminator 1 view .LVU3
+  45 0006 FFF7FEFF 		bl	measure_loop
+  46              	.LVL1:
+  40:Core/Src/main.c ****     measure_loop(); // Main measurement loop
+  47              		.loc 1 40 9 view .LVU4
+  48 000a FCE7     		b	.L2
+  49              		.cfi_endproc
+  50              	.LFE137:
+  52              		.section	.text.Error_Handler,"ax",%progbits
+  53              		.align	1
+  54              		.global	Error_Handler
+  55              		.syntax unified
+  56              		.thumb
+  57              		.thumb_func
+  59              	Error_Handler:
+  60              	.LFB138:
+  42:Core/Src/main.c ****   }
+  43:Core/Src/main.c **** }
   44:Core/Src/main.c **** 
-  45:Core/Src/main.c **** /**
-  46:Core/Src/main.c ****   * @brief  This function is executed in case of error occurrence.
-  47:Core/Src/main.c ****   * @retval None
-  48:Core/Src/main.c ****   */
-  49:Core/Src/main.c **** void Error_Handler(void)
-  50:Core/Src/main.c **** {
-  52              		.loc 1 50 1 view -0
-  53              		.cfi_startproc
-  54              		@ Volatile: function does not return.
-  55              		@ args = 0, pretend = 0, frame = 0
-  56              		@ frame_needed = 0, uses_anonymous_args = 0
-  57              		@ link register save eliminated.
-  51:Core/Src/main.c ****   /* USER CODE BEGIN Error_Handler_Debug */
-  52:Core/Src/main.c ****   /* User can add his own implementation to report the HAL error return state */
-  53:Core/Src/main.c ****   __disable_irq();
-  58              		.loc 1 53 3 view .LVU5
-  59              	.LBB4:
-  60              	.LBI4:
-  61              		.file 2 "Drivers/CMSIS/Include/cmsis_gcc.h"
+  45:Core/Src/main.c **** 
+  46:Core/Src/main.c **** /**
+  47:Core/Src/main.c ****   * @brief  This function is executed in case of error occurrence.
+  48:Core/Src/main.c ****   * @retval None
+  49:Core/Src/main.c ****   */
+  50:Core/Src/main.c **** void Error_Handler(void)
+  51:Core/Src/main.c **** {
+  61              		.loc 1 51 1 view -0
+  62              		.cfi_startproc
+  63              		@ Volatile: function does not return.
+  64              		@ args = 0, pretend = 0, frame = 0
+  65              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 3
+
+
+  66              		@ link register save eliminated.
+  52:Core/Src/main.c ****   /* USER CODE BEGIN Error_Handler_Debug */
+  53:Core/Src/main.c ****   /* User can add his own implementation to report the HAL error return state */
+  54:Core/Src/main.c ****   __disable_irq();
+  67              		.loc 1 54 3 view .LVU6
+  68              	.LBB4:
+  69              	.LBI4:
+  70              		.file 2 "Drivers/CMSIS/Include/cmsis_gcc.h"
    1:Drivers/CMSIS/Include/cmsis_gcc.h **** /**************************************************************************//**
    2:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @file     cmsis_gcc.h
    3:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @brief    CMSIS compiler GCC header file
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 3
-
-
    4:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @version  V5.4.1
    5:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @date     27. May 2021
    6:Drivers/CMSIS/Include/cmsis_gcc.h ****  ******************************************************************************/
@@ -167,6 +178,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
   47:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __STATIC_INLINE                        static inline
   48:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
   49:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __STATIC_FORCEINLINE
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 4
+
+
   50:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __STATIC_FORCEINLINE                   __attribute__((always_inline)) static inline
   51:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
   52:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __NO_RETURN
@@ -178,9 +192,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
   58:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __WEAK
   59:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __WEAK                                 __attribute__((weak))
   60:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 4
-
-
   61:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED
   62:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __PACKED                               __attribute__((packed, aligned(1)))
   63:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
@@ -227,6 +238,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  104:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
  105:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
  106:Drivers/CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_READ { uint32_t v; };
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 5
+
+
  107:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
  108:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_READ(addr)          (((const struct T_UINT32_READ *)(const void *)(add
  109:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
@@ -238,9 +252,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  115:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
  116:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __COMPILER_BARRIER
  117:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __COMPILER_BARRIER()                   __ASM volatile("":::"memory")
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 5
-
-
  118:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
  119:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  120:Drivers/CMSIS/Include/cmsis_gcc.h **** /* #########################  Startup and Lowlevel Init  ######################## */
@@ -287,6 +298,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  161:Drivers/CMSIS/Include/cmsis_gcc.h ****   }
  162:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  163:Drivers/CMSIS/Include/cmsis_gcc.h ****   _start();
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 6
+
+
  164:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  165:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  166:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __PROGRAM_START           __cmsis_start
@@ -298,9 +312,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  172:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  173:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __STACK_LIMIT
  174:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __STACK_LIMIT             __StackLimit
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 6
-
-
  175:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
  176:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  177:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __VECTOR_TABLE
@@ -347,6 +358,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  218:Drivers/CMSIS/Include/cmsis_gcc.h **** #else
  219:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __CMSIS_GCC_OUT_REG(r) "=r" (r)
  220:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __CMSIS_GCC_RW_REG(r) "+r" (r)
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 7
+
+
  221:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __CMSIS_GCC_USE_REG(r) "r" (r)
  222:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
  223:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -358,9 +372,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  229:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  230:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
  231:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Wait For Interrupt
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 7
-
-
  232:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Wait For Interrupt is a hint instruction that suspends execution until one of a number o
  233:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  234:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __WFI()                             __ASM volatile ("wfi":::"memory")
@@ -407,6 +418,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  275:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
  276:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Data Memory Barrier
  277:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Ensures the apparent order of the explicit memory operations before
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 8
+
+
  278:Drivers/CMSIS/Include/cmsis_gcc.h ****            and after the instruction, without ensuring their completion.
  279:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  280:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __DMB(void)
@@ -418,9 +432,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  286:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
  287:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Reverse byte order (32 bit)
  288:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Reverses the byte order in unsigned integer value. For example, 0x12345678 becomes 0x785
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 8
-
-
  289:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    value  Value to reverse
  290:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return               Reversed value
  291:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
@@ -467,6 +478,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  332:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  333:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM ("revsh %0, %1" : __CMSIS_GCC_OUT_REG (result) : __CMSIS_GCC_USE_REG (value) );
  334:Drivers/CMSIS/Include/cmsis_gcc.h ****   return result;
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 9
+
+
  335:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
  336:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  337:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -478,9 +492,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  343:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    op2  Number of Bits to rotate
  344:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return               Rotated value
  345:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 9
-
-
  346:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __ROR(uint32_t op1, uint32_t op2)
  347:Drivers/CMSIS/Include/cmsis_gcc.h **** {
  348:Drivers/CMSIS/Include/cmsis_gcc.h ****   op2 %= 32U;
@@ -527,6 +538,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  389:Drivers/CMSIS/Include/cmsis_gcc.h ****     s--;
  390:Drivers/CMSIS/Include/cmsis_gcc.h ****   }
  391:Drivers/CMSIS/Include/cmsis_gcc.h ****   result <<= s;                        /* shift when v's highest bits are zero */
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 10
+
+
  392:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
  393:Drivers/CMSIS/Include/cmsis_gcc.h ****   return result;
  394:Drivers/CMSIS/Include/cmsis_gcc.h **** }
@@ -538,9 +552,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  400:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to count the leading zeros
  401:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return             number of leading zeros in value
  402:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 10
-
-
  403:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint8_t __CLZ(uint32_t value)
  404:Drivers/CMSIS/Include/cmsis_gcc.h **** {
  405:Drivers/CMSIS/Include/cmsis_gcc.h ****   /* Even though __builtin_clz produces a CLZ instruction on ARM, formally
@@ -587,6 +598,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  446:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  447:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  448:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 11
+
+
  449:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   LDR Exclusive (16 bit)
  450:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a exclusive LDR instruction for 16 bit values.
  451:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to data
@@ -598,9 +612,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  457:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  458:Drivers/CMSIS/Include/cmsis_gcc.h **** #if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)
  459:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldrexh %0, %1" : "=r" (result) : "Q" (*addr) );
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 11
-
-
  460:Drivers/CMSIS/Include/cmsis_gcc.h **** #else
  461:Drivers/CMSIS/Include/cmsis_gcc.h ****     /* Prior to GCC 4.8, "Q" will be expanded to [rx, #0] which is not
  462:Drivers/CMSIS/Include/cmsis_gcc.h ****        accepted by assembler. So has to use following less efficient pattern.
@@ -647,6 +658,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  503:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   STR Exclusive (16 bit)
  504:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a exclusive STR instruction for 16 bit values.
  505:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 12
+
+
  506:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
  507:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          0  Function succeeded
  508:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          1  Function failed
@@ -658,9 +672,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  514:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("strexh %0, %2, %1" : "=&r" (result), "=Q" (*addr) : "r" ((uint32_t)value) );
  515:Drivers/CMSIS/Include/cmsis_gcc.h ****    return(result);
  516:Drivers/CMSIS/Include/cmsis_gcc.h **** }
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 12
-
-
  517:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  518:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  519:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
@@ -707,6 +718,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  560:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  561:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __SSAT(ARG1, ARG2) \
  562:Drivers/CMSIS/Include/cmsis_gcc.h **** __extension__ \
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 13
+
+
  563:Drivers/CMSIS/Include/cmsis_gcc.h **** ({                          \
  564:Drivers/CMSIS/Include/cmsis_gcc.h ****   int32_t __RES, __ARG1 = (ARG1); \
  565:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("ssat %0, %1, %2" : "=r" (__RES) :  "I" (ARG2), "r" (__ARG1) : "cc" ); \
@@ -718,9 +732,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  571:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Unsigned Saturate
  572:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Saturates an unsigned value.
  573:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  ARG1  Value to be saturated
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 13
-
-
  574:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  ARG2  Bit position to saturate to (0..31)
  575:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return             Saturated value
  576:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
@@ -767,6 +778,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  617:Drivers/CMSIS/Include/cmsis_gcc.h ****     */
  618:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldrbt %0, [%1]" : "=r" (result) : "r" (ptr) : "memory" );
  619:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 14
+
+
  620:Drivers/CMSIS/Include/cmsis_gcc.h ****    return ((uint8_t) result);    /* Add explicit type cast here */
  621:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  622:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -778,9 +792,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  628:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return        value of type uint16_t at (*ptr)
  629:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  630:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint16_t __LDRHT(volatile uint16_t *ptr)
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 14
-
-
  631:Drivers/CMSIS/Include/cmsis_gcc.h **** {
  632:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
  633:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -827,6 +838,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  674:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   STRT Unprivileged (16 bit)
  675:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a Unprivileged STRT instruction for 16 bit values.
  676:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 15
+
+
  677:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
  678:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  679:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __STRHT(uint16_t value, volatile uint16_t *ptr)
@@ -838,9 +852,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  685:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
  686:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   STRT Unprivileged (32 bit)
  687:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a Unprivileged STRT instruction for 32 bit values.
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 15
-
-
  688:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
  689:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
  690:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
@@ -887,6 +898,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  731:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  732:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __USAT(int32_t val, uint32_t sat)
  733:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 16
+
+
  734:Drivers/CMSIS/Include/cmsis_gcc.h ****   if (sat <= 31U)
  735:Drivers/CMSIS/Include/cmsis_gcc.h ****   {
  736:Drivers/CMSIS/Include/cmsis_gcc.h ****     const uint32_t max = ((1U << sat) - 1U);
@@ -898,9 +912,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  742:Drivers/CMSIS/Include/cmsis_gcc.h ****     {
  743:Drivers/CMSIS/Include/cmsis_gcc.h ****       return 0U;
  744:Drivers/CMSIS/Include/cmsis_gcc.h ****     }
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 16
-
-
  745:Drivers/CMSIS/Include/cmsis_gcc.h ****   }
  746:Drivers/CMSIS/Include/cmsis_gcc.h ****   return (uint32_t)val;
  747:Drivers/CMSIS/Include/cmsis_gcc.h **** }
@@ -947,6 +958,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  788:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a LDA instruction for 32 bit values.
  789:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to data
  790:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return        value of type uint32_t at (*ptr)
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 17
+
+
  791:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  792:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __LDA(volatile uint32_t *ptr)
  793:Drivers/CMSIS/Include/cmsis_gcc.h **** {
@@ -958,9 +972,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  799:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  800:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  801:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 17
-
-
  802:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Store-Release (8 bit)
  803:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a STLB instruction for 8 bit values.
  804:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
@@ -1007,6 +1018,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  845:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
  846:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  847:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldaexb %0, %1" : "=r" (result) : "Q" (*ptr) : "memory" );
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 18
+
+
  848:Drivers/CMSIS/Include/cmsis_gcc.h ****    return ((uint8_t) result);
  849:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  850:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -1018,9 +1032,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  856:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return        value of type uint16_t at (*ptr)
  857:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  858:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint16_t __LDAEXH(volatile uint16_t *ptr)
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 18
-
-
  859:Drivers/CMSIS/Include/cmsis_gcc.h **** {
  860:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
  861:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -1067,6 +1078,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  902:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
  903:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
  904:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          0  Function succeeded
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 19
+
+
  905:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          1  Function failed
  906:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  907:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __STLEXH(uint16_t value, volatile uint16_t *ptr)
@@ -1078,9 +1092,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  913:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  914:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  915:Drivers/CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 19
-
-
  916:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
  917:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Store-Release Exclusive (32 bit)
  918:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a STL exclusive instruction for 32 bit values.
@@ -1126,60 +1137,46 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 1
  958:Drivers/CMSIS/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
  959:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  960:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __disable_irq(void)
-  62              		.loc 2 960 27 view .LVU6
-  63              	.LBB5:
+  71              		.loc 2 960 27 view .LVU7
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 20
+
+
+  72              	.LBB5:
  961:Drivers/CMSIS/Include/cmsis_gcc.h **** {
  962:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("cpsid i" : : : "memory");
-  64              		.loc 2 962 3 view .LVU7
-  65              		.syntax unified
-  66              	@ 962 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
-  67 0000 72B6     		cpsid i
-  68              	@ 0 "" 2
-  69              		.thumb
-  70              		.syntax unified
-  71              	.L4:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 20
-
-
-  72              	.LBE5:
-  73              	.LBE4:
-  54:Core/Src/main.c ****   while (1)
-  74              		.loc 1 54 3 view .LVU8
-  55:Core/Src/main.c ****   {
-  56:Core/Src/main.c ****   }
-  75              		.loc 1 56 3 view .LVU9
-  54:Core/Src/main.c ****   while (1)
-  76              		.loc 1 54 9 view .LVU10
-  77 0002 FEE7     		b	.L4
-  78              		.cfi_endproc
-  79              	.LFE135:
-  81              		.global	huart2
-  82              		.section	.bss.huart2,"aw",%nobits
-  83              		.align	2
-  86              	huart2:
-  87 0000 00000000 		.space	72
-  87      00000000 
-  87      00000000 
-  87      00000000 
-  87      00000000 
-  88              		.text
-  89              	.Letext0:
-  90              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
-  91              		.file 4 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
-  92              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
-  93              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
-  94              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
-  95              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s 			page 21
+  73              		.loc 2 962 3 view .LVU8
+  74              		.syntax unified
+  75              	@ 962 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+  76 0000 72B6     		cpsid i
+  77              	@ 0 "" 2
+  78              		.thumb
+  79              		.syntax unified
+  80              	.L5:
+  81              	.LBE5:
+  82              	.LBE4:
+  55:Core/Src/main.c ****   while (1)
+  83              		.loc 1 55 3 view .LVU9
+  56:Core/Src/main.c ****   {
+  57:Core/Src/main.c ****   }
+  84              		.loc 1 57 3 view .LVU10
+  55:Core/Src/main.c ****   while (1)
+  85              		.loc 1 55 9 view .LVU11
+  86 0002 FEE7     		b	.L5
+  87              		.cfi_endproc
+  88              	.LFE138:
+  90              		.text
+  91              	.Letext0:
+  92              		.file 3 "Core/Src/command_handler/command_handler.h"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s 			page 21
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s:21     .text.main:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s:27     .text.main:00000000 main
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s:44     .text.Error_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s:50     .text.Error_Handler:00000000 Error_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s:86     .bss.huart2:00000000 huart2
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cch09GV8.s:83     .bss.huart2:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s:21     .text.main:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s:27     .text.main:00000000 main
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s:53     .text.Error_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccNdVjOg.s:59     .text.Error_Handler:00000000 Error_Handler
 
-NO UNDEFINED SYMBOLS
+UNDEFINED SYMBOLS
+BVAT_Init
+measure_loop

@@ -17,9 +17,16 @@
   */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "aml_hal.h"
+#include "gpio_handler.h"
+#include "uart_handler.h"
+#include "timer.h"
+#include "command_handler.h"
+#include "i2c_handler.h"
+#include "uart_handler.h"
 
 /* Private variables ---------------------------------------------------------*/
-UART_HandleTypeDef huart2;
+// UART_HandleTypeDef huart2;
 
 /**
   * @brief  The application entry point.
@@ -27,18 +34,12 @@ UART_HandleTypeDef huart2;
   */
 int main(void)
 {
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  // HAL_Init();
+  // HAL initialization
+  BVAT_Init();
 
-  /* Configure the system clock */
-  // SystemClock_Config();
-
-  /* Initialize all configured peripherals */
-  // MX_GPIO_Init();
-  // MX_USART2_UART_Init();
-
-  /* USER CODE BEGIN WHILE */
-  while (1) {}
+  while (1) {
+    measure_loop(); // Main measurement loop
+  }
 }
 
 

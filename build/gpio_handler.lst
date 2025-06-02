@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciVDq1n.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 1
   12:Core/Src/gpio_handler/gpio_handler.c ****     // Just enable all necessary ports
   13:Core/Src/gpio_handler/gpio_handler.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
   45              		.loc 1 13 5 is_stmt 1 view .LVU3
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 2
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciVDq1n.s 			page 2
 
 
   46              	.LBB2:
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 1
   97 004c 0492     		str	r2, [sp, #16]
   98              		.loc 1 16 5 view .LVU23
   99 004e 1A6B     		ldr	r2, [r3, #48]
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 3
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciVDq1n.s 			page 3
 
 
  100 0050 42F08002 		orr	r2, r2, #128
@@ -178,7 +178,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 1
   40:Core/Src/gpio_handler/gpio_handler.c ****     WriteDigitalOut(&digital_out, 0);
   41:Core/Src/gpio_handler/gpio_handler.c **** }
   42:Core/Src/gpio_handler/gpio_handler.c **** 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 4
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciVDq1n.s 			page 4
 
 
   43:Core/Src/gpio_handler/gpio_handler.c **** void WriteDigitalOut(DigitalOut *digital_out, u8 state) {
@@ -238,7 +238,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 1
  184 0006 83E80300 		stm	r3, {r0, r1}
   26:Core/Src/gpio_handler/gpio_handler.c ****     digital_out.pin = pin;
  185              		.loc 1 26 5 view .LVU37
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 5
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciVDq1n.s 			page 5
 
 
   27:Core/Src/gpio_handler/gpio_handler.c ****     digital_out.state = GPIO_PIN_RESET; // Initialize state to LOW
@@ -298,7 +298,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 1
   41:Core/Src/gpio_handler/gpio_handler.c **** 
  224              		.loc 1 41 1 is_stmt 0 view .LVU54
  225 003e 0BB0     		add	sp, sp, #44
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 6
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciVDq1n.s 			page 6
 
 
  226              	.LCFI5:
@@ -358,23 +358,23 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 1
  278              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
  279              		.file 6 "Core/Src/library/aml_hal.h"
  280              		.file 7 "Core/Src/gpio_handler/gpio_handler.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 7
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciVDq1n.s 			page 7
 
 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s 			page 8
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciVDq1n.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 gpio_handler.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:21     .text.MX_GPIO_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:27     .text.MX_GPIO_Init:00000000 MX_GPIO_Init
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:119    .text.MX_GPIO_Init:00000064 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:124    .text.WriteDigitalOut:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:130    .text.WriteDigitalOut:00000000 WriteDigitalOut
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:162    .text.AssignDigitalOut:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:168    .text.AssignDigitalOut:00000000 AssignDigitalOut
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:234    .text.ToggleDigitalOut:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclgAZsr.s:240    .text.ToggleDigitalOut:00000000 ToggleDigitalOut
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciVDq1n.s:21     .text.MX_GPIO_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciVDq1n.s:27     .text.MX_GPIO_Init:00000000 MX_GPIO_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciVDq1n.s:119    .text.MX_GPIO_Init:00000064 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciVDq1n.s:124    .text.WriteDigitalOut:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciVDq1n.s:130    .text.WriteDigitalOut:00000000 WriteDigitalOut
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciVDq1n.s:162    .text.AssignDigitalOut:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciVDq1n.s:168    .text.AssignDigitalOut:00000000 AssignDigitalOut
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciVDq1n.s:234    .text.ToggleDigitalOut:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciVDq1n.s:240    .text.ToggleDigitalOut:00000000 ToggleDigitalOut
 
 UNDEFINED SYMBOLS
 HAL_GPIO_WritePin

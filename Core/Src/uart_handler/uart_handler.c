@@ -1,5 +1,7 @@
 #include "uart_handler.h"
 
+UART_HandleTypeDef huart2;
+
 /**
   * @brief USART2 Initialization Function
   * @param None

@@ -1,5 +1,8 @@
 #include "timer.h"
 
+// I2C_HandleTypeDef hi2c1;
+TIM_HandleTypeDef htim2;
+
 /**
   * @brief System Clock Configuration
   * @retval None
@@ -46,8 +49,6 @@ void SystemClock_Config(void)
   }
 }
 
-TIM_HandleTypeDef htim2;
-
 void MX_TIM2_Init(void) {
     __HAL_RCC_TIM2_CLK_ENABLE();
 
@@ -60,6 +61,16 @@ void MX_TIM2_Init(void) {
 
     if (HAL_TIM_Base_Init(&htim2) != HAL_OK) {
         Error_Handler();
+    }
+}
+
+void TIM2_IRQHandler(void) {
+    HAL_TIM_IRQHandler(&htim2);
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+    if (htim->Instance == TIM2) {
+        // HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5); // Toggle LED every 0.5s
     }
 }
 

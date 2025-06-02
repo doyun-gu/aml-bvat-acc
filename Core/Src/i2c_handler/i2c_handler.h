@@ -2,11 +2,13 @@
 
 #include <stdbool.h>
 #include "aml_hal.h"
+#include "uart_handler.h"
 #include "stm32f4xx_hal.h"
 
 extern I2C_HandleTypeDef hi2c1;
+extern volatile bool acc_enabled;
 
-void MX_TIM2_Init(void);
+// void MX_TIM2_Init(void);
 void MX_I2C1_Init(void);
 
 // === LIS3DH Accelerometer Constants ===
@@ -16,13 +18,11 @@ void MX_I2C1_Init(void);
 #define ACC_DATA_START    (0x28 | 0x80) // Start at OUT_X_L with auto-increment
 
 extern u8 rawData[6]; // Accessible from other files if needed
-extern volatile bool acc_enabled;
-
-extern volatile bool acc_enabled;
 
 // void I2C_connectivity_check(void);
 bool I2C_connectivity_check(void);
 void I2C_ACC_Enable(void);
 void I2C_Read_ACC(void);
+u8 readACC(u8 reg);
 void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *hi2c);
 void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c);

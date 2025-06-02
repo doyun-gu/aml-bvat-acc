@@ -1,6 +1,9 @@
 #include "i2c_handler.h"
 
+I2C_HandleTypeDef hi2c1;
+
 volatile bool acc_enabled = false;
+u8 rawData[6];
 
 void MX_I2C1_Init(void) {
     hi2c1.Instance = I2C1;
@@ -16,6 +19,14 @@ void MX_I2C1_Init(void) {
     if (HAL_I2C_Init(&hi2c1) != HAL_OK) {
         Error_Handler();
     }
+
+    // Enable and set I2C1 Event Interrupt to priority 0
+    HAL_NVIC_SetPriority(I2C1_EV_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(I2C1_EV_IRQn);
+
+    // Enable and set I2C1 Error Interrupt to priority 1
+    HAL_NVIC_SetPriority(I2C1_ER_IRQn, 0, 1);
+    HAL_NVIC_EnableIRQ(I2C1_ER_IRQn);
 }
 
 // void I2C_connectivity_check (void) {
@@ -50,6 +61,7 @@ bool I2C_connectivity_check (void) {
  * Accelerometer I2C address and register definitions
  */
 
+ // TODO: Need to work with I2C Mem Read/Write with I2C configurations
 void I2C_ACC_Enable(void) {
     static u8 ctrl1 = ACC_CTRL1_VALUE;
 
@@ -70,6 +82,12 @@ void I2C_Read_ACC(void) {
                         6);
 }
 
+u8 readACC(u8 reg) {
+    u8 value = 0;
+    HAL_I2C_Mem_Read(&hi2c1, ACC_I2C_ADDR, reg, I2C_MEMADD_SIZE_8BIT, &value, 1, HAL_MAX_DELAY);
+    return value;
+}
+
 // Write complete callback
 void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *hi2c) {
     if (hi2c->Instance == I2C1) {
@@ -83,5 +101,13 @@ void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c)
 {
     if (hi2c->Instance == I2C1) {
         // Process `sensor_data` now
+    }
+}
+
+void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c)
+{
+    if (hi2c->Instance == I2C1) {
+        WriteUART("I2C error occurred.\n");
+        // Optional: Try reinitializing or setting error flags
     }
 }

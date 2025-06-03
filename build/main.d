@@ -27,6 +27,7 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
+ Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_usart.h \
  Core/Src/library/aml_hal.h Core/Src/gpio_handler/gpio_handler.h \
  Core/Src/uart_handler/uart_handler.h Core/Src/timer/timer.h \
  Core/Src/i2c_handler/i2c_handler.h \
@@ -63,6 +64,7 @@ Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
+Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_usart.h:
 Core/Src/library/aml_hal.h:
 Core/Src/gpio_handler/gpio_handler.h:
 Core/Src/uart_handler/uart_handler.h:

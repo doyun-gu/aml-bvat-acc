@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 1
   42 0008 0792     		str	r2, [sp, #28]
   43 000a 0892     		str	r2, [sp, #32]
   44 000c 0992     		str	r2, [sp, #36]
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 2
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s 			page 2
 
 
   15:Core/Src/gpio_handler/gpio_handler.c **** 
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 1
   20:Core/Src/gpio_handler/gpio_handler.c ****     __HAL_RCC_GPIOH_CLK_ENABLE();
   94              		.loc 1 20 5 view .LVU21
   95              	.LBB5:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 3
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s 			page 3
 
 
   96              		.loc 1 20 5 view .LVU22
@@ -178,7 +178,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 1
   40:Core/Src/gpio_handler/gpio_handler.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM; // Set speed to low
   41:Core/Src/gpio_handler/gpio_handler.c **** 
   42:Core/Src/gpio_handler/gpio_handler.c ****     HAL_GPIO_Init(digital_out.pin.port, &GPIO_InitStruct);      // Initialize GPIO
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 4
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s 			page 4
 
 
   43:Core/Src/gpio_handler/gpio_handler.c **** 
@@ -238,7 +238,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 1
  176 0000 70B5     		push	{r4, r5, r6, lr}
  177              	.LCFI3:
  178              		.cfi_def_cfa_offset 16
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 5
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s 			page 5
 
 
  179              		.cfi_offset 4, -16
@@ -298,7 +298,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 1
  218              		.loc 1 40 5 view .LVU52
   40:Core/Src/gpio_handler/gpio_handler.c **** 
  219              		.loc 1 40 27 is_stmt 0 view .LVU53
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 6
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s 			page 6
 
 
  220 0030 0593     		str	r3, [sp, #20]
@@ -358,7 +358,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 1
  267 0002 037A     		ldrb	r3, [r0, #8]	@ zero_extendqisi2
  268              		.loc 1 56 26 view .LVU64
  269 0004 B3FA83F3 		clz	r3, r3
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 7
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s 			page 7
 
 
  270 0008 5B09     		lsrs	r3, r3, #5
@@ -418,7 +418,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 1
  320 001e 95E80700 		ldm	r5, {r0, r1, r2}
  321 0022 84E80700 		stm	r4, {r0, r1, r2}
   63:Core/Src/gpio_handler/gpio_handler.c ****     g_builtinLed.state = GPIO_PIN_RESET; // Initialize state to LOW
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 8
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s 			page 8
 
 
  322              		.loc 1 63 5 is_stmt 1 view .LVU73
@@ -478,7 +478,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 1
  368              		.loc 1 73 5 is_stmt 1 view .LVU79
  369              	.LBB6:
  370              		.loc 1 73 10 view .LVU80
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 9
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s 			page 9
 
 
  371              	.LVL14:
@@ -538,7 +538,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 1
  419              	.LFB140:
   80:Core/Src/gpio_handler/gpio_handler.c **** 
   81:Core/Src/gpio_handler/gpio_handler.c **** void ToggleLED(DigitalOut *led, u32 interval, u32 *last_tick_timer) {
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 10
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s 			page 10
 
 
  420              		.loc 1 81 69 is_stmt 1 view -0
@@ -598,7 +598,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 1
  462              		.align	2
  465              	g_ledToggleTimer:
  466 0000 00000000 		.space	4
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 11
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s 			page 11
 
 
  467              		.global	g_builtinLed
@@ -624,33 +624,33 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 1
  487              		.file 6 "Core/Src/library/aml_hal.h"
  488              		.file 7 "Core/Src/gpio_handler/gpio_handler.h"
  489              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s 			page 12
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s 			page 12
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 gpio_handler.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:21     .text.MX_GPIO_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:27     .text.MX_GPIO_Init:00000000 MX_GPIO_Init
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:119    .text.MX_GPIO_Init:00000064 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:124    .text.WriteDigitalOut:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:130    .text.WriteDigitalOut:00000000 WriteDigitalOut
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:162    .text.AssignDigitalOut:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:168    .text.AssignDigitalOut:00000000 AssignDigitalOut
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:246    .text.ToggleDigitalOut:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:252    .text.ToggleDigitalOut:00000000 ToggleDigitalOut
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:286    .text.BuiltinLED_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:292    .text.BuiltinLED_Init:00000000 BuiltinLED_Init
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:339    .text.BuiltinLED_Init:00000034 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:472    .bss.g_builtinLed:00000000 g_builtinLed
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:345    .text.indicate_setup_with_blinks:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:351    .text.indicate_setup_with_blinks:00000000 indicate_setup_with_blinks
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:406    .text.indicate_setup_with_blinks:00000028 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:411    .text.ToggleLED:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:417    .text.ToggleLED:00000000 ToggleLED
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:465    .bss.g_ledToggleTimer:00000000 g_ledToggleTimer
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:462    .bss.g_ledToggleTimer:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:469    .bss.g_builtinLed:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccqIjBD5.s:475    .rodata:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:21     .text.MX_GPIO_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:27     .text.MX_GPIO_Init:00000000 MX_GPIO_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:119    .text.MX_GPIO_Init:00000064 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:124    .text.WriteDigitalOut:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:130    .text.WriteDigitalOut:00000000 WriteDigitalOut
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:162    .text.AssignDigitalOut:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:168    .text.AssignDigitalOut:00000000 AssignDigitalOut
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:246    .text.ToggleDigitalOut:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:252    .text.ToggleDigitalOut:00000000 ToggleDigitalOut
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:286    .text.BuiltinLED_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:292    .text.BuiltinLED_Init:00000000 BuiltinLED_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:339    .text.BuiltinLED_Init:00000034 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:472    .bss.g_builtinLed:00000000 g_builtinLed
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:345    .text.indicate_setup_with_blinks:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:351    .text.indicate_setup_with_blinks:00000000 indicate_setup_with_blinks
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:406    .text.indicate_setup_with_blinks:00000028 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:411    .text.ToggleLED:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:417    .text.ToggleLED:00000000 ToggleLED
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:465    .bss.g_ledToggleTimer:00000000 g_ledToggleTimer
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:462    .bss.g_ledToggleTimer:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:469    .bss.g_builtinLed:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccCYBgxu.s:475    .rodata:00000000 $d
 
 UNDEFINED SYMBOLS
 HAL_GPIO_WritePin

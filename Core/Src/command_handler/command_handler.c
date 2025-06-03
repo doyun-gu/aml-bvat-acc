@@ -8,8 +8,8 @@ bool i2c_ready = false;
 void BVAT_Init(void) {
     AML_Init();                         // Handles all HAL init
     command_timer = HAL_GetTick();      // Set command timer
-    i2c_ready = I2C_connectivity_check();
-    I2C_ACC_Enable();                   // Enable sensor
+
+    HAL_Delay(100);
 }
 
 //TODO: SD Card needs to be discussed -> Not available with the current setup

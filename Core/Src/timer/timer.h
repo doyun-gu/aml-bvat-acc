@@ -10,8 +10,6 @@
 #include "stm32f4xx_hal.h"
 
 extern TIM_HandleTypeDef htim2;
-// extern I2C_HandleTypeDef hi2c1;
-
 
 void SystemClock_Config(void);
 void MX_TIM2_Init(void);

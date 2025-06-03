@@ -76,13 +76,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 bool timer_handler (u32 interval, u32 *timer)
 {
-    u32 current_time = HAL_GetTick(); // Get the current time in milliseconds
+    // Get the current time in milliseconds
+    u32 current_time = HAL_GetTick();
 
     if ((current_time - *timer) >= interval) {
-        *timer = current_time; // Reset the timer to the current time
+        // Reset the timer to the current time
+        *timer = current_time;  
 
-        return true; // Timer expired
+        return true;    // Timer expired
     }
 
-        return false; // Timer not expired
+        return false;   // Timer not expired
 }

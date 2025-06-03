@@ -28,6 +28,7 @@ build/i2c_handler.o: Core/Src/i2c_handler/i2c_handler.c \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
+ Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_usart.h \
  Core/Src/uart_handler/uart_handler.h
 Core/Src/i2c_handler/i2c_handler.h:
 Core/Src/library/aml_hal.h:
@@ -61,4 +62,5 @@ Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
+Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_usart.h:
 Core/Src/uart_handler/uart_handler.h:

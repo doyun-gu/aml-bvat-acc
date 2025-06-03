@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
   38              		.loc 1 18 5 view .LVU1
   39 0002 FFF7FEFF 		bl	HAL_Init
   40              	.LVL0:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 2
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 2
 
 
   19:Core/Src/library/aml_hal.c ****     SystemClock_Config();
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
    2:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @file     cmsis_gcc.h
    3:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @brief    CMSIS compiler GCC header file
    4:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @version  V5.4.1
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 3
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 3
 
 
    5:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @date     27. May 2021
@@ -178,7 +178,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
   59:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __WEAK                                 __attribute__((weak))
   60:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
   61:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 4
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 4
 
 
   62:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __PACKED                               __attribute__((packed, aligned(1)))
@@ -238,7 +238,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
  116:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __COMPILER_BARRIER
  117:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __COMPILER_BARRIER()                   __ASM volatile("":::"memory")
  118:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 5
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 5
 
 
  119:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -298,7 +298,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
  173:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __STACK_LIMIT
  174:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __STACK_LIMIT             __StackLimit
  175:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 6
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 6
 
 
  176:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -358,7 +358,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
  230:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
  231:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Wait For Interrupt
  232:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Wait For Interrupt is a hint instruction that suspends execution until one of a number o
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 7
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 7
 
 
  233:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
@@ -418,7 +418,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
  287:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Reverse byte order (32 bit)
  288:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Reverses the byte order in unsigned integer value. For example, 0x12345678 becomes 0x785
  289:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    value  Value to reverse
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 8
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 8
 
 
  290:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return               Reversed value
@@ -478,7 +478,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
  344:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return               Rotated value
  345:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  346:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __ROR(uint32_t op1, uint32_t op2)
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 9
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 9
 
 
  347:Drivers/CMSIS/Include/cmsis_gcc.h **** {
@@ -538,7 +538,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
  401:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return             number of leading zeros in value
  402:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  403:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint8_t __CLZ(uint32_t value)
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 10
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 10
 
 
  404:Drivers/CMSIS/Include/cmsis_gcc.h **** {
@@ -598,7 +598,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
  458:Drivers/CMSIS/Include/cmsis_gcc.h **** #if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)
  459:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldrexh %0, %1" : "=r" (result) : "Q" (*addr) );
  460:Drivers/CMSIS/Include/cmsis_gcc.h **** #else
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 11
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 11
 
 
  461:Drivers/CMSIS/Include/cmsis_gcc.h ****     /* Prior to GCC 4.8, "Q" will be expanded to [rx, #0] which is not
@@ -658,7 +658,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
  515:Drivers/CMSIS/Include/cmsis_gcc.h ****    return(result);
  516:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  517:Drivers/CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 12
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 12
 
 
  518:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -718,7 +718,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
  572:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Saturates an unsigned value.
  573:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  ARG1  Value to be saturated
  574:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  ARG2  Bit position to saturate to (0..31)
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 13
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 13
 
 
  575:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return             Saturated value
@@ -778,7 +778,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
  629:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  630:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint16_t __LDRHT(volatile uint16_t *ptr)
  631:Drivers/CMSIS/Include/cmsis_gcc.h **** {
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 14
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 14
 
 
  632:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
@@ -838,7 +838,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
  686:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   STRT Unprivileged (32 bit)
  687:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a Unprivileged STRT instruction for 32 bit values.
  688:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 15
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 15
 
 
  689:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
@@ -898,7 +898,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
  743:Drivers/CMSIS/Include/cmsis_gcc.h ****       return 0U;
  744:Drivers/CMSIS/Include/cmsis_gcc.h ****     }
  745:Drivers/CMSIS/Include/cmsis_gcc.h ****   }
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 16
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 16
 
 
  746:Drivers/CMSIS/Include/cmsis_gcc.h ****   return (uint32_t)val;
@@ -958,7 +958,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
  800:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  801:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
  802:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Store-Release (8 bit)
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 17
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 17
 
 
  803:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a STLB instruction for 8 bit values.
@@ -1018,7 +1018,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
  857:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  858:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint16_t __LDAEXH(volatile uint16_t *ptr)
  859:Drivers/CMSIS/Include/cmsis_gcc.h **** {
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 18
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 18
 
 
  860:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
@@ -1078,7 +1078,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
  914:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  915:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  916:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 19
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 19
 
 
  917:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Store-Release Exclusive (32 bit)
@@ -1138,7 +1138,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
   88              		.syntax unified
   89              	.L4:
   90              	.LBE5:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 20
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 20
 
 
   91              	.LBE4:
@@ -1156,15 +1156,15 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 1
  100              	.Letext0:
  101              		.file 3 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
  102              		.file 4 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s 			page 21
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 21
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 aml_hal.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s:21     .text.AML_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s:27     .text.AML_Init:00000000 AML_Init
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s:62     .text.Error_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc4dMNcX.s:68     .text.Error_Handler:00000000 Error_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s:21     .text.AML_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s:27     .text.AML_Init:00000000 AML_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s:62     .text.Error_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s:68     .text.Error_Handler:00000000 Error_Handler
 
 UNDEFINED SYMBOLS
 HAL_Init

@@ -26,3 +26,5 @@ void I2C_Read_ACC(void);
 u8 readACC(u8 reg);
 void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *hi2c);
 void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c);
+void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c);
+void BVAT_I2C_Init(void);

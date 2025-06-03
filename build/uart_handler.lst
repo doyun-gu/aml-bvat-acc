@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -27,19 +27,24 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s 			page 1
   24              		.thumb
   25              		.thumb_func
   27              	MX_USART2_UART_Init:
-  28              	.LFB134:
+  28              	.LFB137:
    1:Core/Src/uart_handler/uart_handler.c **** #include "uart_handler.h"
    2:Core/Src/uart_handler/uart_handler.c **** 
-   3:Core/Src/uart_handler/uart_handler.c **** UART_HandleTypeDef huart2;
-   4:Core/Src/uart_handler/uart_handler.c **** 
-   5:Core/Src/uart_handler/uart_handler.c **** /**
-   6:Core/Src/uart_handler/uart_handler.c ****   * @brief USART2 Initialization Function
-   7:Core/Src/uart_handler/uart_handler.c ****   * @param None
-   8:Core/Src/uart_handler/uart_handler.c ****   * @retval None
-   9:Core/Src/uart_handler/uart_handler.c ****   */
-  10:Core/Src/uart_handler/uart_handler.c **** void MX_USART2_UART_Init(void)
-  11:Core/Src/uart_handler/uart_handler.c **** {
-  29              		.loc 1 11 1 view -0
+   3:Core/Src/uart_handler/uart_handler.c **** // TODO1: UART is not working - either blocking or non-blocking mode
+   4:Core/Src/uart_handler/uart_handler.c **** // // TODO2: Check if the UART is working with the blocking mode
+   5:Core/Src/uart_handler/uart_handler.c **** // TODO3: Check if the UART is working with the non-blocking mode
+   6:Core/Src/uart_handler/uart_handler.c **** // TODO4: Check if the UART is working with the interrupt mode
+   7:Core/Src/uart_handler/uart_handler.c **** 
+   8:Core/Src/uart_handler/uart_handler.c **** UART_HandleTypeDef huart2;
+   9:Core/Src/uart_handler/uart_handler.c **** 
+  10:Core/Src/uart_handler/uart_handler.c **** /**
+  11:Core/Src/uart_handler/uart_handler.c ****   * @brief USART2 Initialization Function
+  12:Core/Src/uart_handler/uart_handler.c ****   * @param None
+  13:Core/Src/uart_handler/uart_handler.c ****   * @retval None
+  14:Core/Src/uart_handler/uart_handler.c ****   */
+  15:Core/Src/uart_handler/uart_handler.c **** void MX_USART2_UART_Init(void)
+  16:Core/Src/uart_handler/uart_handler.c **** {
+  29              		.loc 1 16 1 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -48,66 +53,75 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s 			page 1
   35              		.cfi_def_cfa_offset 8
   36              		.cfi_offset 3, -8
   37              		.cfi_offset 14, -4
-  12:Core/Src/uart_handler/uart_handler.c ****   huart2.Instance = USART2;
-  38              		.loc 1 12 3 view .LVU1
-  39              		.loc 1 12 19 is_stmt 0 view .LVU2
+  17:Core/Src/uart_handler/uart_handler.c ****   // 1. Assign the specific hardware instance (USART2) to the handle.
+  18:Core/Src/uart_handler/uart_handler.c ****   huart2.Instance = USART2;
+  38              		.loc 1 18 3 view .LVU1
+  39              		.loc 1 18 19 is_stmt 0 view .LVU2
   40 0002 0A48     		ldr	r0, .L5
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s 			page 2
+
+
   41 0004 0A4B     		ldr	r3, .L5+4
   42 0006 0360     		str	r3, [r0]
-  13:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.BaudRate = 115200;
-  43              		.loc 1 13 3 is_stmt 1 view .LVU3
-  44              		.loc 1 13 24 is_stmt 0 view .LVU4
+  19:Core/Src/uart_handler/uart_handler.c **** 
+  20:Core/Src/uart_handler/uart_handler.c ****   // 2. Configure the basic communication parameters:
+  21:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.BaudRate = 115200;          // Sets baud rate to 115200 bps
+  43              		.loc 1 21 3 is_stmt 1 view .LVU3
+  44              		.loc 1 21 24 is_stmt 0 view .LVU4
   45 0008 4FF4E133 		mov	r3, #115200
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s 			page 2
-
-
   46 000c 4360     		str	r3, [r0, #4]
-  14:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.WordLength = UART_WORDLENGTH_8B;
-  47              		.loc 1 14 3 is_stmt 1 view .LVU5
-  48              		.loc 1 14 26 is_stmt 0 view .LVU6
+  22:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.WordLength = UART_WORDLENGTH_8B; // 8 data bits
+  47              		.loc 1 22 3 is_stmt 1 view .LVU5
+  48              		.loc 1 22 26 is_stmt 0 view .LVU6
   49 000e 0023     		movs	r3, #0
   50 0010 8360     		str	r3, [r0, #8]
-  15:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.StopBits = UART_STOPBITS_1;
-  51              		.loc 1 15 3 is_stmt 1 view .LVU7
-  52              		.loc 1 15 24 is_stmt 0 view .LVU8
+  23:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.StopBits = UART_STOPBITS_1;   // 1 stop bit
+  51              		.loc 1 23 3 is_stmt 1 view .LVU7
+  52              		.loc 1 23 24 is_stmt 0 view .LVU8
   53 0012 C360     		str	r3, [r0, #12]
-  16:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.Parity = UART_PARITY_NONE;
-  54              		.loc 1 16 3 is_stmt 1 view .LVU9
-  55              		.loc 1 16 22 is_stmt 0 view .LVU10
+  24:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.Parity = UART_PARITY_NONE;    // No parity bit
+  54              		.loc 1 24 3 is_stmt 1 view .LVU9
+  55              		.loc 1 24 22 is_stmt 0 view .LVU10
   56 0014 0361     		str	r3, [r0, #16]
-  17:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.Mode = UART_MODE_TX_RX;
-  57              		.loc 1 17 3 is_stmt 1 view .LVU11
-  58              		.loc 1 17 20 is_stmt 0 view .LVU12
+  25:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.Mode = UART_MODE_TX_RX;       // Enable both Transmit and Receive
+  57              		.loc 1 25 3 is_stmt 1 view .LVU11
+  58              		.loc 1 25 20 is_stmt 0 view .LVU12
   59 0016 0C22     		movs	r2, #12
   60 0018 4261     		str	r2, [r0, #20]
-  18:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  61              		.loc 1 18 3 is_stmt 1 view .LVU13
-  62              		.loc 1 18 25 is_stmt 0 view .LVU14
+  26:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE; // No hardware flow control (RTS/CTS)
+  61              		.loc 1 26 3 is_stmt 1 view .LVU13
+  62              		.loc 1 26 25 is_stmt 0 view .LVU14
   63 001a 8361     		str	r3, [r0, #24]
-  19:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.OverSampling = UART_OVERSAMPLING_16;
-  64              		.loc 1 19 3 is_stmt 1 view .LVU15
-  65              		.loc 1 19 28 is_stmt 0 view .LVU16
+  27:Core/Src/uart_handler/uart_handler.c ****   huart2.Init.OverSampling = UART_OVERSAMPLING_16; // Standard oversampling
+  64              		.loc 1 27 3 is_stmt 1 view .LVU15
+  65              		.loc 1 27 28 is_stmt 0 view .LVU16
   66 001c C361     		str	r3, [r0, #28]
-  20:Core/Src/uart_handler/uart_handler.c ****   if (HAL_UART_Init(&huart2) != HAL_OK)
-  67              		.loc 1 20 3 is_stmt 1 view .LVU17
-  68              		.loc 1 20 7 is_stmt 0 view .LVU18
+  28:Core/Src/uart_handler/uart_handler.c **** 
+  29:Core/Src/uart_handler/uart_handler.c ****   // 3. Call the HAL function to apply these settings to the hardware.
+  30:Core/Src/uart_handler/uart_handler.c ****   if (HAL_UART_Init(&huart2) != HAL_OK)
+  67              		.loc 1 30 3 is_stmt 1 view .LVU17
+  68              		.loc 1 30 7 is_stmt 0 view .LVU18
   69 001e FFF7FEFF 		bl	HAL_UART_Init
   70              	.LVL0:
-  71              		.loc 1 20 6 discriminator 1 view .LVU19
+  71              		.loc 1 30 6 discriminator 1 view .LVU19
   72 0022 00B9     		cbnz	r0, .L4
   73              	.L1:
-  21:Core/Src/uart_handler/uart_handler.c ****   {
-  22:Core/Src/uart_handler/uart_handler.c ****     Error_Handler();
-  23:Core/Src/uart_handler/uart_handler.c ****   }
-  24:Core/Src/uart_handler/uart_handler.c **** }
-  74              		.loc 1 24 1 view .LVU20
+  31:Core/Src/uart_handler/uart_handler.c ****   {
+  32:Core/Src/uart_handler/uart_handler.c ****     // 4. If initialization fails, call the error handler.
+  33:Core/Src/uart_handler/uart_handler.c ****     Error_Handler();
+  34:Core/Src/uart_handler/uart_handler.c ****   }
+  35:Core/Src/uart_handler/uart_handler.c **** }
+  74              		.loc 1 35 1 view .LVU20
   75 0024 08BD     		pop	{r3, pc}
   76              	.L4:
-  22:Core/Src/uart_handler/uart_handler.c ****   }
-  77              		.loc 1 22 5 is_stmt 1 view .LVU21
+  33:Core/Src/uart_handler/uart_handler.c ****   }
+  77              		.loc 1 33 5 is_stmt 1 view .LVU21
   78 0026 FFF7FEFF 		bl	Error_Handler
   79              	.LVL1:
-  80              		.loc 1 24 1 is_stmt 0 view .LVU22
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s 			page 3
+
+
+  80              		.loc 1 35 1 is_stmt 0 view .LVU22
   81 002a FBE7     		b	.L1
   82              	.L6:
   83              		.align	2
@@ -115,132 +129,386 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s 			page 1
   85 002c 00000000 		.word	huart2
   86 0030 00440040 		.word	1073759232
   87              		.cfi_endproc
-  88              	.LFE134:
-  90              		.section	.text.WriteUART,"ax",%progbits
+  88              	.LFE137:
+  90              		.section	.text.WriteUART_Blocking,"ax",%progbits
   91              		.align	1
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s 			page 3
-
-
-  92              		.global	WriteUART
+  92              		.global	WriteUART_Blocking
   93              		.syntax unified
   94              		.thumb
   95              		.thumb_func
-  97              	WriteUART:
+  97              	WriteUART_Blocking:
   98              	.LVL2:
-  99              	.LFB135:
-  25:Core/Src/uart_handler/uart_handler.c **** 
-  26:Core/Src/uart_handler/uart_handler.c **** void WriteUART (const char *message) {
- 100              		.loc 1 26 38 is_stmt 1 view -0
+  99              	.LFB138:
+  36:Core/Src/uart_handler/uart_handler.c **** 
+  37:Core/Src/uart_handler/uart_handler.c **** /**
+  38:Core/Src/uart_handler/uart_handler.c ****  * ! Tester Functions for UART =============================================
+  39:Core/Src/uart_handler/uart_handler.c ****  * ! These functions are used to send messages over UART.
+  40:Core/Src/uart_handler/uart_handler.c ****  * 
+  41:Core/Src/uart_handler/uart_handler.c ****  * *1. Blocking Mode UART
+  42:Core/Src/uart_handler/uart_handler.c ****  * *2. Non-blocking Mode UART
+  43:Core/Src/uart_handler/uart_handler.c ****  * *3. Interrupt Mode UART
+  44:Core/Src/uart_handler/uart_handler.c ****  */
+  45:Core/Src/uart_handler/uart_handler.c **** 
+  46:Core/Src/uart_handler/uart_handler.c **** /**
+  47:Core/Src/uart_handler/uart_handler.c ****   * @brief  Transmits a message over UART in blocking mode.
+  48:Core/Src/uart_handler/uart_handler.c ****   * @param  message: Pointer to the null-terminated string to be transmitted.
+  49:Core/Src/uart_handler/uart_handler.c ****   * @retval None
+  50:Core/Src/uart_handler/uart_handler.c ****   */
+  51:Core/Src/uart_handler/uart_handler.c **** void WriteUART_Blocking(const char *message) // Renamed for clarity, or you can keep WriteBUART
+  52:Core/Src/uart_handler/uart_handler.c **** {
+ 100              		.loc 1 52 1 is_stmt 1 view -0
  101              		.cfi_startproc
  102              		@ args = 0, pretend = 0, frame = 0
  103              		@ frame_needed = 0, uses_anonymous_args = 0
- 104              		.loc 1 26 38 is_stmt 0 view .LVU24
- 105 0000 10B5     		push	{r4, lr}
- 106              	.LCFI1:
- 107              		.cfi_def_cfa_offset 8
- 108              		.cfi_offset 4, -8
- 109              		.cfi_offset 14, -4
- 110 0002 0446     		mov	r4, r0
-  27:Core/Src/uart_handler/uart_handler.c ****     HAL_UART_Transmit_IT (&huart2, (u8 *)message, strlen(message));
- 111              		.loc 1 27 5 is_stmt 1 view .LVU25
- 112              		.loc 1 27 51 is_stmt 0 view .LVU26
- 113 0004 FFF7FEFF 		bl	strlen
- 114              	.LVL3:
- 115              		.loc 1 27 5 discriminator 1 view .LVU27
- 116 0008 82B2     		uxth	r2, r0
- 117 000a 2146     		mov	r1, r4
- 118 000c 0148     		ldr	r0, .L9
- 119 000e FFF7FEFF 		bl	HAL_UART_Transmit_IT
+  53:Core/Src/uart_handler/uart_handler.c ****     if (message == NULL) {
+ 104              		.loc 1 53 5 view .LVU24
+ 105              		.loc 1 53 8 is_stmt 0 view .LVU25
+ 106 0000 68B1     		cbz	r0, .L10
+  52:Core/Src/uart_handler/uart_handler.c ****     if (message == NULL) {
+ 107              		.loc 1 52 1 view .LVU26
+ 108 0002 10B5     		push	{r4, lr}
+ 109              	.LCFI1:
+ 110              		.cfi_def_cfa_offset 8
+ 111              		.cfi_offset 4, -8
+ 112              		.cfi_offset 14, -4
+ 113 0004 0446     		mov	r4, r0
+  54:Core/Src/uart_handler/uart_handler.c ****         return; // Or handle error
+  55:Core/Src/uart_handler/uart_handler.c ****     }
+  56:Core/Src/uart_handler/uart_handler.c **** 
+  57:Core/Src/uart_handler/uart_handler.c ****     uint16_t message_len = strlen(message);
+ 114              		.loc 1 57 5 is_stmt 1 view .LVU27
+ 115              		.loc 1 57 28 is_stmt 0 view .LVU28
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s 			page 4
+
+
+ 116 0006 FFF7FEFF 		bl	strlen
+ 117              	.LVL3:
+ 118              		.loc 1 57 14 discriminator 1 view .LVU29
+ 119 000a 82B2     		uxth	r2, r0
  120              	.LVL4:
-  28:Core/Src/uart_handler/uart_handler.c **** }
- 121              		.loc 1 28 1 view .LVU28
- 122 0012 10BD     		pop	{r4, pc}
- 123              	.LVL5:
- 124              	.L10:
- 125              		.loc 1 28 1 view .LVU29
- 126              		.align	2
- 127              	.L9:
- 128 0014 00000000 		.word	huart2
- 129              		.cfi_endproc
- 130              	.LFE135:
- 132              		.section	.text.HAL_UART_TxCpltCallback,"ax",%progbits
- 133              		.align	1
- 134              		.global	HAL_UART_TxCpltCallback
- 135              		.syntax unified
- 136              		.thumb
- 137              		.thumb_func
- 139              	HAL_UART_TxCpltCallback:
- 140              	.LVL6:
- 141              	.LFB136:
-  29:Core/Src/uart_handler/uart_handler.c **** 
-  30:Core/Src/uart_handler/uart_handler.c **** //! No need for now
-  31:Core/Src/uart_handler/uart_handler.c **** // void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-  32:Core/Src/uart_handler/uart_handler.c **** //     if (huart->Instance == USART2) {
-  33:Core/Src/uart_handler/uart_handler.c **** //         // Handle received data here
-  34:Core/Src/uart_handler/uart_handler.c **** //         // For example, you can read the received data from huart->pRxBuffPtr
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s 			page 4
+  58:Core/Src/uart_handler/uart_handler.c ****     if (message_len == 0) {
+ 121              		.loc 1 58 5 is_stmt 1 view .LVU30
+ 122              		.loc 1 58 8 is_stmt 0 view .LVU31
+ 123 000c 02B9     		cbnz	r2, .L13
+ 124              	.LVL5:
+ 125              	.L7:
+  59:Core/Src/uart_handler/uart_handler.c ****         return; // Nothing to send
+  60:Core/Src/uart_handler/uart_handler.c ****     }
+  61:Core/Src/uart_handler/uart_handler.c **** 
+  62:Core/Src/uart_handler/uart_handler.c ****     // Use HAL_UART_Transmit for blocking mode
+  63:Core/Src/uart_handler/uart_handler.c ****     // It will wait until all data is sent or the timeout expires.
+  64:Core/Src/uart_handler/uart_handler.c ****     HAL_StatusTypeDef status = HAL_UART_Transmit(&huart2,        // Your UART handle
+  65:Core/Src/uart_handler/uart_handler.c ****                                                 (uint8_t *)message, // Pointer to data buffer
+  66:Core/Src/uart_handler/uart_handler.c ****                                                 message_len,        // Length of data
+  67:Core/Src/uart_handler/uart_handler.c ****                                                 HAL_MAX_DELAY);     // Timeout (HAL_MAX_DELAY waits
+  68:Core/Src/uart_handler/uart_handler.c ****                                                                     // You can use a specific timeo
+  69:Core/Src/uart_handler/uart_handler.c **** 
+  70:Core/Src/uart_handler/uart_handler.c ****     if (status != HAL_OK)
+  71:Core/Src/uart_handler/uart_handler.c ****     {
+  72:Core/Src/uart_handler/uart_handler.c ****         // Handle transmission error, e.g., by calling Error_Handler()
+  73:Core/Src/uart_handler/uart_handler.c ****         // Or by setting an error flag, or logging.
+  74:Core/Src/uart_handler/uart_handler.c ****         // For example:
+  75:Core/Src/uart_handler/uart_handler.c ****         // Error_Handler();
+  76:Core/Src/uart_handler/uart_handler.c ****     }
+  77:Core/Src/uart_handler/uart_handler.c **** }
+ 126              		.loc 1 77 1 view .LVU32
+ 127 000e 10BD     		pop	{r4, pc}
+ 128              	.LVL6:
+ 129              	.L13:
+  64:Core/Src/uart_handler/uart_handler.c ****                                                 (uint8_t *)message, // Pointer to data buffer
+ 130              		.loc 1 64 5 is_stmt 1 view .LVU33
+  64:Core/Src/uart_handler/uart_handler.c ****                                                 (uint8_t *)message, // Pointer to data buffer
+ 131              		.loc 1 64 32 is_stmt 0 view .LVU34
+ 132 0010 4FF0FF33 		mov	r3, #-1
+ 133 0014 2146     		mov	r1, r4
+ 134 0016 0248     		ldr	r0, .L14
+ 135 0018 FFF7FEFF 		bl	HAL_UART_Transmit
+ 136              	.LVL7:
+  70:Core/Src/uart_handler/uart_handler.c ****     {
+ 137              		.loc 1 70 5 is_stmt 1 view .LVU35
+  76:Core/Src/uart_handler/uart_handler.c **** }
+ 138              		.loc 1 76 5 view .LVU36
+ 139 001c F7E7     		b	.L7
+ 140              	.LVL8:
+ 141              	.L10:
+ 142              	.LCFI2:
+ 143              		.cfi_def_cfa_offset 0
+ 144              		.cfi_restore 4
+ 145              		.cfi_restore 14
+  76:Core/Src/uart_handler/uart_handler.c **** }
+ 146              		.loc 1 76 5 is_stmt 0 view .LVU37
+ 147 001e 7047     		bx	lr
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s 			page 5
 
 
-  35:Core/Src/uart_handler/uart_handler.c **** //         // and process it as needed.
-  36:Core/Src/uart_handler/uart_handler.c **** //     }
-  37:Core/Src/uart_handler/uart_handler.c **** // }
-  38:Core/Src/uart_handler/uart_handler.c **** 
-  39:Core/Src/uart_handler/uart_handler.c **** void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
- 142              		.loc 1 39 57 is_stmt 1 view -0
- 143              		.cfi_startproc
- 144              		@ args = 0, pretend = 0, frame = 0
- 145              		@ frame_needed = 0, uses_anonymous_args = 0
- 146              		@ link register save eliminated.
-  40:Core/Src/uart_handler/uart_handler.c ****     if (huart->Instance == USART2) {
- 147              		.loc 1 40 5 view .LVU31
-  41:Core/Src/uart_handler/uart_handler.c ****         // Handle transmission complete here
-  42:Core/Src/uart_handler/uart_handler.c ****         // For example, you can set a flag or perform other actions after transmission.
-  43:Core/Src/uart_handler/uart_handler.c ****     }
- 148              		.loc 1 43 5 view .LVU32
-  44:Core/Src/uart_handler/uart_handler.c **** }...
- 149              		.loc 1 44 1 is_stmt 0 view .LVU33
- 150 0000 7047     		bx	lr
- 151              		.cfi_endproc
- 152              	.LFE136:
- 154              		.global	huart2
- 155              		.section	.bss.huart2,"aw",%nobits
- 156              		.align	2
- 159              	huart2:
- 160 0000 00000000 		.space	72
- 160      00000000 
- 160      00000000 
- 160      00000000 
- 160      00000000 
- 161              		.text
- 162              	.Letext0:
- 163              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/13.3.1/includ
- 164              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
- 165              		.file 4 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
- 166              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
- 167              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
- 168              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
- 169              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
- 170              		.file 9 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/string.h"
- 171              		.file 10 "Core/Src/library/aml_hal.h"
- 172              		.file 11 "Core/Src/uart_handler/uart_handler.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s 			page 5
+ 148              	.L15:
+ 149              		.align	2
+ 150              	.L14:
+ 151 0020 00000000 		.word	huart2
+ 152              		.cfi_endproc
+ 153              	.LFE138:
+ 155              		.section	.text.WriteUART,"ax",%progbits
+ 156              		.align	1
+ 157              		.global	WriteUART
+ 158              		.syntax unified
+ 159              		.thumb
+ 160              		.thumb_func
+ 162              	WriteUART:
+ 163              	.LVL9:
+ 164              	.LFB139:
+  78:Core/Src/uart_handler/uart_handler.c **** 
+  79:Core/Src/uart_handler/uart_handler.c **** /**
+  80:Core/Src/uart_handler/uart_handler.c ****   * @brief  Transmits a null-terminated string message over UART using interrupt-driven (non-blocki
+  81:Core/Src/uart_handler/uart_handler.c ****   * @param  message: Pointer to the null-terminated string to be transmitted.
+  82:Core/Src/uart_handler/uart_handler.c ****   * @retval HAL_StatusTypeDef: Status of the UART transmission initiation.
+  83:Core/Src/uart_handler/uart_handler.c ****   * - HAL_OK: Transmission was successfully initiated.
+  84:Core/Src/uart_handler/uart_handler.c ****   * - HAL_ERROR: Parameter error (e.g., null message) or other HAL error.
+  85:Core/Src/uart_handler/uart_handler.c ****   * - HAL_BUSY: UART is busy with a previous transmission (if using IT or DMA).
+  86:Core/Src/uart_handler/uart_handler.c ****   * The caller might need to wait or queue the message.
+  87:Core/Src/uart_handler/uart_handler.c ****   */
+  88:Core/Src/uart_handler/uart_handler.c **** HAL_StatusTypeDef WriteUART(const char *message) {
+ 165              		.loc 1 88 50 is_stmt 1 view -0
+ 166              		.cfi_startproc
+ 167              		@ args = 0, pretend = 0, frame = 0
+ 168              		@ frame_needed = 0, uses_anonymous_args = 0
+  89:Core/Src/uart_handler/uart_handler.c ****     HAL_StatusTypeDef status = HAL_OK;
+ 169              		.loc 1 89 5 view .LVU39
+  90:Core/Src/uart_handler/uart_handler.c **** 
+  91:Core/Src/uart_handler/uart_handler.c ****     // 1. Check for NULL pointer
+  92:Core/Src/uart_handler/uart_handler.c ****     if (message == NULL) {
+ 170              		.loc 1 92 5 view .LVU40
+ 171              		.loc 1 92 8 is_stmt 0 view .LVU41
+ 172 0000 C8B1     		cbz	r0, .L20
+  88:Core/Src/uart_handler/uart_handler.c ****     HAL_StatusTypeDef status = HAL_OK;
+ 173              		.loc 1 88 50 view .LVU42
+ 174 0002 38B5     		push	{r3, r4, r5, lr}
+ 175              	.LCFI3:
+ 176              		.cfi_def_cfa_offset 16
+ 177              		.cfi_offset 3, -16
+ 178              		.cfi_offset 4, -12
+ 179              		.cfi_offset 5, -8
+ 180              		.cfi_offset 14, -4
+ 181 0004 0546     		mov	r5, r0
+  93:Core/Src/uart_handler/uart_handler.c ****         // Optionally, log this error or handle it in a specific way
+  94:Core/Src/uart_handler/uart_handler.c ****         // For example, you could transmit a predefined error string, or do nothing.
+  95:Core/Src/uart_handler/uart_handler.c ****         return HAL_ERROR; // Indicate a parameter error
+  96:Core/Src/uart_handler/uart_handler.c ****     }
+  97:Core/Src/uart_handler/uart_handler.c **** 
+  98:Core/Src/uart_handler/uart_handler.c ****     // 2. Calculate the length of the message
+  99:Core/Src/uart_handler/uart_handler.c ****     uint16_t message_len = strlen(message);
+ 182              		.loc 1 99 5 is_stmt 1 view .LVU43
+ 183              		.loc 1 99 28 is_stmt 0 view .LVU44
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s 			page 6
+
+
+ 184 0006 FFF7FEFF 		bl	strlen
+ 185              	.LVL10:
+ 186              		.loc 1 99 14 discriminator 1 view .LVU45
+ 187 000a 84B2     		uxth	r4, r0
+ 188              	.LVL11:
+ 100:Core/Src/uart_handler/uart_handler.c **** 
+ 101:Core/Src/uart_handler/uart_handler.c ****     // 3. Check for zero-length string (optional, but good practice)
+ 102:Core/Src/uart_handler/uart_handler.c ****     if (message_len == 0) {
+ 189              		.loc 1 102 5 is_stmt 1 view .LVU46
+ 190              		.loc 1 102 8 is_stmt 0 view .LVU47
+ 191 000c 0CB9     		cbnz	r4, .L26
+ 103:Core/Src/uart_handler/uart_handler.c ****         // Nothing to send, so we can consider it successful or an error depending on requirements.
+ 104:Core/Src/uart_handler/uart_handler.c ****         // For now, let's say it's okay, as no transmission is needed.
+ 105:Core/Src/uart_handler/uart_handler.c ****         return HAL_OK;
+ 192              		.loc 1 105 16 view .LVU48
+ 193 000e 0020     		movs	r0, #0
+ 194              	.LVL12:
+ 195              	.L17:
+ 106:Core/Src/uart_handler/uart_handler.c ****     }
+ 107:Core/Src/uart_handler/uart_handler.c **** 
+ 108:Core/Src/uart_handler/uart_handler.c ****     // 4. Check if UART is busy (Optional but good for robust IT transmissions)
+ 109:Core/Src/uart_handler/uart_handler.c ****     //    If a previous IT transmission is ongoing, HAL_UART_Transmit_IT will return HAL_BUSY.
+ 110:Core/Src/uart_handler/uart_handler.c ****     //    You might want to handle this explicitly before calling.
+ 111:Core/Src/uart_handler/uart_handler.c ****     if (HAL_UART_GetState(&huart2) == HAL_UART_STATE_BUSY_TX ||
+ 112:Core/Src/uart_handler/uart_handler.c ****         HAL_UART_GetState(&huart2) == HAL_UART_STATE_BUSY_TX_RX) {
+ 113:Core/Src/uart_handler/uart_handler.c ****         // UART is currently busy with another transmission.
+ 114:Core/Src/uart_handler/uart_handler.c ****         // What to do?
+ 115:Core/Src/uart_handler/uart_handler.c ****         // Option A: Return HAL_BUSY and let the caller handle it (e.g., retry later, queue message
+ 116:Core/Src/uart_handler/uart_handler.c ****         // Option B: Wait for a short period (making it somewhat blocking, use with caution).
+ 117:Core/Src/uart_handler/uart_handler.c ****         // Option C: Implement a transmit queue (more complex).
+ 118:Core/Src/uart_handler/uart_handler.c ****         return HAL_BUSY; // Let the caller know the UART is busy.
+ 119:Core/Src/uart_handler/uart_handler.c ****     }
+ 120:Core/Src/uart_handler/uart_handler.c **** 
+ 121:Core/Src/uart_handler/uart_handler.c ****     // 5. Initiate the interrupt-driven transmission
+ 122:Core/Src/uart_handler/uart_handler.c ****     //    The cast to (uint8_t*) is because HAL_UART_Transmit_IT expects a byte pointer.
+ 123:Core/Src/uart_handler/uart_handler.c ****     //    Your 'u8' type from aml_hal.h is likely uint8_t, so (u8*) is also fine.
+ 124:Core/Src/uart_handler/uart_handler.c ****     status = HAL_UART_Transmit_IT(&huart2, (uint8_t *)message, message_len);
+ 125:Core/Src/uart_handler/uart_handler.c **** 
+ 126:Core/Src/uart_handler/uart_handler.c ****     // 6. Handle potential errors from initiating the transmission
+ 127:Core/Src/uart_handler/uart_handler.c ****     if (status != HAL_OK) {
+ 128:Core/Src/uart_handler/uart_handler.c ****         // An error occurred while trying to START the transmission (e.g., HAL_BUSY if not checked 
+ 129:Core/Src/uart_handler/uart_handler.c ****         // You might want to log this, toggle an error LED, or call Error_Handler()
+ 130:Core/Src/uart_handler/uart_handler.c ****         // if failing to initiate a UART message is a critical failure.
+ 131:Core/Src/uart_handler/uart_handler.c ****         // For example:
+ 132:Core/Src/uart_handler/uart_handler.c ****         // Error_Handler();
+ 133:Core/Src/uart_handler/uart_handler.c ****     }
+ 134:Core/Src/uart_handler/uart_handler.c **** 
+ 135:Core/Src/uart_handler/uart_handler.c ****     return status; // Return the status of HAL_UART_Transmit_IT
+ 136:Core/Src/uart_handler/uart_handler.c **** }
+ 196              		.loc 1 136 1 view .LVU49
+ 197 0010 38BD     		pop	{r3, r4, r5, pc}
+ 198              	.LVL13:
+ 199              	.L26:
+ 111:Core/Src/uart_handler/uart_handler.c ****         HAL_UART_GetState(&huart2) == HAL_UART_STATE_BUSY_TX_RX) {
+ 200              		.loc 1 111 5 is_stmt 1 view .LVU50
+ 111:Core/Src/uart_handler/uart_handler.c ****         HAL_UART_GetState(&huart2) == HAL_UART_STATE_BUSY_TX_RX) {
+ 201              		.loc 1 111 9 is_stmt 0 view .LVU51
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s 			page 7
+
+
+ 202 0012 0A48     		ldr	r0, .L27
+ 203 0014 FFF7FEFF 		bl	HAL_UART_GetState
+ 204              	.LVL14:
+ 111:Core/Src/uart_handler/uart_handler.c ****         HAL_UART_GetState(&huart2) == HAL_UART_STATE_BUSY_TX_RX) {
+ 205              		.loc 1 111 8 discriminator 1 view .LVU52
+ 206 0018 2128     		cmp	r0, #33
+ 207 001a 0AD0     		beq	.L18
+ 112:Core/Src/uart_handler/uart_handler.c ****         // UART is currently busy with another transmission.
+ 208              		.loc 1 112 9 view .LVU53
+ 209 001c 0748     		ldr	r0, .L27
+ 210 001e FFF7FEFF 		bl	HAL_UART_GetState
+ 211              	.LVL15:
+ 111:Core/Src/uart_handler/uart_handler.c ****         HAL_UART_GetState(&huart2) == HAL_UART_STATE_BUSY_TX_RX) {
+ 212              		.loc 1 111 62 discriminator 1 view .LVU54
+ 213 0022 2328     		cmp	r0, #35
+ 214 0024 05D0     		beq	.L18
+ 124:Core/Src/uart_handler/uart_handler.c **** 
+ 215              		.loc 1 124 5 is_stmt 1 view .LVU55
+ 124:Core/Src/uart_handler/uart_handler.c **** 
+ 216              		.loc 1 124 14 is_stmt 0 view .LVU56
+ 217 0026 2246     		mov	r2, r4
+ 218 0028 2946     		mov	r1, r5
+ 219 002a 0448     		ldr	r0, .L27
+ 220 002c FFF7FEFF 		bl	HAL_UART_Transmit_IT
+ 221              	.LVL16:
+ 127:Core/Src/uart_handler/uart_handler.c ****         // An error occurred while trying to START the transmission (e.g., HAL_BUSY if not checked 
+ 222              		.loc 1 127 5 is_stmt 1 view .LVU57
+ 133:Core/Src/uart_handler/uart_handler.c **** 
+ 223              		.loc 1 133 5 view .LVU58
+ 135:Core/Src/uart_handler/uart_handler.c **** }
+ 224              		.loc 1 135 5 view .LVU59
+ 135:Core/Src/uart_handler/uart_handler.c **** }
+ 225              		.loc 1 135 12 is_stmt 0 view .LVU60
+ 226 0030 EEE7     		b	.L17
+ 227              	.LVL17:
+ 228              	.L18:
+ 118:Core/Src/uart_handler/uart_handler.c ****     }
+ 229              		.loc 1 118 9 is_stmt 1 view .LVU61
+ 118:Core/Src/uart_handler/uart_handler.c ****     }
+ 230              		.loc 1 118 16 is_stmt 0 view .LVU62
+ 231 0032 0220     		movs	r0, #2
+ 232 0034 ECE7     		b	.L17
+ 233              	.LVL18:
+ 234              	.L20:
+ 235              	.LCFI4:
+ 236              		.cfi_def_cfa_offset 0
+ 237              		.cfi_restore 3
+ 238              		.cfi_restore 4
+ 239              		.cfi_restore 5
+ 240              		.cfi_restore 14
+  95:Core/Src/uart_handler/uart_handler.c ****     }
+ 241              		.loc 1 95 16 view .LVU63
+ 242 0036 0120     		movs	r0, #1
+ 243              	.LVL19:
+ 244              		.loc 1 136 1 view .LVU64
+ 245 0038 7047     		bx	lr
+ 246              	.L28:
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s 			page 8
+
+
+ 247 003a 00BF     		.align	2
+ 248              	.L27:
+ 249 003c 00000000 		.word	huart2
+ 250              		.cfi_endproc
+ 251              	.LFE139:
+ 253              		.section	.text.HAL_UART_TxCpltCallback,"ax",%progbits
+ 254              		.align	1
+ 255              		.global	HAL_UART_TxCpltCallback
+ 256              		.syntax unified
+ 257              		.thumb
+ 258              		.thumb_func
+ 260              	HAL_UART_TxCpltCallback:
+ 261              	.LVL20:
+ 262              	.LFB140:
+ 137:Core/Src/uart_handler/uart_handler.c **** 
+ 138:Core/Src/uart_handler/uart_handler.c **** //! No need for now
+ 139:Core/Src/uart_handler/uart_handler.c **** // void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+ 140:Core/Src/uart_handler/uart_handler.c **** //     if (huart->Instance == USART2) {
+ 141:Core/Src/uart_handler/uart_handler.c **** //         // Handle received data here
+ 142:Core/Src/uart_handler/uart_handler.c **** //         // For example, you can read the received data from huart->pRxBuffPtr
+ 143:Core/Src/uart_handler/uart_handler.c **** //         // and process it as needed.
+ 144:Core/Src/uart_handler/uart_handler.c **** //     }
+ 145:Core/Src/uart_handler/uart_handler.c **** // }
+ 146:Core/Src/uart_handler/uart_handler.c **** 
+ 147:Core/Src/uart_handler/uart_handler.c **** void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
+ 263              		.loc 1 147 57 is_stmt 1 view -0
+ 264              		.cfi_startproc
+ 265              		@ args = 0, pretend = 0, frame = 0
+ 266              		@ frame_needed = 0, uses_anonymous_args = 0
+ 267              		@ link register save eliminated.
+ 148:Core/Src/uart_handler/uart_handler.c ****     if (huart->Instance == USART2) {
+ 268              		.loc 1 148 5 view .LVU66
+ 149:Core/Src/uart_handler/uart_handler.c ****         // Handle transmission complete here
+ 150:Core/Src/uart_handler/uart_handler.c ****         // For example, you can set a flag or perform other actions after transmission.
+ 151:Core/Src/uart_handler/uart_handler.c ****     }
+ 269              		.loc 1 151 5 view .LVU67
+ 152:Core/Src/uart_handler/uart_handler.c **** }...
+ 270              		.loc 1 152 1 is_stmt 0 view .LVU68
+ 271 0000 7047     		bx	lr
+ 272              		.cfi_endproc
+ 273              	.LFE140:
+ 275              		.global	huart2
+ 276              		.section	.bss.huart2,"aw",%nobits
+ 277              		.align	2
+ 280              	huart2:
+ 281 0000 00000000 		.space	72
+ 281      00000000 
+ 281      00000000 
+ 281      00000000 
+ 281      00000000 
+ 282              		.text
+ 283              	.Letext0:
+ 284              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+ 285              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/13.3.1/includ
+ 286              		.file 4 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 287              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
+ 288              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s 			page 9
+
+
+ 289              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 290              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 291              		.file 9 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/string.h"
+ 292              		.file 10 "Core/Src/uart_handler/uart_handler.h"
+ 293              		.file 11 "Core/Src/library/aml_hal.h"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s 			page 10
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 uart_handler.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s:21     .text.MX_USART2_UART_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s:27     .text.MX_USART2_UART_Init:00000000 MX_USART2_UART_Init
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s:85     .text.MX_USART2_UART_Init:0000002c $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s:159    .bss.huart2:00000000 huart2
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s:91     .text.WriteUART:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s:97     .text.WriteUART:00000000 WriteUART
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s:128    .text.WriteUART:00000014 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s:133    .text.HAL_UART_TxCpltCallback:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s:139    .text.HAL_UART_TxCpltCallback:00000000 HAL_UART_TxCpltCallback
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccuaK6Vt.s:156    .bss.huart2:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s:21     .text.MX_USART2_UART_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s:27     .text.MX_USART2_UART_Init:00000000 MX_USART2_UART_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s:85     .text.MX_USART2_UART_Init:0000002c $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s:280    .bss.huart2:00000000 huart2
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s:91     .text.WriteUART_Blocking:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s:97     .text.WriteUART_Blocking:00000000 WriteUART_Blocking
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s:151    .text.WriteUART_Blocking:00000020 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s:156    .text.WriteUART:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s:162    .text.WriteUART:00000000 WriteUART
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s:249    .text.WriteUART:0000003c $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s:254    .text.HAL_UART_TxCpltCallback:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s:260    .text.HAL_UART_TxCpltCallback:00000000 HAL_UART_TxCpltCallback
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccFN4s2S.s:277    .bss.huart2:00000000 $d
 
 UNDEFINED SYMBOLS
 HAL_UART_Init
 Error_Handler
 strlen
+HAL_UART_Transmit
+HAL_UART_GetState
 HAL_UART_Transmit_IT

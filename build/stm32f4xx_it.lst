@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -27,7 +27,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 1
   24              		.thumb
   25              		.thumb_func
   27              	NMI_Handler:
-  28              	.LFB134:
+  28              	.LFB137:
    1:Core/Src/stm32f4xx_it.c **** /* USER CODE BEGIN Header */
    2:Core/Src/stm32f4xx_it.c **** /**
    3:Core/Src/stm32f4xx_it.c ****   ******************************************************************************
@@ -45,45 +45,35 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 1
   15:Core/Src/stm32f4xx_it.c ****   *
   16:Core/Src/stm32f4xx_it.c ****   ******************************************************************************
   17:Core/Src/stm32f4xx_it.c ****   */
-  18:Core/Src/stm32f4xx_it.c **** /* USER CODE END Header */
-  19:Core/Src/stm32f4xx_it.c **** 
-  20:Core/Src/stm32f4xx_it.c **** /* Includes ------------------------------------------------------------------*/
-  21:Core/Src/stm32f4xx_it.c **** #include "main.h"
-  22:Core/Src/stm32f4xx_it.c **** #include "stm32f4xx_it.h"
-  23:Core/Src/stm32f4xx_it.c **** /* Private includes ----------------------------------------------------------*/
-  24:Core/Src/stm32f4xx_it.c **** 
-  25:Core/Src/stm32f4xx_it.c **** /******************************************************************************/
-  26:Core/Src/stm32f4xx_it.c **** /*           Cortex-M4 Processor Interruption and Exception Handlers          */
-  27:Core/Src/stm32f4xx_it.c **** /******************************************************************************/
-  28:Core/Src/stm32f4xx_it.c **** /**
-  29:Core/Src/stm32f4xx_it.c ****   * @brief This function handles Non maskable interrupt.
-  30:Core/Src/stm32f4xx_it.c ****   */
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 2
+  18:Core/Src/stm32f4xx_it.c **** /* Includes ------------------------------------------------------------------*/
+  19:Core/Src/stm32f4xx_it.c **** #include "main.h"
+  20:Core/Src/stm32f4xx_it.c **** #include "stm32f4xx_it.h"
+  21:Core/Src/stm32f4xx_it.c **** 
+  22:Core/Src/stm32f4xx_it.c **** /******************************************************************************/
+  23:Core/Src/stm32f4xx_it.c **** /*           Cortex-M4 Processor Interruption and Exception Handlers          */
+  24:Core/Src/stm32f4xx_it.c **** /******************************************************************************/
+  25:Core/Src/stm32f4xx_it.c **** /**
+  26:Core/Src/stm32f4xx_it.c ****   * @brief This function handles Non maskable interrupt.
+  27:Core/Src/stm32f4xx_it.c ****   */
+  28:Core/Src/stm32f4xx_it.c **** void NMI_Handler(void)
+  29:Core/Src/stm32f4xx_it.c **** {
+  29              		.loc 1 29 1 view -0
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s 			page 2
 
 
-  31:Core/Src/stm32f4xx_it.c **** void NMI_Handler(void)
-  32:Core/Src/stm32f4xx_it.c **** {
-  29              		.loc 1 32 1 view -0
   30              		.cfi_startproc
   31              		@ Volatile: function does not return.
   32              		@ args = 0, pretend = 0, frame = 0
   33              		@ frame_needed = 0, uses_anonymous_args = 0
   34              		@ link register save eliminated.
   35              	.L2:
-  33:Core/Src/stm32f4xx_it.c ****   /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
-  34:Core/Src/stm32f4xx_it.c **** 
-  35:Core/Src/stm32f4xx_it.c ****   /* USER CODE END NonMaskableInt_IRQn 0 */
-  36:Core/Src/stm32f4xx_it.c ****   /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
-  37:Core/Src/stm32f4xx_it.c ****    while (1)
-  36              		.loc 1 37 4 view .LVU1
-  38:Core/Src/stm32f4xx_it.c ****   {
-  39:Core/Src/stm32f4xx_it.c ****   }
-  37              		.loc 1 39 3 view .LVU2
-  37:Core/Src/stm32f4xx_it.c ****   {
-  38              		.loc 1 37 10 view .LVU3
+  30:Core/Src/stm32f4xx_it.c ****    while (1) {}
+  36              		.loc 1 30 4 view .LVU1
+  37              		.loc 1 30 15 view .LVU2
+  38              		.loc 1 30 10 view .LVU3
   39 0000 FEE7     		b	.L2
   40              		.cfi_endproc
-  41              	.LFE134:
+  41              	.LFE137:
   43              		.section	.text.HardFault_Handler,"ax",%progbits
   44              		.align	1
   45              		.global	HardFault_Handler
@@ -91,64 +81,63 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 1
   47              		.thumb
   48              		.thumb_func
   50              	HardFault_Handler:
-  51              	.LFB135:
-  40:Core/Src/stm32f4xx_it.c ****   /* USER CODE END NonMaskableInt_IRQn 1 */
-  41:Core/Src/stm32f4xx_it.c **** }
-  42:Core/Src/stm32f4xx_it.c **** 
-  43:Core/Src/stm32f4xx_it.c **** /**
-  44:Core/Src/stm32f4xx_it.c ****   * @brief This function handles Hard fault interrupt.
-  45:Core/Src/stm32f4xx_it.c ****   */
-  46:Core/Src/stm32f4xx_it.c **** void HardFault_Handler(void)
-  47:Core/Src/stm32f4xx_it.c **** {
-  52              		.loc 1 47 1 view -0
+  51              	.LFB138:
+  31:Core/Src/stm32f4xx_it.c **** }
+  32:Core/Src/stm32f4xx_it.c **** 
+  33:Core/Src/stm32f4xx_it.c **** /**
+  34:Core/Src/stm32f4xx_it.c ****   * @brief This function handles Hard fault interrupt.
+  35:Core/Src/stm32f4xx_it.c ****   */
+  36:Core/Src/stm32f4xx_it.c **** void HardFault_Handler(void)
+  37:Core/Src/stm32f4xx_it.c **** {
+  52              		.loc 1 37 1 view -0
   53              		.cfi_startproc
   54              		@ Volatile: function does not return.
   55              		@ args = 0, pretend = 0, frame = 0
   56              		@ frame_needed = 0, uses_anonymous_args = 0
   57              		@ link register save eliminated.
   58              	.L4:
-  48:Core/Src/stm32f4xx_it.c ****   while (1)
-  59              		.loc 1 48 3 view .LVU5
-  49:Core/Src/stm32f4xx_it.c ****   {}
-  60              		.loc 1 49 4 view .LVU6
-  48:Core/Src/stm32f4xx_it.c ****   while (1)
-  61              		.loc 1 48 9 view .LVU7
+  38:Core/Src/stm32f4xx_it.c ****   while (1)
+  59              		.loc 1 38 3 view .LVU5
+  39:Core/Src/stm32f4xx_it.c ****   {}
+  60              		.loc 1 39 4 view .LVU6
+  38:Core/Src/stm32f4xx_it.c ****   while (1)
+  61              		.loc 1 38 9 view .LVU7
   62 0000 FEE7     		b	.L4
   63              		.cfi_endproc
-  64              	.LFE135:
+  64              	.LFE138:
   66              		.section	.text.MemManage_Handler,"ax",%progbits
   67              		.align	1
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 3
-
-
   68              		.global	MemManage_Handler
   69              		.syntax unified
   70              		.thumb
   71              		.thumb_func
   73              	MemManage_Handler:
-  74              	.LFB136:
-  50:Core/Src/stm32f4xx_it.c **** }
-  51:Core/Src/stm32f4xx_it.c **** 
-  52:Core/Src/stm32f4xx_it.c **** /**
-  53:Core/Src/stm32f4xx_it.c ****   * @brief This function handles Memory management fault.
-  54:Core/Src/stm32f4xx_it.c ****   */
-  55:Core/Src/stm32f4xx_it.c **** void MemManage_Handler(void) {
-  75              		.loc 1 55 30 view -0
+  74              	.LFB139:
+  40:Core/Src/stm32f4xx_it.c **** }
+  41:Core/Src/stm32f4xx_it.c **** 
+  42:Core/Src/stm32f4xx_it.c **** /**
+  43:Core/Src/stm32f4xx_it.c ****   * @brief This function handles Memory management fault.
+  44:Core/Src/stm32f4xx_it.c ****   */
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s 			page 3
+
+
+  45:Core/Src/stm32f4xx_it.c **** void MemManage_Handler(void) {
+  75              		.loc 1 45 30 view -0
   76              		.cfi_startproc
   77              		@ Volatile: function does not return.
   78              		@ args = 0, pretend = 0, frame = 0
   79              		@ frame_needed = 0, uses_anonymous_args = 0
   80              		@ link register save eliminated.
   81              	.L6:
-  56:Core/Src/stm32f4xx_it.c ****   while (1)
-  82              		.loc 1 56 3 view .LVU9
-  57:Core/Src/stm32f4xx_it.c ****   {}
-  83              		.loc 1 57 4 view .LVU10
-  56:Core/Src/stm32f4xx_it.c ****   while (1)
-  84              		.loc 1 56 9 view .LVU11
+  46:Core/Src/stm32f4xx_it.c ****   while (1)
+  82              		.loc 1 46 3 view .LVU9
+  47:Core/Src/stm32f4xx_it.c ****   {}
+  83              		.loc 1 47 4 view .LVU10
+  46:Core/Src/stm32f4xx_it.c ****   while (1)
+  84              		.loc 1 46 9 view .LVU11
   85 0000 FEE7     		b	.L6
   86              		.cfi_endproc
-  87              	.LFE136:
+  87              	.LFE139:
   89              		.section	.text.BusFault_Handler,"ax",%progbits
   90              		.align	1
   91              		.global	BusFault_Handler
@@ -156,32 +145,29 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 1
   93              		.thumb
   94              		.thumb_func
   96              	BusFault_Handler:
-  97              	.LFB137:
-  58:Core/Src/stm32f4xx_it.c **** 
-  59:Core/Src/stm32f4xx_it.c **** }
-  60:Core/Src/stm32f4xx_it.c **** /**
-  61:Core/Src/stm32f4xx_it.c ****   * @brief This function handles Pre-fetch fault, memory access fault.
-  62:Core/Src/stm32f4xx_it.c ****   */
-  63:Core/Src/stm32f4xx_it.c **** void BusFault_Handler(void) {
-  98              		.loc 1 63 29 view -0
+  97              	.LFB140:
+  48:Core/Src/stm32f4xx_it.c **** 
+  49:Core/Src/stm32f4xx_it.c **** }
+  50:Core/Src/stm32f4xx_it.c **** /**
+  51:Core/Src/stm32f4xx_it.c ****   * @brief This function handles Pre-fetch fault, memory access fault.
+  52:Core/Src/stm32f4xx_it.c ****   */
+  53:Core/Src/stm32f4xx_it.c **** void BusFault_Handler(void) {
+  98              		.loc 1 53 29 view -0
   99              		.cfi_startproc
  100              		@ Volatile: function does not return.
  101              		@ args = 0, pretend = 0, frame = 0
  102              		@ frame_needed = 0, uses_anonymous_args = 0
  103              		@ link register save eliminated.
  104              	.L8:
-  64:Core/Src/stm32f4xx_it.c ****   while (1)
- 105              		.loc 1 64 3 view .LVU13
-  65:Core/Src/stm32f4xx_it.c ****   {}
- 106              		.loc 1 65 4 view .LVU14
-  64:Core/Src/stm32f4xx_it.c ****   while (1)
- 107              		.loc 1 64 9 view .LVU15
+  54:Core/Src/stm32f4xx_it.c ****   while (1)
+ 105              		.loc 1 54 3 view .LVU13
+  55:Core/Src/stm32f4xx_it.c ****   {}
+ 106              		.loc 1 55 4 view .LVU14
+  54:Core/Src/stm32f4xx_it.c ****   while (1)
+ 107              		.loc 1 54 9 view .LVU15
  108 0000 FEE7     		b	.L8
  109              		.cfi_endproc
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 4
-
-
- 110              	.LFE137:
+ 110              	.LFE140:
  112              		.section	.text.UsageFault_Handler,"ax",%progbits
  113              		.align	1
  114              		.global	UsageFault_Handler
@@ -189,31 +175,34 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 1
  116              		.thumb
  117              		.thumb_func
  119              	UsageFault_Handler:
- 120              	.LFB138:
-  66:Core/Src/stm32f4xx_it.c **** }
-  67:Core/Src/stm32f4xx_it.c **** 
-  68:Core/Src/stm32f4xx_it.c **** /**
-  69:Core/Src/stm32f4xx_it.c ****   * @brief This function handles Undefined instruction or illegal state.
-  70:Core/Src/stm32f4xx_it.c ****   */
-  71:Core/Src/stm32f4xx_it.c **** void UsageFault_Handler(void)
-  72:Core/Src/stm32f4xx_it.c **** {
- 121              		.loc 1 72 1 view -0
+ 120              	.LFB141:
+  56:Core/Src/stm32f4xx_it.c **** }
+  57:Core/Src/stm32f4xx_it.c **** 
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s 			page 4
+
+
+  58:Core/Src/stm32f4xx_it.c **** /**
+  59:Core/Src/stm32f4xx_it.c ****   * @brief This function handles Undefined instruction or illegal state.
+  60:Core/Src/stm32f4xx_it.c ****   */
+  61:Core/Src/stm32f4xx_it.c **** void UsageFault_Handler(void)
+  62:Core/Src/stm32f4xx_it.c **** {
+ 121              		.loc 1 62 1 view -0
  122              		.cfi_startproc
  123              		@ Volatile: function does not return.
  124              		@ args = 0, pretend = 0, frame = 0
  125              		@ frame_needed = 0, uses_anonymous_args = 0
  126              		@ link register save eliminated.
  127              	.L10:
-  73:Core/Src/stm32f4xx_it.c **** 
-  74:Core/Src/stm32f4xx_it.c ****   while (1)
- 128              		.loc 1 74 3 view .LVU17
-  75:Core/Src/stm32f4xx_it.c ****   {}
- 129              		.loc 1 75 4 view .LVU18
-  74:Core/Src/stm32f4xx_it.c ****   {}
- 130              		.loc 1 74 9 view .LVU19
+  63:Core/Src/stm32f4xx_it.c **** 
+  64:Core/Src/stm32f4xx_it.c ****   while (1)
+ 128              		.loc 1 64 3 view .LVU17
+  65:Core/Src/stm32f4xx_it.c ****   {}
+ 129              		.loc 1 65 4 view .LVU18
+  64:Core/Src/stm32f4xx_it.c ****   {}
+ 130              		.loc 1 64 9 view .LVU19
  131 0000 FEE7     		b	.L10
  132              		.cfi_endproc
- 133              	.LFE138:
+ 133              	.LFE141:
  135              		.section	.text.SVC_Handler,"ax",%progbits
  136              		.align	1
  137              		.global	SVC_Handler
@@ -221,47 +210,47 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 1
  139              		.thumb
  140              		.thumb_func
  142              	SVC_Handler:
- 143              	.LFB139:
-  76:Core/Src/stm32f4xx_it.c **** }
-  77:Core/Src/stm32f4xx_it.c **** 
-  78:Core/Src/stm32f4xx_it.c **** /**
-  79:Core/Src/stm32f4xx_it.c ****   * @brief This function handles System service call via SWI instruction.
-  80:Core/Src/stm32f4xx_it.c ****   */
-  81:Core/Src/stm32f4xx_it.c **** void SVC_Handler(void) {}
- 144              		.loc 1 81 24 view -0
+ 143              	.LFB142:
+  66:Core/Src/stm32f4xx_it.c **** }
+  67:Core/Src/stm32f4xx_it.c **** 
+  68:Core/Src/stm32f4xx_it.c **** /**
+  69:Core/Src/stm32f4xx_it.c ****   * @brief This function handles System service call via SWI instruction.
+  70:Core/Src/stm32f4xx_it.c ****   */
+  71:Core/Src/stm32f4xx_it.c **** void SVC_Handler(void) {}
+ 144              		.loc 1 71 24 view -0
  145              		.cfi_startproc
  146              		@ args = 0, pretend = 0, frame = 0
  147              		@ frame_needed = 0, uses_anonymous_args = 0
  148              		@ link register save eliminated.
- 149              		.loc 1 81 25 view .LVU21
+ 149              		.loc 1 71 25 view .LVU21
  150 0000 7047     		bx	lr
  151              		.cfi_endproc
- 152              	.LFE139:
+ 152              	.LFE142:
  154              		.section	.text.DebugMon_Handler,"ax",%progbits
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 5
-
-
  155              		.align	1
  156              		.global	DebugMon_Handler
  157              		.syntax unified
  158              		.thumb
  159              		.thumb_func
  161              	DebugMon_Handler:
- 162              	.LFB140:
-  82:Core/Src/stm32f4xx_it.c **** 
-  83:Core/Src/stm32f4xx_it.c **** /**
-  84:Core/Src/stm32f4xx_it.c ****   * @brief This function handles Debug monitor.
-  85:Core/Src/stm32f4xx_it.c ****   */
-  86:Core/Src/stm32f4xx_it.c **** void DebugMon_Handler(void) {}
- 163              		.loc 1 86 29 view -0
+ 162              	.LFB143:
+  72:Core/Src/stm32f4xx_it.c **** 
+  73:Core/Src/stm32f4xx_it.c **** /**
+  74:Core/Src/stm32f4xx_it.c ****   * @brief This function handles Debug monitor.
+  75:Core/Src/stm32f4xx_it.c ****   */
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s 			page 5
+
+
+  76:Core/Src/stm32f4xx_it.c **** void DebugMon_Handler(void) {}
+ 163              		.loc 1 76 29 view -0
  164              		.cfi_startproc
  165              		@ args = 0, pretend = 0, frame = 0
  166              		@ frame_needed = 0, uses_anonymous_args = 0
  167              		@ link register save eliminated.
- 168              		.loc 1 86 30 view .LVU23
+ 168              		.loc 1 76 30 view .LVU23
  169 0000 7047     		bx	lr
  170              		.cfi_endproc
- 171              	.LFE140:
+ 171              	.LFE143:
  173              		.section	.text.PendSV_Handler,"ax",%progbits
  174              		.align	1
  175              		.global	PendSV_Handler
@@ -269,21 +258,21 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 1
  177              		.thumb
  178              		.thumb_func
  180              	PendSV_Handler:
- 181              	.LFB141:
-  87:Core/Src/stm32f4xx_it.c **** 
-  88:Core/Src/stm32f4xx_it.c **** /**
-  89:Core/Src/stm32f4xx_it.c ****   * @brief This function handles Pendable request for system service.
-  90:Core/Src/stm32f4xx_it.c ****   */
-  91:Core/Src/stm32f4xx_it.c **** void PendSV_Handler(void) {}
- 182              		.loc 1 91 27 view -0
+ 181              	.LFB144:
+  77:Core/Src/stm32f4xx_it.c **** 
+  78:Core/Src/stm32f4xx_it.c **** /**
+  79:Core/Src/stm32f4xx_it.c ****   * @brief This function handles Pendable request for system service.
+  80:Core/Src/stm32f4xx_it.c ****   */
+  81:Core/Src/stm32f4xx_it.c **** void PendSV_Handler(void) {}
+ 182              		.loc 1 81 27 view -0
  183              		.cfi_startproc
  184              		@ args = 0, pretend = 0, frame = 0
  185              		@ frame_needed = 0, uses_anonymous_args = 0
  186              		@ link register save eliminated.
- 187              		.loc 1 91 28 view .LVU25
+ 187              		.loc 1 81 28 view .LVU25
  188 0000 7047     		bx	lr
  189              		.cfi_endproc
- 190              	.LFE141:
+ 190              	.LFE144:
  192              		.section	.text.SysTick_Handler,"ax",%progbits
  193              		.align	1
  194              		.global	SysTick_Handler
@@ -291,17 +280,14 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 1
  196              		.thumb
  197              		.thumb_func
  199              	SysTick_Handler:
- 200              	.LFB142:
-  92:Core/Src/stm32f4xx_it.c **** 
-  93:Core/Src/stm32f4xx_it.c **** /**
-  94:Core/Src/stm32f4xx_it.c ****   * @brief This function handles System tick timer.
-  95:Core/Src/stm32f4xx_it.c ****   */
-  96:Core/Src/stm32f4xx_it.c **** void SysTick_Handler(void)
-  97:Core/Src/stm32f4xx_it.c **** {
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 6
-
-
- 201              		.loc 1 97 1 view -0
+ 200              	.LFB145:
+  82:Core/Src/stm32f4xx_it.c **** 
+  83:Core/Src/stm32f4xx_it.c **** /**
+  84:Core/Src/stm32f4xx_it.c ****   * @brief This function handles System tick timer.
+  85:Core/Src/stm32f4xx_it.c ****   */
+  86:Core/Src/stm32f4xx_it.c **** void SysTick_Handler(void)
+  87:Core/Src/stm32f4xx_it.c **** {
+ 201              		.loc 1 87 1 view -0
  202              		.cfi_startproc
  203              		@ args = 0, pretend = 0, frame = 0
  204              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -310,15 +296,18 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 1
  207              		.cfi_def_cfa_offset 8
  208              		.cfi_offset 3, -8
  209              		.cfi_offset 14, -4
-  98:Core/Src/stm32f4xx_it.c ****   HAL_IncTick();
- 210              		.loc 1 98 3 view .LVU27
+  88:Core/Src/stm32f4xx_it.c ****   HAL_IncTick();
+ 210              		.loc 1 88 3 view .LVU27
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s 			page 6
+
+
  211 0002 FFF7FEFF 		bl	HAL_IncTick
  212              	.LVL0:
-  99:Core/Src/stm32f4xx_it.c **** }
- 213              		.loc 1 99 1 is_stmt 0 view .LVU28
+  89:Core/Src/stm32f4xx_it.c **** }
+ 213              		.loc 1 89 1 is_stmt 0 view .LVU28
  214 0006 08BD     		pop	{r3, pc}
  215              		.cfi_endproc
- 216              	.LFE142:
+ 216              	.LFE145:
  218              		.section	.text.USART2_IRQHandler,"ax",%progbits
  219              		.align	1
  220              		.global	USART2_IRQHandler
@@ -326,18 +315,18 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 1
  222              		.thumb
  223              		.thumb_func
  225              	USART2_IRQHandler:
- 226              	.LFB143:
- 100:Core/Src/stm32f4xx_it.c **** 
- 101:Core/Src/stm32f4xx_it.c **** /******************************************************************************/
- 102:Core/Src/stm32f4xx_it.c **** /* STM32F4xx Peripheral Interrupt Handlers                                    */
- 103:Core/Src/stm32f4xx_it.c **** /* Add here the Interrupt Handlers for the used peripherals.                  */
- 104:Core/Src/stm32f4xx_it.c **** /* For the available peripheral interrupt handler names,                      */
- 105:Core/Src/stm32f4xx_it.c **** /* please refer to the startup file (startup_stm32f4xx.s).                    */
- 106:Core/Src/stm32f4xx_it.c **** /******************************************************************************/
- 107:Core/Src/stm32f4xx_it.c **** 
- 108:Core/Src/stm32f4xx_it.c **** void USART2_IRQHandler(void)
- 109:Core/Src/stm32f4xx_it.c **** {
- 227              		.loc 1 109 1 is_stmt 1 view -0
+ 226              	.LFB146:
+  90:Core/Src/stm32f4xx_it.c **** 
+  91:Core/Src/stm32f4xx_it.c **** /******************************************************************************/
+  92:Core/Src/stm32f4xx_it.c **** /* STM32F4xx Peripheral Interrupt Handlers                                    */
+  93:Core/Src/stm32f4xx_it.c **** /* Add here the Interrupt Handlers for the used peripherals.                  */
+  94:Core/Src/stm32f4xx_it.c **** /* For the available peripheral interrupt handler names,                      */
+  95:Core/Src/stm32f4xx_it.c **** /* please refer to the startup file (startup_stm32f4xx.s).                    */
+  96:Core/Src/stm32f4xx_it.c **** /******************************************************************************/
+  97:Core/Src/stm32f4xx_it.c **** 
+  98:Core/Src/stm32f4xx_it.c **** void USART2_IRQHandler(void)
+  99:Core/Src/stm32f4xx_it.c **** {
+ 227              		.loc 1 99 1 is_stmt 1 view -0
  228              		.cfi_startproc
  229              		@ args = 0, pretend = 0, frame = 0
  230              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -346,23 +335,20 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 1
  233              		.cfi_def_cfa_offset 8
  234              		.cfi_offset 3, -8
  235              		.cfi_offset 14, -4
- 110:Core/Src/stm32f4xx_it.c ****     HAL_UART_IRQHandler(&huart2);
- 236              		.loc 1 110 5 view .LVU30
+ 100:Core/Src/stm32f4xx_it.c ****     HAL_UART_IRQHandler(&huart2);
+ 236              		.loc 1 100 5 view .LVU30
  237 0002 0248     		ldr	r0, .L18
  238 0004 FFF7FEFF 		bl	HAL_UART_IRQHandler
  239              	.LVL1:
- 111:Core/Src/stm32f4xx_it.c **** }...
- 240              		.loc 1 111 1 is_stmt 0 view .LVU31
+ 101:Core/Src/stm32f4xx_it.c **** }...
+ 240              		.loc 1 101 1 is_stmt 0 view .LVU31
  241 0008 08BD     		pop	{r3, pc}
  242              	.L19:
  243 000a 00BF     		.align	2
  244              	.L18:
  245 000c 00000000 		.word	huart2
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 7
-
-
  246              		.cfi_endproc
- 247              	.LFE143:
+ 247              	.LFE146:
  249              		.text
  250              	.Letext0:
  251              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
@@ -372,33 +358,36 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 1
  255              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
  256              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
  257              		.file 8 "Core/Src/uart_handler/uart_handler.h"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s 			page 7
+
+
  258              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s 			page 8
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_it.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:21     .text.NMI_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:27     .text.NMI_Handler:00000000 NMI_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:44     .text.HardFault_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:50     .text.HardFault_Handler:00000000 HardFault_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:67     .text.MemManage_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:73     .text.MemManage_Handler:00000000 MemManage_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:90     .text.BusFault_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:96     .text.BusFault_Handler:00000000 BusFault_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:113    .text.UsageFault_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:119    .text.UsageFault_Handler:00000000 UsageFault_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:136    .text.SVC_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:142    .text.SVC_Handler:00000000 SVC_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:155    .text.DebugMon_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:161    .text.DebugMon_Handler:00000000 DebugMon_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:174    .text.PendSV_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:180    .text.PendSV_Handler:00000000 PendSV_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:193    .text.SysTick_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:199    .text.SysTick_Handler:00000000 SysTick_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:219    .text.USART2_IRQHandler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:225    .text.USART2_IRQHandler:00000000 USART2_IRQHandler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccTnltAk.s:245    .text.USART2_IRQHandler:0000000c $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:21     .text.NMI_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:27     .text.NMI_Handler:00000000 NMI_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:44     .text.HardFault_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:50     .text.HardFault_Handler:00000000 HardFault_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:67     .text.MemManage_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:73     .text.MemManage_Handler:00000000 MemManage_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:90     .text.BusFault_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:96     .text.BusFault_Handler:00000000 BusFault_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:113    .text.UsageFault_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:119    .text.UsageFault_Handler:00000000 UsageFault_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:136    .text.SVC_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:142    .text.SVC_Handler:00000000 SVC_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:155    .text.DebugMon_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:161    .text.DebugMon_Handler:00000000 DebugMon_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:174    .text.PendSV_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:180    .text.PendSV_Handler:00000000 PendSV_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:193    .text.SysTick_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:199    .text.SysTick_Handler:00000000 SysTick_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:219    .text.USART2_IRQHandler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:225    .text.USART2_IRQHandler:00000000 USART2_IRQHandler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccI6KHId.s:245    .text.USART2_IRQHandler:0000000c $d
 
 UNDEFINED SYMBOLS
 HAL_IncTick

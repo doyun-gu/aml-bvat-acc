@@ -8,7 +8,7 @@ typedef struct {
     u8 state; // State of the pin, either HIGH or LOW
 } DigitalOut;
 
-// Function prototypes for UART initialization and handling
+// Function prototypes for UART initialisation and handling
 void MX_GPIO_Init(void);
 DigitalOut AssignDigitalOut(Pin pin);
 void WriteDigitalOut(DigitalOut *digital_out, u8 state);

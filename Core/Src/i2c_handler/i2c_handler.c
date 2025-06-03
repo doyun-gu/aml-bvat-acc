@@ -42,18 +42,65 @@ void MX_I2C1_Init(void) {
 //     }
 // }
 
-bool I2C_connectivity_check (void) {
-    HAL_StatusTypeDef status;
-    u8 deviceADDR = 0x18 << 1; // LIS3DH address shifted
+// bool I2C_connectivity_check (void) {
+//     HAL_StatusTypeDef status;
+//     u8 deviceADDR = 0x18 << 1; // LIS3DH address shifted
 
-    status = HAL_I2C_IsDeviceReady(&hi2c1, deviceADDR, 3, 1000);
+//     status = HAL_I2C_IsDeviceReady(&hi2c1, deviceADDR, 3, 1000);
+
+//     if (status == HAL_OK) {
+//         WriteUART("I2C device is ready.\n");
+//         return true; // Device is ready
+//     } else {
+//         WriteUART("I2C device not found.\n");
+//         return false; // Device not found
+//     }
+// }
+
+
+/**
+  * @brief  Checks the connectivity of a specific I2C device (e.g., LIS3DH).
+  * @param  None (implicitly uses global hi2c1 and a hardcoded device address for LIS3DH)
+  * @retval bool true if the device is found and ready, false otherwise.
+  */
+bool I2C_connectivity_check(void) {
+    HAL_StatusTypeDef status;
+    uint8_t device_7bit_address = 0x18;
+    uint8_t deviceADDR_8bit_shifted = (device_7bit_address << 1);
+    uint32_t trials = 3;
+    uint32_t timeout = 100;
+
+    // If WriteUART uses HAL_UART_Transmit_IT, msg_buffer MUST persist
+    // until the transmission is complete. Making it static achieves this.
+    static char msg_buffer[64]; // **** MODIFIED: Made static ****
+
+    status = HAL_I2C_IsDeviceReady(&hi2c1, deviceADDR_8bit_shifted, trials, timeout);
 
     if (status == HAL_OK) {
-        WriteUART("I2C device is ready.\n");
-        return true; // Device is ready
+        // Sending a string literal is safe with HAL_UART_Transmit_IT
+        // because string literals have static storage duration.
+        WriteUART("I2C LIS3DH (0x18) is ready.\r\n");
+        return true;
     } else {
-        WriteUART("I2C device not found.\n");
-        return false; // Device not found
+        switch (status) {
+            case HAL_ERROR:
+                sprintf(msg_buffer, "I2C LIS3DH (0x18) error. Status: HAL_ERROR\r\n");
+                break;
+            case HAL_BUSY:
+                sprintf(msg_buffer, "I2C LIS3DH (0x18) busy. Status: HAL_BUSY\r\n");
+                break;
+            case HAL_TIMEOUT:
+                sprintf(msg_buffer, "I2C LIS3DH (0x18) timeout. Status: HAL_TIMEOUT\r\n");
+                break;
+            default:
+                sprintf(msg_buffer, "I2C LIS3DH (0x18) not found. Status: %d\r\n", status);
+                break;
+        }
+        // Now WriteUART will use a buffer (msg_buffer) that remains valid
+        // even after I2C_connectivity_check returns, allowing the IT-based
+        // transmission to complete correctly.
+        WriteUART(msg_buffer);
+        return false;
     }
 }
 
@@ -110,4 +157,19 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c)
         WriteUART("I2C error occurred.\n");
         // Optional: Try reinitializing or setting error flags
     }
+}
+
+void BVAT_I2C_Init (void) {
+    MX_I2C1_Init(); // Initialize I2C1
+    WriteUART("I2C1 Initialized.\r\n");
+
+    // Check connectivity
+    if (I2C_connectivity_check()) {
+        WriteUART("I2C device is ready.\r\n");
+    } else {
+        WriteUART("I2C device not found.\r\n");
+    }
+
+    // Enable accelerometer
+    I2C_ACC_Enable();
 }

@@ -26,7 +26,7 @@ void MX_GPIO_Init(void)
  * @retval None
  */
 
-DigitalOut AssignDigitalOut (Pin pin) {
+DigitalOut AssignDigitalOut (Pin_t pin) {
     DigitalOut digital_out;
 
     digital_out.pin = pin;
@@ -59,7 +59,7 @@ void ToggleDigitalOut(DigitalOut *digital_out) {
 
 void BuiltinLED_Init(void) {
     // Assign the built-in LED to a DigitalOut structure
-    g_builtinLed = AssignDigitalOut((Pin){D13_PORT, D13_PIN}); // Assuming D13 is the built-in LED pin
+    g_builtinLed = AssignDigitalOut((Pin_t){D13_PORT, D13_PIN}); // Assuming D13 is the built-in LED pin
     g_builtinLed.state = GPIO_PIN_RESET; // Initialize state to LOW
     WriteDigitalOut(&g_builtinLed, 0); // Set initial state
 }

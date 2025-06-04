@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s 			page 1
   46 000a 034B     		ldr	r3, .L3
   47 000c 1860     		str	r0, [r3]
   11:Core/Src/command_handler/command_handler.c **** 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s 			page 2
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 2
 
 
   12:Core/Src/command_handler/command_handler.c ****     HAL_Delay(100);
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s 			page 1
   75              		.loc 1 36 51 is_stmt 1 view -0
   76              		.cfi_startproc
   77              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s 			page 3
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 3
 
 
   78              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -178,7 +178,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s 			page 1
  128      61766169 
  128      6C61626C 
  128      652C2073 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s 			page 4
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 4
 
 
  129 002a 0000     		.align	2
@@ -238,7 +238,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s 			page 1
   51:Core/Src/command_handler/command_handler.c **** 
   52:Core/Src/command_handler/command_handler.c ****     if (timer_handler(1000, &command_timer)) {
  169              		.loc 1 52 5 is_stmt 1 view .LVU23
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s 			page 5
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 5
 
 
  170              		.loc 1 52 9 is_stmt 0 view .LVU24
@@ -298,7 +298,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s 			page 1
  202 0030 1A70     		strb	r2, [r3]
  203 0032 EDE7     		b	.L12
  204              	.L16:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s 			page 6
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 6
 
 
  205              	.LBB2:
@@ -309,122 +309,128 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s 			page 1
  208 0034 2820     		movs	r0, #40
  209 0036 FFF7FEFF 		bl	readACC
  210              	.LVL13:
- 211 003a 0446     		mov	r4, r0
- 212              	.LVL14:
+  53:Core/Src/command_handler/command_handler.c ****         u8 y = readACC(0x29);
+ 211              		.loc 1 53 12 discriminator 1 view .LVU34
+ 212 003a C4B2     		uxtb	r4, r0
+ 213              	.LVL14:
   54:Core/Src/command_handler/command_handler.c ****         u8 z = readACC(0x2A);
- 213              		.loc 1 54 9 is_stmt 1 view .LVU34
+ 214              		.loc 1 54 9 is_stmt 1 view .LVU35
   54:Core/Src/command_handler/command_handler.c ****         u8 z = readACC(0x2A);
- 214              		.loc 1 54 16 is_stmt 0 view .LVU35
- 215 003c 2920     		movs	r0, #41
- 216 003e FFF7FEFF 		bl	readACC
- 217              	.LVL15:
- 218 0042 0546     		mov	r5, r0
- 219              	.LVL16:
+ 215              		.loc 1 54 16 is_stmt 0 view .LVU36
+ 216 003c 2920     		movs	r0, #41
+ 217 003e FFF7FEFF 		bl	readACC
+ 218              	.LVL15:
+  54:Core/Src/command_handler/command_handler.c ****         u8 z = readACC(0x2A);
+ 219              		.loc 1 54 12 discriminator 1 view .LVU37
+ 220 0042 C5B2     		uxtb	r5, r0
+ 221              	.LVL16:
   55:Core/Src/command_handler/command_handler.c **** 
- 220              		.loc 1 55 9 is_stmt 1 view .LVU36
+ 222              		.loc 1 55 9 is_stmt 1 view .LVU38
   55:Core/Src/command_handler/command_handler.c **** 
- 221              		.loc 1 55 16 is_stmt 0 view .LVU37
- 222 0044 2A20     		movs	r0, #42
- 223 0046 FFF7FEFF 		bl	readACC
- 224              	.LVL17:
- 225 004a 0646     		mov	r6, r0
- 226              	.LVL18:
+ 223              		.loc 1 55 16 is_stmt 0 view .LVU39
+ 224 0044 2A20     		movs	r0, #42
+ 225 0046 FFF7FEFF 		bl	readACC
+ 226              	.LVL17:
+  55:Core/Src/command_handler/command_handler.c **** 
+ 227              		.loc 1 55 12 discriminator 1 view .LVU40
+ 228 004a C6B2     		uxtb	r6, r0
+ 229              	.LVL18:
   57:Core/Src/command_handler/command_handler.c **** 
- 227              		.loc 1 57 9 is_stmt 1 view .LVU38
+ 230              		.loc 1 57 9 is_stmt 1 view .LVU41
   57:Core/Src/command_handler/command_handler.c **** 
- 228              		.loc 1 57 25 is_stmt 0 view .LVU39
- 229 004c FFF7FEFF 		bl	HAL_GetTick
- 230              	.LVL19:
- 231 0050 0746     		mov	r7, r0
- 232              	.LVL20:
+ 231              		.loc 1 57 25 is_stmt 0 view .LVU42
+ 232 004c FFF7FEFF 		bl	HAL_GetTick
+ 233              	.LVL19:
+ 234 0050 0746     		mov	r7, r0
+ 235              	.LVL20:
   60:Core/Src/command_handler/command_handler.c **** 
- 233              		.loc 1 60 9 is_stmt 1 view .LVU40
- 234 0052 0196     		str	r6, [sp, #4]
- 235 0054 0095     		str	r5, [sp]
- 236 0056 2346     		mov	r3, r4
- 237 0058 094A     		ldr	r2, .L17+16
- 238 005a 4021     		movs	r1, #64
- 239 005c 0948     		ldr	r0, .L17+20
- 240              	.LVL21:
+ 236              		.loc 1 60 9 is_stmt 1 view .LVU43
+ 237 0052 0196     		str	r6, [sp, #4]
+ 238 0054 0095     		str	r5, [sp]
+ 239 0056 2346     		mov	r3, r4
+ 240 0058 094A     		ldr	r2, .L17+16
+ 241 005a 4021     		movs	r1, #64
+ 242 005c 0948     		ldr	r0, .L17+20
+ 243              	.LVL21:
   60:Core/Src/command_handler/command_handler.c **** 
- 241              		.loc 1 60 9 is_stmt 0 view .LVU41
- 242 005e FFF7FEFF 		bl	snprintf
- 243              	.LVL22:
+ 244              		.loc 1 60 9 is_stmt 0 view .LVU44
+ 245 005e FFF7FEFF 		bl	snprintf
+ 246              	.LVL22:
   67:Core/Src/command_handler/command_handler.c ****     }
- 244              		.loc 1 67 9 is_stmt 1 view .LVU42
- 245 0062 3346     		mov	r3, r6
- 246 0064 2A46     		mov	r2, r5
- 247 0066 2146     		mov	r1, r4
- 248 0068 3846     		mov	r0, r7
- 249 006a FFF7FEFF 		bl	log_to_uart
- 250              	.LVL23:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s 			page 7
+ 247              		.loc 1 67 9 is_stmt 1 view .LVU45
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 7
 
 
- 251 006e D5E7     		b	.L9
- 252              	.L18:
- 253              		.align	2
- 254              	.L17:
- 255 0070 00000000 		.word	i2c_ready
- 256 0074 00000000 		.word	acc_enabled
- 257 0078 00000000 		.word	command_timer
- 258 007c 00000000 		.word	.LC1
- 259 0080 2C000000 		.word	.LC2
- 260 0084 00000000 		.word	UART_buffer
- 261              	.LBE2:
- 262              		.cfi_endproc
- 263              	.LFE139:
- 265              		.global	i2c_ready
- 266              		.section	.bss.i2c_ready,"aw",%nobits
- 269              	i2c_ready:
- 270 0000 00       		.space	1
- 271              		.global	UART_buffer
- 272              		.section	.bss.UART_buffer,"aw",%nobits
- 273              		.align	2
- 276              	UART_buffer:
- 277 0000 00000000 		.space	64
- 277      00000000 
- 277      00000000 
- 277      00000000 
- 277      00000000 
- 278              		.section	.bss.command_timer,"aw",%nobits
- 279              		.align	2
- 282              	command_timer:
- 283 0000 00000000 		.space	4
- 284              		.text
- 285              	.Letext0:
- 286              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
- 287              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
- 288              		.file 4 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/13.3.1/includ
- 289              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
- 290              		.file 6 "Core/Src/library/aml_hal.h"
- 291              		.file 7 "Core/Src/i2c_handler/i2c_handler.h"
- 292              		.file 8 "Core/Src/timer/timer.h"
- 293              		.file 9 "Core/Src/uart_handler/uart_handler.h"
- 294              		.file 10 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdio.h"
- 295              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s 			page 8
+ 248 0062 3346     		mov	r3, r6
+ 249 0064 2A46     		mov	r2, r5
+ 250 0066 2146     		mov	r1, r4
+ 251 0068 3846     		mov	r0, r7
+ 252 006a FFF7FEFF 		bl	log_to_uart
+ 253              	.LVL23:
+ 254 006e D5E7     		b	.L9
+ 255              	.L18:
+ 256              		.align	2
+ 257              	.L17:
+ 258 0070 00000000 		.word	i2c_ready
+ 259 0074 00000000 		.word	acc_enabled
+ 260 0078 00000000 		.word	command_timer
+ 261 007c 00000000 		.word	.LC1
+ 262 0080 2C000000 		.word	.LC2
+ 263 0084 00000000 		.word	UART_buffer
+ 264              	.LBE2:
+ 265              		.cfi_endproc
+ 266              	.LFE139:
+ 268              		.global	i2c_ready
+ 269              		.section	.bss.i2c_ready,"aw",%nobits
+ 272              	i2c_ready:
+ 273 0000 00       		.space	1
+ 274              		.global	UART_buffer
+ 275              		.section	.bss.UART_buffer,"aw",%nobits
+ 276              		.align	2
+ 279              	UART_buffer:
+ 280 0000 00000000 		.space	64
+ 280      00000000 
+ 280      00000000 
+ 280      00000000 
+ 280      00000000 
+ 281              		.section	.bss.command_timer,"aw",%nobits
+ 282              		.align	2
+ 285              	command_timer:
+ 286 0000 00000000 		.space	4
+ 287              		.text
+ 288              	.Letext0:
+ 289              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+ 290              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 291              		.file 4 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/13.3.1/includ
+ 292              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 293              		.file 6 "Core/Src/library/aml_hal.h"
+ 294              		.file 7 "Core/Src/i2c_handler/i2c_handler.h"
+ 295              		.file 8 "Core/Src/timer/timer.h"
+ 296              		.file 9 "Core/Src/uart_handler/uart_handler.h"
+ 297              		.file 10 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdio.h"
+ 298              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 command_handler.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s:21     .text.BVAT_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s:27     .text.BVAT_Init:00000000 BVAT_Init
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s:57     .text.BVAT_Init:00000018 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s:282    .bss.command_timer:00000000 command_timer
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s:62     .rodata.log_to_uart.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s:66     .text.log_to_uart:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s:72     .text.log_to_uart:00000000 log_to_uart
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s:120    .text.log_to_uart:00000024 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s:276    .bss.UART_buffer:00000000 UART_buffer
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s:126    .rodata.measure_loop.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s:133    .text.measure_loop:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s:139    .text.measure_loop:00000000 measure_loop
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s:255    .text.measure_loop:00000070 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s:269    .bss.i2c_ready:00000000 i2c_ready
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s:270    .bss.i2c_ready:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s:273    .bss.UART_buffer:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccwldoxQ.s:279    .bss.command_timer:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:21     .text.BVAT_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:27     .text.BVAT_Init:00000000 BVAT_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:57     .text.BVAT_Init:00000018 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:285    .bss.command_timer:00000000 command_timer
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:62     .rodata.log_to_uart.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:66     .text.log_to_uart:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:72     .text.log_to_uart:00000000 log_to_uart
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:120    .text.log_to_uart:00000024 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:279    .bss.UART_buffer:00000000 UART_buffer
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:126    .rodata.measure_loop.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:133    .text.measure_loop:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:139    .text.measure_loop:00000000 measure_loop
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:258    .text.measure_loop:00000070 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:272    .bss.i2c_ready:00000000 i2c_ready
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:273    .bss.i2c_ready:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:276    .bss.UART_buffer:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:282    .bss.command_timer:00000000 $d
 
 UNDEFINED SYMBOLS
 AML_Init

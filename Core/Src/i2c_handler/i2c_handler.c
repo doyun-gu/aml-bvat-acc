@@ -1,13 +1,50 @@
-#include "i2c_handler.h"
+/**
+  ******************************************************************************
+  * @file    i2c_handler.c
+  * @brief   This file provides code for I2C handling, specifically for an
+  * LIS3DH accelerometer.
+  ******************************************************************************
+  */
 
+/* Includes ------------------------------------------------------------------*/
+#include "i2c_handler.h" // Primary include for this module's definitions and dependencies
+                         // This header should include:
+                         // <stdio.h>, <string.h>, <stdbool.h>
+                         // "stm32f4xx_hal.h", "aml_hal.h", "uart_handler.h"
+
+/* Private define ------------------------------------------------------------*/
+// No private defines needed here if all constants are in the header.
+
+/* Private macro -------------------------------------------------------------*/
+// No private macros needed here.
+
+/* Private variables ---------------------------------------------------------*/
+// These are the definitions for the variables declared 'extern' in i2c_handler.h
 I2C_HandleTypeDef hi2c1;
-
 volatile bool acc_enabled = false;
-u8 rawData[6];
+u8 rawData[6]; // Buffer for accelerometer data
 
+/* Private function prototypes -----------------------------------------------*/
+// Declare any static helper functions specific to this file here, if needed.
+
+/* Exported functions --------------------------------------------------------*/
+
+//------------------------------------------------------------------------------
+// Initialization Functions
+//------------------------------------------------------------------------------
+
+/**
+  * @brief  Initializes the I2C1 peripheral parameters and NVIC for interrupts.
+  * @param  None
+  * @retval None
+  */
 void MX_I2C1_Init(void) {
+    // Using WriteUART_Blocking for critical init messages to avoid IT complexities
+    // Ensure WriteUART_Blocking is prototyped and defined in uart_handler.c/h
+    WriteUART_Blocking("Attempting HAL_I2C_Init...\r\n");
+
     hi2c1.Instance = I2C1;
-    hi2c1.Init.ClockSpeed = 100000;
+    hi2c1.Init.ClockSpeed = 100000; // 100 kHz
     hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
     hi2c1.Init.OwnAddress1 = 0;
     hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
@@ -17,69 +54,64 @@ void MX_I2C1_Init(void) {
     hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
 
     if (HAL_I2C_Init(&hi2c1) != HAL_OK) {
-        Error_Handler();
+        WriteUART_Blocking("HAL_I2C_Init FAILED! Entering Error_Handler.\r\n");
+        Error_Handler(); // Ensure Error_Handler() is defined (e.g., in aml_hal.c)
     }
 
-    // Enable and set I2C1 Event Interrupt to priority 0
+    WriteUART_Blocking("HAL_I2C_Init Successful.\r\n");
+
+    // NVIC configuration for I2C1 interrupts (Event and Error)
     HAL_NVIC_SetPriority(I2C1_EV_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(I2C1_EV_IRQn);
-
-    // Enable and set I2C1 Error Interrupt to priority 1
     HAL_NVIC_SetPriority(I2C1_ER_IRQn, 0, 1);
     HAL_NVIC_EnableIRQ(I2C1_ER_IRQn);
 }
 
-// void I2C_connectivity_check (void) {
-//     HAL_StatusTypeDef status;
-//     u8 deviceADDR = 0x18 << 1;      // LIS3DH address shifted
+/**
+  * @brief  Performs I2C setup for the application AFTER I2C1 peripheral is initialized.
+  * Checks LIS3DH connectivity, and enables the accelerometer.
+  * @param  None
+  * @retval bool true if device setup was successful, false otherwise.
+  */
+bool BVAT_I2C_Init(void) {
+    bool device_is_ok;
 
-//     status = HAL_I2C_IsDeviceReady(&hi2c1, deviceADDR, 3, 1000);
+    // MX_I2C1_Init() is called once in AML_Init()
+    WriteUART_Blocking("Performing I2C device checks (LIS3DH)...\r\n"); // Use blocking for reliability
 
-//     if (status == HAL_OK) {
-//         WriteUART("I2C device is ready.\n");
-//     } else {
-//         WriteUART("I2C device not found.\n");
-//     }
-// }
+    device_is_ok = I2C_connectivity_check(); // Call to the function defined below
 
-// bool I2C_connectivity_check (void) {
-//     HAL_StatusTypeDef status;
-//     u8 deviceADDR = 0x18 << 1; // LIS3DH address shifted
+    if (device_is_ok) {
+        I2C_ACC_Enable(); // Call to the function defined below
+        WriteUART_Blocking("LIS3DH Accelerometer configuration command sent.\r\n");
+    } else {
+        WriteUART_Blocking("LIS3DH Accelerometer NOT configured due to I2C issue.\r\n");
+    }
+    return device_is_ok;
+}
 
-//     status = HAL_I2C_IsDeviceReady(&hi2c1, deviceADDR, 3, 1000);
-
-//     if (status == HAL_OK) {
-//         WriteUART("I2C device is ready.\n");
-//         return true; // Device is ready
-//     } else {
-//         WriteUART("I2C device not found.\n");
-//         return false; // Device not found
-//     }
-// }
-
+//------------------------------------------------------------------------------
+// I2C Operational Functions (LIS3DH Specific) - DEFINITIONS
+//------------------------------------------------------------------------------
 
 /**
-  * @brief  Checks the connectivity of a specific I2C device (e.g., LIS3DH).
-  * @param  None (implicitly uses global hi2c1 and a hardcoded device address for LIS3DH)
-  * @retval bool true if the device is found and ready, false otherwise.
+  * @brief  Checks the connectivity of the LIS3DH accelerometer.
+  * @note   Prints detailed status messages via UART.
+  * @param  None
+  * @retval bool true if the LIS3DH responds, false otherwise.
   */
 bool I2C_connectivity_check(void) {
     HAL_StatusTypeDef status;
-    uint8_t device_7bit_address = 0x18;
-    uint8_t deviceADDR_8bit_shifted = (device_7bit_address << 1);
     uint32_t trials = 3;
-    uint32_t timeout = 100;
+    uint32_t timeout = 100; // ms
 
-    // If WriteUART uses HAL_UART_Transmit_IT, msg_buffer MUST persist
-    // until the transmission is complete. Making it static achieves this.
-    static char msg_buffer[64]; // **** MODIFIED: Made static ****
+    static char msg_buffer[64]; // Static for IT-based WriteUART, or if WriteUART_Blocking uses it.
 
-    status = HAL_I2C_IsDeviceReady(&hi2c1, deviceADDR_8bit_shifted, trials, timeout);
+    // ACC_I2C_ADDR is defined in i2c_handler.h as (LIS3DH_7BIT_ADDR << 1)
+    status = HAL_I2C_IsDeviceReady(&hi2c1, ACC_I2C_ADDR, trials, timeout);
 
     if (status == HAL_OK) {
-        // Sending a string literal is safe with HAL_UART_Transmit_IT
-        // because string literals have static storage duration.
-        WriteUART("I2C LIS3DH (0x18) is ready.\r\n");
+        WriteUART_Blocking("I2C LIS3DH (0x18) is ready.\r\n");
         return true;
     } else {
         switch (status) {
@@ -96,80 +128,150 @@ bool I2C_connectivity_check(void) {
                 sprintf(msg_buffer, "I2C LIS3DH (0x18) not found. Status: %d\r\n", status);
                 break;
         }
-        // Now WriteUART will use a buffer (msg_buffer) that remains valid
-        // even after I2C_connectivity_check returns, allowing the IT-based
-        // transmission to complete correctly.
-        WriteUART(msg_buffer);
+        WriteUART_Blocking(msg_buffer);
         return false;
     }
 }
 
 /**
- * Accelerometer I2C address and register definitions
+ * @brief  Enables the LIS3DH accelerometer by writing to its CTRL_REG1.
+ * @note   Uses interrupt-driven I2C write.
+ * ACC_CTRL_REG1_CONFIG_100HZ and LIS3DH_REG_CTRL_REG1 are defined in i2c_handler.h.
+ * @param  None
+ * @retval None
  */
-
- // TODO: Need to work with I2C Mem Read/Write with I2C configurations
+// In i2c_handler.c
 void I2C_ACC_Enable(void) {
-    static u8 ctrl1 = ACC_CTRL1_VALUE;
+    u8 ctrl1_config_value = ACC_CTRL_REG1_CONFIG_100HZ; // Should be 0x57
+    HAL_StatusTypeDef status;
 
-    HAL_I2C_Mem_Write_IT(&hi2c1,
-                         ACC_I2C_ADDR,
-                         ACC_CTRL1_REG,
-                         I2C_MEMADD_SIZE_8BIT,
-                         &ctrl1,
-                         1);
+    status = HAL_I2C_Mem_Write(&hi2c1,
+                               ACC_I2C_ADDR,
+                               LIS3DH_REG_CTRL_REG1, // Target register (0x20)
+                               I2C_MEMADD_SIZE_8BIT,
+                               &ctrl1_config_value,  // Data to write (0x57)
+                               1,                    // Size of data (1 byte)
+                               100);                 // Timeout in ms (e.g., 100ms)
+
+    if (status == HAL_OK) {
+        WriteUART_Blocking("LIS3DH CTRL_REG1 Write OK (Blocking).\r\n"); // Use blocking UART for this test
+        acc_enabled = true; // Set your global flag
+        
+    } else {
+        static char err_buf[64]; // static if WriteUART_Blocking might use IT internally
+        sprintf(err_buf, "LIS3DH CTRL_REG1 Write FAILED (Blocking). Status: %d\r\n", status);
+        WriteUART_Blocking(err_buf);
+        acc_enabled = false;
+    }
 }
 
+/**
+ * @brief  Initiates an interrupt-driven read of 6 bytes (X,Y,Z data) from LIS3DH.
+ * @note   Data is read into the global 'rawData' buffer. Completion is signaled
+ * via HAL_I2C_MemRxCpltCallback. LIS3DH_DATA_START_MULTI_READ is defined
+ * in i2c_handler.h.
+ * @param  None
+ * @retval None
+ */
 void I2C_Read_ACC(void) {
     HAL_I2C_Mem_Read_IT(&hi2c1,
                         ACC_I2C_ADDR,
-                        ACC_DATA_START,
+                        LIS3DH_DATA_START_MULTI_READ,
                         I2C_MEMADD_SIZE_8BIT,
-                        rawData,
-                        6);
+                        rawData,  // Global buffer
+                        6);       // Read 6 bytes
 }
 
+/**
+ * @brief  Reads a single byte from a specified register of the LIS3DH in blocking mode.
+ * @param  reg: The 8-bit LIS3DH register address to read from.
+ * @retval u8: The value read from the register.
+ */
 u8 readACC(u8 reg) {
     u8 value = 0;
-    HAL_I2C_Mem_Read(&hi2c1, ACC_I2C_ADDR, reg, I2C_MEMADD_SIZE_8BIT, &value, 1, HAL_MAX_DELAY);
+    HAL_StatusTypeDef status = HAL_I2C_Mem_Read(&hi2c1,
+                                               ACC_I2C_ADDR,
+                                               reg,
+                                               I2C_MEMADD_SIZE_8BIT,
+                                               &value,
+                                               1,
+                                               HAL_MAX_DELAY);
+    if (status != HAL_OK) {
+        static char err_buf[64]; // Static for safety if WriteUART_Blocking is IT-based
+        sprintf(err_buf, "Error reading I2C reg 0x%02X. Status: %d\r\n", reg, status);
+        WriteUART_Blocking(err_buf);
+    }
     return value;
 }
 
-// Write complete callback
-void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *hi2c) {
-    if (hi2c->Instance == I2C1) {
-        // acc_enabled = true;
+/**
+ * @brief  Test function to read LIS3DH accelerometer data in blocking mode and print via UART.
+ * @note   LIS3DH_DATA_START_MULTI_READ is defined in i2c_handler.h.
+ * @param  None
+ * @retval None
+ */
+void read_I2C_Blocking (void) { // Definition matches prototype now
+    u8 data[6];
+    HAL_StatusTypeDef status;
+    static char temp_buffer[128]; // Static for safety with IT-based WriteUART, ensure size
+
+    status = HAL_I2C_Mem_Read(&hi2c1,
+                              ACC_I2C_ADDR,
+                              LIS3DH_DATA_START_MULTI_READ,
+                              I2C_MEMADD_SIZE_8BIT,
+                              data,
+                              sizeof(data),
+                              1000);
+    
+    if (status == HAL_OK) {
+        sprintf(temp_buffer, "I2C Block Read OK: XL=%02X XH=%02X YL=%02X YH=%02X ZL=%02X ZH=%02X\r\n",
+                data[0], data[1], data[2], data[3], data[4], data[5]);
+        WriteUART_Blocking(temp_buffer);
+    } else {
+        sprintf(temp_buffer, "I2C Block Read Failed. Status: %d\r\n", status);
+        WriteUART_Blocking(temp_buffer);
     }
 }
 
-//* Will be called when the I2C memory read operation is complete
-//* This callback is triggered when the I2C memory read operation is complete
+/* HAL I2C Callbacks ---------------------------------------------------------*/
+
+/**
+  * @brief  Memory Tx Transfer completed callback.
+  * @param  hi2c: I2C handle pointer.
+  * @retval None
+  */
+void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *hi2c) {
+    if (hi2c->Instance == I2C1) {
+        acc_enabled = true;
+        WriteUART_Blocking("LIS3DH CTRL_REG1 Write Complete (IT).\r\n"); // Use blocking for callback debug
+    }
+}
+
+/**
+  * @brief  Memory Rx Transfer completed callback.
+  * @param  hi2c: I2C handle pointer.
+  * @retval None
+  */
 void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c)
 {
     if (hi2c->Instance == I2C1) {
-        // Process `sensor_data` now
+        static char temp_buffer[128];
+        sprintf(temp_buffer, "I2C IT Read OK: XL=%02X XH=%02X YL=%02X YH=%02X ZL=%02X ZH=%02X\r\n",
+                rawData[0], rawData[1], rawData[2], rawData[3], rawData[4], rawData[5]);
+        WriteUART_Blocking(temp_buffer); // Use blocking for callback debug
     }
 }
 
+/**
+  * @brief  I2C error callback.
+  * @param  hi2c: I2C handle pointer.
+  * @retval None
+  */
 void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c)
 {
     if (hi2c->Instance == I2C1) {
-        WriteUART("I2C error occurred.\n");
-        // Optional: Try reinitializing or setting error flags
+        static char err_buf[64];
+        sprintf(err_buf, "I2C Error Occurred. Code: 0x%08lX\r\n", hi2c->ErrorCode);
+        WriteUART_Blocking(err_buf); // Use blocking for callback debug
     }
-}
-
-void BVAT_I2C_Init (void) {
-    MX_I2C1_Init(); // Initialize I2C1
-    WriteUART("I2C1 Initialized.\r\n");
-
-    // Check connectivity
-    if (I2C_connectivity_check()) {
-        WriteUART("I2C device is ready.\r\n");
-    } else {
-        WriteUART("I2C device not found.\r\n");
-    }
-
-    // Enable accelerometer
-    I2C_ACC_Enable();
 }

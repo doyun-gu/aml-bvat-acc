@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -27,25 +27,52 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
   24              		.thumb
   25              		.thumb_func
   27              	AML_Init:
-  28              	.LFB134:
-   1:Core/Src/library/aml_hal.c **** #include "aml_hal.h"
-   2:Core/Src/library/aml_hal.c **** 
-   3:Core/Src/library/aml_hal.c **** /**
-   4:Core/Src/library/aml_hal.c ****  * HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET); // Turn on LED
-   5:Core/Src/library/aml_hal.c ****  * HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);              // Toggle LED
-   6:Core/Src/library/aml_hal.c ****  */
-   7:Core/Src/library/aml_hal.c **** 
-   8:Core/Src/library/aml_hal.c **** 
-   9:Core/Src/library/aml_hal.c **** /**
-  10:Core/Src/library/aml_hal.c ****  * @file aml_hal.c
-  11:Core/Src/library/aml_hal.c ****  * This function initialises all necessary configurations for the Hardware Abstraction Layer (HAL)
-  12:Core/Src/library/aml_hal.c ****  * on the STM32 board. It sets up the HAL library and prepares the microcontroller for further
-  13:Core/Src/library/aml_hal.c ****  * hardware operations. Typically, this involves calling HAL_Init() and configuring system clocks,
-  14:Core/Src/library/aml_hal.c ****  * peripherals, and interrupts as required.
-  15:Core/Src/library/aml_hal.c ****  */
-  16:Core/Src/library/aml_hal.c ****  
-  17:Core/Src/library/aml_hal.c **** void AML_Init(void) {
-  29              		.loc 1 17 21 view -0
+  28              	.LFB137:
+   1:Core/Src/library/aml_hal.c **** /**
+   2:Core/Src/library/aml_hal.c ****   ******************************************************************************
+   3:Core/Src/library/aml_hal.c ****   * @file    aml_hal.c
+   4:Core/Src/library/aml_hal.c ****   * @brief   This file provides implementation for the AML (Aston Martin Lagonda)
+   5:Core/Src/library/aml_hal.c ****   * Hardware Abstraction Layer utility functions, including main
+   6:Core/Src/library/aml_hal.c ****   * initialization and error handling.
+   7:Core/Src/library/aml_hal.c ****   ******************************************************************************
+   8:Core/Src/library/aml_hal.c ****   */
+   9:Core/Src/library/aml_hal.c **** 
+  10:Core/Src/library/aml_hal.c **** /* Includes ------------------------------------------------------------------*/
+  11:Core/Src/library/aml_hal.c **** #include "aml_hal.h"      // Primary header for this module
+  12:Core/Src/library/aml_hal.c **** 
+  13:Core/Src/library/aml_hal.c **** // Include headers for all MX_..._Init functions and SystemClock_Config
+  14:Core/Src/library/aml_hal.c **** #include "main.h"         // Often contains SystemClock_Config() prototype and may include others
+  15:Core/Src/library/aml_hal.c **** #include "gpio_handler.h" // For MX_GPIO_Init() and g_builtinLed
+  16:Core/Src/library/aml_hal.c **** #include "uart_handler.h" // For MX_USART2_UART_Init()
+  17:Core/Src/library/aml_hal.c **** #include "i2c_handler.h"  // For MX_I2C1_Init()
+  18:Core/Src/library/aml_hal.c **** #include "timer.h"        // For MX_TIM2_Init()
+  19:Core/Src/library/aml_hal.c **** 
+  20:Core/Src/library/aml_hal.c **** /* Private typedef -----------------------------------------------------------*/
+  21:Core/Src/library/aml_hal.c **** /* Private define ------------------------------------------------------------*/
+  22:Core/Src/library/aml_hal.c **** /* Private macro -------------------------------------------------------------*/
+  23:Core/Src/library/aml_hal.c **** /* Private variables ---------------------------------------------------------*/
+  24:Core/Src/library/aml_hal.c **** // No private variables defined in this file. Global variables like g_builtinLed
+  25:Core/Src/library/aml_hal.c **** // are defined in their respective handler files (e.g., gpio_handler.c).
+  26:Core/Src/library/aml_hal.c **** 
+  27:Core/Src/library/aml_hal.c **** /* Private function prototypes -----------------------------------------------*/
+  28:Core/Src/library/aml_hal.c **** // If SystemClock_Config is defined in main.c and not prototyped in main.h,
+  29:Core/Src/library/aml_hal.c **** // you might need a prototype here, but it's better if main.h provides it.
+  30:Core/Src/library/aml_hal.c **** // static void SystemClock_Config(void); // Example if it were static to this scope
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 2
+
+
+  31:Core/Src/library/aml_hal.c **** 
+  32:Core/Src/library/aml_hal.c **** /* Exported functions --------------------------------------------------------*/
+  33:Core/Src/library/aml_hal.c **** 
+  34:Core/Src/library/aml_hal.c **** /**
+  35:Core/Src/library/aml_hal.c ****  * @brief  Initializes core HAL, system clocks, and base peripherals.
+  36:Core/Src/library/aml_hal.c ****  * @note   This function should be called once at the beginning of main().
+  37:Core/Src/library/aml_hal.c ****  * It calls HAL_Init(), SystemClock_Config(), and various MX_..._Init() functions.
+  38:Core/Src/library/aml_hal.c ****  * @param  None
+  39:Core/Src/library/aml_hal.c ****  * @retval None
+  40:Core/Src/library/aml_hal.c ****  */
+  41:Core/Src/library/aml_hal.c **** void AML_Init(void) {
+  29              		.loc 1 41 21 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -54,38 +81,52 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
   35              		.cfi_def_cfa_offset 8
   36              		.cfi_offset 3, -8
   37              		.cfi_offset 14, -4
-  18:Core/Src/library/aml_hal.c ****     HAL_Init();
-  38              		.loc 1 18 5 view .LVU1
+  42:Core/Src/library/aml_hal.c ****     // 1. Initialize the HAL Library (mandatory first step)
+  43:Core/Src/library/aml_hal.c ****     // This function:
+  44:Core/Src/library/aml_hal.c ****     // - Configures the Flash prefetch, instruction and data caches.
+  45:Core/Src/library/aml_hal.c ****     // - Sets the NVIC Group Priority.
+  46:Core/Src/library/aml_hal.c ****     // - Initializes the SysTick timer to generate interrupts at 1ms intervals (used for HAL_Delay)
+  47:Core/Src/library/aml_hal.c ****     HAL_Init();
+  38              		.loc 1 47 5 view .LVU1
   39 0002 FFF7FEFF 		bl	HAL_Init
   40              	.LVL0:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 2
-
-
-  19:Core/Src/library/aml_hal.c ****     SystemClock_Config();
-  41              		.loc 1 19 5 view .LVU2
+  48:Core/Src/library/aml_hal.c **** 
+  49:Core/Src/library/aml_hal.c ****     // 2. Configure the system clock
+  50:Core/Src/library/aml_hal.c ****     // This function (typically defined in main.c by CubeMX) sets up the main
+  51:Core/Src/library/aml_hal.c ****     // system clock (SYSCLK), HCLK, PCLK1, PCLK2.
+  52:Core/Src/library/aml_hal.c ****     SystemClock_Config(); // Ensure this is prototyped, usually in main.h
+  41              		.loc 1 52 5 view .LVU2
   42 0006 FFF7FEFF 		bl	SystemClock_Config
   43              	.LVL1:
-  20:Core/Src/library/aml_hal.c ****     MX_GPIO_Init();
-  44              		.loc 1 20 5 view .LVU3
+  53:Core/Src/library/aml_hal.c **** 
+  54:Core/Src/library/aml_hal.c ****     // 3. Initialize common/base peripherals
+  55:Core/Src/library/aml_hal.c ****     // These MX_... functions should handle their respective HAL_..._Init()
+  56:Core/Src/library/aml_hal.c ****     // and HAL_..._MspInit() calls.
+  57:Core/Src/library/aml_hal.c ****     MX_GPIO_Init();       // Initialize general purpose I/O pins
+  44              		.loc 1 57 5 view .LVU3
   45 000a FFF7FEFF 		bl	MX_GPIO_Init
   46              	.LVL2:
-  21:Core/Src/library/aml_hal.c ****     MX_USART2_UART_Init();
-  47              		.loc 1 21 5 view .LVU4
+  58:Core/Src/library/aml_hal.c ****     MX_USART2_UART_Init();// Initialize USART2 for serial communication
+  47              		.loc 1 58 5 view .LVU4
   48 000e FFF7FEFF 		bl	MX_USART2_UART_Init
   49              	.LVL3:
-  22:Core/Src/library/aml_hal.c ****     MX_I2C1_Init();
-  50              		.loc 1 22 5 view .LVU5
+  59:Core/Src/library/aml_hal.c ****     MX_I2C1_Init();       // Initialize I2C1 for sensor communication
+  50              		.loc 1 59 5 view .LVU5
   51 0012 FFF7FEFF 		bl	MX_I2C1_Init
   52              	.LVL4:
-  23:Core/Src/library/aml_hal.c ****     MX_TIM2_Init();
-  53              		.loc 1 23 5 view .LVU6
+  60:Core/Src/library/aml_hal.c ****     MX_TIM2_Init();       // Initialize TIM2 (or other timers as needed)
+  53              		.loc 1 60 5 view .LVU6
   54 0016 FFF7FEFF 		bl	MX_TIM2_Init
   55              	.LVL5:
-  24:Core/Src/library/aml_hal.c **** }
-  56              		.loc 1 24 1 is_stmt 0 view .LVU7
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 3
+
+
+  61:Core/Src/library/aml_hal.c ****     // Add other MX_..._Init() calls as your project requires
+  62:Core/Src/library/aml_hal.c **** }
+  56              		.loc 1 62 1 is_stmt 0 view .LVU7
   57 001a 08BD     		pop	{r3, pc}
   58              		.cfi_endproc
-  59              	.LFE134:
+  59              	.LFE137:
   61              		.section	.text.Error_Handler,"ax",%progbits
   62              		.align	1
   63              		.global	Error_Handler
@@ -93,34 +134,61 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
   65              		.thumb
   66              		.thumb_func
   68              	Error_Handler:
-  69              	.LFB135:
-  25:Core/Src/library/aml_hal.c **** 
-  26:Core/Src/library/aml_hal.c **** /**
-  27:Core/Src/library/aml_hal.c ****   * @brief  This function is executed in case of error occurrence.
-  28:Core/Src/library/aml_hal.c ****   * @retval None
-  29:Core/Src/library/aml_hal.c ****   */
-  30:Core/Src/library/aml_hal.c **** void Error_Handler(void)
-  31:Core/Src/library/aml_hal.c **** {
-  70              		.loc 1 31 1 is_stmt 1 view -0
+  69              	.LFB138:
+  63:Core/Src/library/aml_hal.c **** 
+  64:Core/Src/library/aml_hal.c **** /**
+  65:Core/Src/library/aml_hal.c ****   * @brief  This function is executed in case of error occurrence.
+  66:Core/Src/library/aml_hal.c ****   * @note   Halts the system in an infinite loop after disabling interrupts.
+  67:Core/Src/library/aml_hal.c ****   * Attempts to turn on g_builtinLed if initialized.
+  68:Core/Src/library/aml_hal.c ****   * @param  None
+  69:Core/Src/library/aml_hal.c ****   * @retval None
+  70:Core/Src/library/aml_hal.c ****   */
+  71:Core/Src/library/aml_hal.c **** void Error_Handler(void)
+  72:Core/Src/library/aml_hal.c **** {
+  70              		.loc 1 72 1 is_stmt 1 view -0
   71              		.cfi_startproc
   72              		@ Volatile: function does not return.
   73              		@ args = 0, pretend = 0, frame = 0
   74              		@ frame_needed = 0, uses_anonymous_args = 0
-  75              		@ link register save eliminated.
-  32:Core/Src/library/aml_hal.c ****   /* USER CODE BEGIN Error_Handler_Debug */
-  33:Core/Src/library/aml_hal.c ****   /* User can add his own implementation to report the HAL error return state */
-  34:Core/Src/library/aml_hal.c ****   __disable_irq();
-  76              		.loc 1 34 3 view .LVU9
-  77              	.LBB4:
-  78              	.LBI4:
-  79              		.file 2 "Drivers/CMSIS/Include/cmsis_gcc.h"
+  75 0000 08B5     		push	{r3, lr}
+  76              	.LCFI1:
+  77              		.cfi_def_cfa_offset 8
+  78              		.cfi_offset 3, -8
+  79              		.cfi_offset 14, -4
+  73:Core/Src/library/aml_hal.c ****   /* USER CODE BEGIN Error_Handler_Debug */
+  74:Core/Src/library/aml_hal.c ****   // Attempt to turn on an indicator LED.
+  75:Core/Src/library/aml_hal.c ****   // g_builtinLed must be properly initialized by BuiltinLED_Init() before
+  76:Core/Src/library/aml_hal.c ****   // Error_Handler is called for this to work.
+  77:Core/Src/library/aml_hal.c ****   // The extern declaration for g_builtinLed comes from including "gpio_handler.h".
+  78:Core/Src/library/aml_hal.c ****   if (g_builtinLed.pin.port != NULL) { // Basic check if g_builtinLed is somewhat initialized
+  80              		.loc 1 78 3 view .LVU9
+  81              		.loc 1 78 23 is_stmt 0 view .LVU10
+  82 0002 044B     		ldr	r3, .L7
+  83 0004 1868     		ldr	r0, [r3]
+  84              		.loc 1 78 6 view .LVU11
+  85 0006 18B1     		cbz	r0, .L4
+  79:Core/Src/library/aml_hal.c ****       HAL_GPIO_WritePin(g_builtinLed.pin.port, g_builtinLed.pin.pin, GPIO_PIN_SET); // Turn LED ON 
+  86              		.loc 1 79 7 is_stmt 1 view .LVU12
+  87 0008 0122     		movs	r2, #1
+  88 000a 9988     		ldrh	r1, [r3, #4]
+  89 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+  90              	.LVL6:
+  91              	.L4:
+  80:Core/Src/library/aml_hal.c ****   }
+  81:Core/Src/library/aml_hal.c **** 
+  82:Core/Src/library/aml_hal.c ****   // Disable all interrupts to prevent further issues
+  83:Core/Src/library/aml_hal.c ****   __disable_irq();
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 4
+
+
+  92              		.loc 1 83 3 view .LVU13
+  93              	.LBB4:
+  94              	.LBI4:
+  95              		.file 2 "Drivers/CMSIS/Include/cmsis_gcc.h"
    1:Drivers/CMSIS/Include/cmsis_gcc.h **** /**************************************************************************//**
    2:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @file     cmsis_gcc.h
    3:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @brief    CMSIS compiler GCC header file
    4:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @version  V5.4.1
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 3
-
-
    5:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @date     27. May 2021
    6:Drivers/CMSIS/Include/cmsis_gcc.h ****  ******************************************************************************/
    7:Drivers/CMSIS/Include/cmsis_gcc.h **** /*
@@ -170,6 +238,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
   51:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
   52:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __NO_RETURN
   53:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __NO_RETURN                            __attribute__((__noreturn__))
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 5
+
+
   54:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
   55:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __USED
   56:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __USED                                 __attribute__((used))
@@ -178,9 +249,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
   59:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __WEAK                                 __attribute__((weak))
   60:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
   61:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 4
-
-
   62:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __PACKED                               __attribute__((packed, aligned(1)))
   63:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
   64:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED_STRUCT
@@ -230,6 +298,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  108:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_READ(addr)          (((const struct T_UINT32_READ *)(const void *)(add
  109:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
  110:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __ALIGNED
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 6
+
+
  111:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __ALIGNED(x)                           __attribute__((aligned(x)))
  112:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
  113:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __RESTRICT
@@ -238,9 +309,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  116:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __COMPILER_BARRIER
  117:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __COMPILER_BARRIER()                   __ASM volatile("":::"memory")
  118:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 5
-
-
  119:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  120:Drivers/CMSIS/Include/cmsis_gcc.h **** /* #########################  Startup and Lowlevel Init  ######################## */
  121:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -290,6 +358,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  165:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  166:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __PROGRAM_START           __cmsis_start
  167:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 7
+
+
  168:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  169:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __INITIAL_SP
  170:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __INITIAL_SP              __StackTop
@@ -298,9 +369,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  173:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __STACK_LIMIT
  174:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __STACK_LIMIT             __StackLimit
  175:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 6
-
-
  176:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  177:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __VECTOR_TABLE
  178:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __VECTOR_TABLE            __Vectors
@@ -350,6 +418,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  222:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
  223:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  224:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 8
+
+
  225:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   No Operation
  226:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details No Operation does nothing. This instruction can be used for code alignment purposes.
  227:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
@@ -358,9 +429,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  230:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
  231:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Wait For Interrupt
  232:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Wait For Interrupt is a hint instruction that suspends execution until one of a number o
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 7
-
-
  233:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  234:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __WFI()                             __ASM volatile ("wfi":::"memory")
  235:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -410,6 +478,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  279:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  280:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __DMB(void)
  281:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 9
+
+
  282:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("dmb 0xF":::"memory");
  283:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  284:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -418,9 +489,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  287:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Reverse byte order (32 bit)
  288:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Reverses the byte order in unsigned integer value. For example, 0x12345678 becomes 0x785
  289:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    value  Value to reverse
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 8
-
-
  290:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return               Reversed value
  291:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  292:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __REV(uint32_t value)
@@ -470,6 +538,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  336:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  337:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  338:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 10
+
+
  339:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
  340:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Rotate Right in unsigned value (32 bit)
  341:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Rotate Right (immediate) provides the value of the contents of a register rotated by a v
@@ -478,9 +549,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  344:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return               Rotated value
  345:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  346:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __ROR(uint32_t op1, uint32_t op2)
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 9
-
-
  347:Drivers/CMSIS/Include/cmsis_gcc.h **** {
  348:Drivers/CMSIS/Include/cmsis_gcc.h ****   op2 %= 32U;
  349:Drivers/CMSIS/Include/cmsis_gcc.h ****   if (op2 == 0U)
@@ -530,6 +598,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  393:Drivers/CMSIS/Include/cmsis_gcc.h ****   return result;
  394:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  395:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 11
+
+
  396:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  397:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
  398:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Count leading zeros
@@ -538,9 +609,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  401:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return             number of leading zeros in value
  402:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  403:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint8_t __CLZ(uint32_t value)
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 10
-
-
  404:Drivers/CMSIS/Include/cmsis_gcc.h **** {
  405:Drivers/CMSIS/Include/cmsis_gcc.h ****   /* Even though __builtin_clz produces a CLZ instruction on ARM, formally
  406:Drivers/CMSIS/Include/cmsis_gcc.h ****      __builtin_clz(0) is undefined behaviour, so handle this case specially.
@@ -590,6 +658,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  450:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a exclusive LDR instruction for 16 bit values.
  451:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to data
  452:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return        value of type uint16_t at (*ptr)
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 12
+
+
  453:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  454:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint16_t __LDREXH(volatile uint16_t *addr)
  455:Drivers/CMSIS/Include/cmsis_gcc.h **** {
@@ -598,9 +669,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  458:Drivers/CMSIS/Include/cmsis_gcc.h **** #if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)
  459:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldrexh %0, %1" : "=r" (result) : "Q" (*addr) );
  460:Drivers/CMSIS/Include/cmsis_gcc.h **** #else
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 11
-
-
  461:Drivers/CMSIS/Include/cmsis_gcc.h ****     /* Prior to GCC 4.8, "Q" will be expanded to [rx, #0] which is not
  462:Drivers/CMSIS/Include/cmsis_gcc.h ****        accepted by assembler. So has to use following less efficient pattern.
  463:Drivers/CMSIS/Include/cmsis_gcc.h ****     */
@@ -650,6 +718,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  507:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          0  Function succeeded
  508:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          1  Function failed
  509:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 13
+
+
  510:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __STREXH(uint16_t value, volatile uint16_t *addr)
  511:Drivers/CMSIS/Include/cmsis_gcc.h **** {
  512:Drivers/CMSIS/Include/cmsis_gcc.h ****    uint32_t result;
@@ -658,9 +729,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  515:Drivers/CMSIS/Include/cmsis_gcc.h ****    return(result);
  516:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  517:Drivers/CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 12
-
-
  518:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  519:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
  520:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   STR Exclusive (32 bit)
@@ -710,6 +778,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  564:Drivers/CMSIS/Include/cmsis_gcc.h ****   int32_t __RES, __ARG1 = (ARG1); \
  565:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("ssat %0, %1, %2" : "=r" (__RES) :  "I" (ARG2), "r" (__ARG1) : "cc" ); \
  566:Drivers/CMSIS/Include/cmsis_gcc.h ****   __RES; \
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 14
+
+
  567:Drivers/CMSIS/Include/cmsis_gcc.h ****  })
  568:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  569:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -718,9 +789,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  572:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Saturates an unsigned value.
  573:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  ARG1  Value to be saturated
  574:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  ARG2  Bit position to saturate to (0..31)
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 13
-
-
  575:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return             Saturated value
  576:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  577:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __USAT(ARG1, ARG2) \
@@ -770,6 +838,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  621:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  622:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  623:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 15
+
+
  624:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
  625:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   LDRT Unprivileged (16 bit)
  626:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a Unprivileged LDRT instruction for 16 bit values.
@@ -778,9 +849,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  629:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  630:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint16_t __LDRHT(volatile uint16_t *ptr)
  631:Drivers/CMSIS/Include/cmsis_gcc.h **** {
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 14
-
-
  632:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
  633:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  634:Drivers/CMSIS/Include/cmsis_gcc.h **** #if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)
@@ -830,6 +898,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  678:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  679:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __STRHT(uint16_t value, volatile uint16_t *ptr)
  680:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 16
+
+
  681:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("strht %1, %0" : "=Q" (*ptr) : "r" ((uint32_t)value) );
  682:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  683:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -838,9 +909,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  686:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   STRT Unprivileged (32 bit)
  687:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a Unprivileged STRT instruction for 32 bit values.
  688:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 15
-
-
  689:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
  690:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  691:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __STRT(uint32_t value, volatile uint32_t *ptr)
@@ -890,6 +958,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  735:Drivers/CMSIS/Include/cmsis_gcc.h ****   {
  736:Drivers/CMSIS/Include/cmsis_gcc.h ****     const uint32_t max = ((1U << sat) - 1U);
  737:Drivers/CMSIS/Include/cmsis_gcc.h ****     if (val > (int32_t)max)
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 17
+
+
  738:Drivers/CMSIS/Include/cmsis_gcc.h ****     {
  739:Drivers/CMSIS/Include/cmsis_gcc.h ****       return max;
  740:Drivers/CMSIS/Include/cmsis_gcc.h ****     }
@@ -898,9 +969,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  743:Drivers/CMSIS/Include/cmsis_gcc.h ****       return 0U;
  744:Drivers/CMSIS/Include/cmsis_gcc.h ****     }
  745:Drivers/CMSIS/Include/cmsis_gcc.h ****   }
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 16
-
-
  746:Drivers/CMSIS/Include/cmsis_gcc.h ****   return (uint32_t)val;
  747:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  748:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -950,6 +1018,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  792:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __LDA(volatile uint32_t *ptr)
  793:Drivers/CMSIS/Include/cmsis_gcc.h **** {
  794:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 18
+
+
  795:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  796:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("lda %0, %1" : "=r" (result) : "Q" (*ptr) : "memory" );
  797:Drivers/CMSIS/Include/cmsis_gcc.h ****    return(result);
@@ -958,9 +1029,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  800:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  801:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
  802:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Store-Release (8 bit)
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 17
-
-
  803:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a STLB instruction for 8 bit values.
  804:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
  805:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
@@ -1010,6 +1078,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  849:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  850:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  851:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 19
+
+
  852:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
  853:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Load-Acquire Exclusive (16 bit)
  854:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a LDAH exclusive instruction for 16 bit values.
@@ -1018,9 +1089,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  857:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  858:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint16_t __LDAEXH(volatile uint16_t *ptr)
  859:Drivers/CMSIS/Include/cmsis_gcc.h **** {
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 18
-
-
  860:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
  861:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  862:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldaexh %0, %1" : "=r" (result) : "Q" (*ptr) : "memory" );
@@ -1070,6 +1138,9 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  906:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  907:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __STLEXH(uint16_t value, volatile uint16_t *ptr)
  908:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 20
+
+
  909:Drivers/CMSIS/Include/cmsis_gcc.h ****    uint32_t result;
  910:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  911:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("stlexh %0, %2, %1" : "=&r" (result), "=Q" (*ptr) : "r" ((uint32_t)value) : "mem
@@ -1078,9 +1149,6 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  914:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  915:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  916:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 19
-
-
  917:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Store-Release Exclusive (32 bit)
  918:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a STL exclusive instruction for 32 bit values.
  919:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
@@ -1125,46 +1193,64 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 1
  958:Drivers/CMSIS/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
  959:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  960:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __disable_irq(void)
-  80              		.loc 2 960 27 view .LVU10
-  81              	.LBB5:
+  96              		.loc 2 960 27 view .LVU14
+  97              	.LBB5:
  961:Drivers/CMSIS/Include/cmsis_gcc.h **** {
  962:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("cpsid i" : : : "memory");
-  82              		.loc 2 962 3 view .LVU11
-  83              		.syntax unified
-  84              	@ 962 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
-  85 0000 72B6     		cpsid i
-  86              	@ 0 "" 2
-  87              		.thumb
-  88              		.syntax unified
-  89              	.L4:
-  90              	.LBE5:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 20
+  98              		.loc 2 962 3 view .LVU15
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 21
 
 
-  91              	.LBE4:
-  35:Core/Src/library/aml_hal.c ****   while (1)
-  92              		.loc 1 35 3 view .LVU12
-  36:Core/Src/library/aml_hal.c ****   {
-  37:Core/Src/library/aml_hal.c ****   }
-  93              		.loc 1 37 3 view .LVU13
-  35:Core/Src/library/aml_hal.c ****   while (1)
-  94              		.loc 1 35 9 view .LVU14
-  95 0002 FEE7     		b	.L4
-  96              		.cfi_endproc
-  97              	.LFE135:
-  99              		.text
- 100              	.Letext0:
- 101              		.file 3 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
- 102              		.file 4 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s 			page 21
+  99              		.syntax unified
+ 100              	@ 962 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 101 0010 72B6     		cpsid i
+ 102              	@ 0 "" 2
+ 103              		.thumb
+ 104              		.syntax unified
+ 105              	.L5:
+ 106              	.LBE5:
+ 107              	.LBE4:
+  84:Core/Src/library/aml_hal.c **** 
+  85:Core/Src/library/aml_hal.c ****   // Infinite loop to halt the system
+  86:Core/Src/library/aml_hal.c ****   while (1)
+ 108              		.loc 1 86 3 view .LVU16
+  87:Core/Src/library/aml_hal.c ****   {
+  88:Core/Src/library/aml_hal.c ****     // Processor is halted here.
+  89:Core/Src/library/aml_hal.c ****     // Attach a debugger to find the call stack leading to Error_Handler.
+  90:Core/Src/library/aml_hal.c ****   }
+ 109              		.loc 1 90 3 view .LVU17
+  86:Core/Src/library/aml_hal.c ****   {
+ 110              		.loc 1 86 9 view .LVU18
+ 111 0012 FEE7     		b	.L5
+ 112              	.L8:
+ 113              		.align	2
+ 114              	.L7:
+ 115 0014 00000000 		.word	g_builtinLed
+ 116              		.cfi_endproc
+ 117              	.LFE138:
+ 119              		.text
+ 120              	.Letext0:
+ 121              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+ 122              		.file 4 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 123              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
+ 124              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 125              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 126              		.file 8 "Core/Src/library/aml_hal.h"
+ 127              		.file 9 "Core/Src/gpio_handler/gpio_handler.h"
+ 128              		.file 10 "Core/Src/timer/timer.h"
+ 129              		.file 11 "Core/Src/i2c_handler/i2c_handler.h"
+ 130              		.file 12 "Core/Src/uart_handler/uart_handler.h"
+ 131              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s 			page 22
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 aml_hal.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s:21     .text.AML_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s:27     .text.AML_Init:00000000 AML_Init
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s:62     .text.Error_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccUPwDsM.s:68     .text.Error_Handler:00000000 Error_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s:21     .text.AML_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s:27     .text.AML_Init:00000000 AML_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s:62     .text.Error_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s:68     .text.Error_Handler:00000000 Error_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cco3rfwi.s:115    .text.Error_Handler:00000014 $d
 
 UNDEFINED SYMBOLS
 HAL_Init
@@ -1173,3 +1259,5 @@ MX_GPIO_Init
 MX_USART2_UART_Init
 MX_I2C1_Init
 MX_TIM2_Init
+HAL_GPIO_WritePin
+g_builtinLed

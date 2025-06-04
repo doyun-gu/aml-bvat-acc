@@ -26,13 +26,10 @@
   */
 void HAL_MspInit(void)
 {
-
-
   __HAL_RCC_SYSCFG_CLK_ENABLE();
   __HAL_RCC_PWR_CLK_ENABLE();
 
   HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_0);
-
 }
 
 /**
@@ -85,14 +82,42 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
     PA3     ------> USART2_RX
     */
     HAL_GPIO_DeInit(GPIOA, USART_TX_Pin|USART_RX_Pin);
-
-  /* USER CODE BEGIN USART2_MspDeInit 1 */
-
-  /* USER CODE END USART2_MspDeInit 1 */
   }
 
 }
 
-/* USER CODE BEGIN 1 */
+void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  if(hi2c->Instance==I2C1) // Check if it's for I2C1
+  {
+    // 1. Enable clock for GPIOB (since PB8 and PB9 are on Port B)
+    __HAL_RCC_GPIOB_CLK_ENABLE();
 
-/* USER CODE END 1 */
+    /**I2C1 GPIO Configuration
+    PB8     ------> I2C1_SCL
+    PB9     ------> I2C1_SDA
+    */
+    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9; // Specify PB8 and PB9
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;      // Alternate Function Open Drain (Critical for I2C)
+    GPIO_InitStruct.Pull = GPIO_PULLUP;          // Enable internal pull-up (External pull-ups are often better/needed)
+                                                 // Use GPIO_NOPULL if you have strong external pull-ups.
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH; // Or GPIO_SPEED_FREQ_HIGH
+    GPIO_InitStruct.Alternate = GPIO_AF4_I2C1;   // Alternate Function mapping for I2C1 on PB8/PB9 for STM32F4xx
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);      // Initialize GPIOB pins 8 and 9
+
+    // 2. Enable I2C1 peripheral clock
+    __HAL_RCC_I2C1_CLK_ENABLE();
+
+    // 3. NVIC configuration for I2C1 interrupts (if you use IT functions, good to have)
+    //    (Your MX_I2C1_Init function already includes this, which is also fine.
+    //     It's common to see it either here or in the peripheral's main init function.
+    //     If it's in MX_I2C1_Init, you don't strictly need to repeat it here, but ensure it's done.)
+    /*
+    HAL_NVIC_SetPriority(I2C1_EV_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(I2C1_EV_IRQn);
+    HAL_NVIC_SetPriority(I2C1_ER_IRQn, 0, 0); // Or a different priority for errors
+    HAL_NVIC_EnableIRQ(I2C1_ER_IRQn);
+    */
+  }
+}

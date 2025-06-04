@@ -4,13 +4,13 @@
 #include "stm32f4xx_hal.h"
 
 typedef struct {
-    Pin pin;
+    Pin_t pin;
     u8 state; // State of the pin, either HIGH or LOW
 } DigitalOut;
 
 // Function prototypes for UART initialisation and handling
 void MX_GPIO_Init(void);
-DigitalOut AssignDigitalOut(Pin pin);
+DigitalOut AssignDigitalOut(Pin_t pin);
 void WriteDigitalOut(DigitalOut *digital_out, u8 state);
 void ToggleDigitalOut(DigitalOut *digital_out);
 void BuiltinLED_Init(void);

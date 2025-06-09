@@ -42,7 +42,11 @@ void indicate_setup_with_blinks(int num_blinks, u32 dealy_ms);
 void ToggleLED(DigitalOut *led, u32 interval, u32 *last_tick_timer);
 
 void AssignDigitalIn(DigitalIn *digital_in, Pin_t pin);
+void AssignDigitalIn_IT(Pin_t pin);
+void DigitalIn_Init(DigitalIn *digital_in, Pin_t pin);
 void ReadDigitalIn(DigitalIn *digital_in);
+void BuiltinPushButton_Init(void);
+void HAL_GPIO_EXTI_Callback(u16 GPIO_Pin);
 
 // Extern declarations for global variables
 

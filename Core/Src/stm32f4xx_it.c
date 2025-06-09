@@ -99,3 +99,16 @@ void USART2_IRQHandler(void)
 {
     HAL_UART_IRQHandler(&huart2);
 }
+
+void EXTI15_10_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
+
+  /* USER CODE END EXTI15_10_IRQn 0 */
+  // Check if the interrupt was triggered on Pin 13, then call the HAL handler.
+  // The HAL handler will clear the interrupt flag and call your HAL_GPIO_EXTI_Callback.
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_13);
+  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
+
+  /* USER CODE END EXTI15_10_IRQn 1 */
+}

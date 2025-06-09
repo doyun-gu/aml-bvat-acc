@@ -125,6 +125,85 @@ void ToggleLED(DigitalOut *led, u32 interval, u32 *last_tick_timer) {
     return digital_in; // Return the initialised DigitalIn structure
 }
 
+/**
+ * @brief  Configures a GPIO pin as an interrupt and enables its corresponding NVIC line.
+ * @note   This is a generic function to enable an interrupt on any pin at runtime.
+ * It's often simpler to configure static buttons directly in MX_GPIO_Init().
+ * @param  pin: The Pin_t struct defining the GPIO Port and Pin.
+ * @retval None
+ */
+void AssignDigitalIn_IT(Pin_t pin) {
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    IRQn_Type EXTI_IRQn; // Variable to hold the correct IRQ number
+
+    // Basic GPIO Configuration
+    GPIO_InitStruct.Pin = pin.pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING; // Or IT_FALLING, or IT_RISING_FALLING
+    GPIO_InitStruct.Pull = GPIO_NOPULL;         // Set to GPIO_PULLDOWN for a button connected to 3.3V
+    HAL_GPIO_Init(pin.port, &GPIO_InitStruct);
+
+    // Determine the correct EXTI IRQn based on the pin number
+    switch (pin.pin) {
+        case GPIO_PIN_0:
+            EXTI_IRQn = EXTI0_IRQn;
+            break;
+        case GPIO_PIN_1:
+            EXTI_IRQn = EXTI1_IRQn;
+            break;
+        case GPIO_PIN_2:
+            EXTI_IRQn = EXTI2_IRQn;
+            break;
+        case GPIO_PIN_3:
+            EXTI_IRQn = EXTI3_IRQn;
+            break;
+        case GPIO_PIN_4:
+            EXTI_IRQn = EXTI4_IRQn;
+            break;
+        case GPIO_PIN_5:
+        case GPIO_PIN_6:
+        case GPIO_PIN_7:
+        case GPIO_PIN_8:
+        case GPIO_PIN_9:
+            EXTI_IRQn = EXTI9_5_IRQn;
+            break;
+        case GPIO_PIN_10:
+        case GPIO_PIN_11:
+        case GPIO_PIN_12:
+        case GPIO_PIN_13:
+        case GPIO_PIN_14:
+        case GPIO_PIN_15:
+            EXTI_IRQn = EXTI15_10_IRQn;
+            break;
+        default:
+            // Invalid pin for EXTI, return without configuring NVIC
+            return;
+    }
+
+    // Now, use the determined IRQn to configure the NVIC
+    HAL_NVIC_SetPriority(EXTI_IRQn, 0, 0); // Set desired priority
+    HAL_NVIC_EnableIRQ(EXTI_IRQn);
+}
+
+/**
+ * @brief Initializes the fields of a DigitalIn software struct.
+ * @param digital_in: Pointer to the DigitalIn struct to be initialized.
+ * @param pin: The Pin_t struct containing the port and pin to associate with this DigitalIn.
+ * @retval None
+ */
+void DigitalIn_Init(DigitalIn* digital_in, Pin_t pin) {
+    // Safety check for null pointer
+    if (digital_in == NULL) {
+        return;
+    }
+
+    // Initialize all the software state variables
+    digital_in->pin = pin;
+    digital_in->state = GPIO_PIN_RESET;
+    digital_in->last_stable_state = GPIO_PIN_RESET;
+    digital_in->reading = GPIO_PIN_RESET;
+    digital_in->last_debounce_time = 0;
+}
+
 void ReadDigitalIn(DigitalIn *digital_in) {
     // 1. Get the current physical reading from the pin.
     u8 current_reading = HAL_GPIO_ReadPin(digital_in->pin.port, digital_in->pin.pin);
@@ -152,9 +231,20 @@ void ReadDigitalIn(DigitalIn *digital_in) {
     }
 }
 
+void BuiltinPushButton_Init(void) {
+    // Define the pin for this specific button
+    Pin_t button_pin = {GPIOC, GPIO_PIN_13};
+
+    // 1. Configure the hardware pin to be an interrupt source
+    AssignDigitalIn_IT(button_pin);
+
+    // 2. Initialize the global software struct for this button by calling our new helper function
+    DigitalIn_Init(&g_builtinPushButton, button_pin);
+}
+
 //TODO: make this logic works when toggled start logging while BUILTIN LED is ON
 //TODO: Otherwise it will wait for the push button while it toggles the LED
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+void HAL_GPIO_EXTI_Callback(u16 GPIO_Pin)
 {
     // This static variable remembers the time of the last *accepted* press.
     static u32 last_accepted_press_time = 0;
@@ -184,12 +274,4 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
         }
         // If not enough time has passed, we assume it's a bounce and do nothing.
     }
-}
-
-void BPushButton_Init (void) {
-    // This line calls AssignDigitalIn, which returns a 'DigitalIn' struct.
-    g_builtinPushButton = AssignDigitalIn((Pin_t){GPIOC, GPIO_PIN_13});
-
-    // This correctly sets the initial state of the global variable.
-    g_builtinPushButton.state = GPIO_PIN_RESET;
 }

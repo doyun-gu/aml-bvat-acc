@@ -5,12 +5,13 @@
   * @brief          : Main program body
   ******************************************************************************
   * @attention
-  *
+  * 
+  * This project is part of the Aston Martin Lagonda BVA (Benchmarking Vehicle Analysis) Project.
+  * 
+  * @defgroup ADAS Team Aston Martin Lagonda
+  * 
   * Copyright (c) 2025 Aston Martin Lagonda.
   * All rights reserved.
-  *
-  * This firmware 
-  *
   ******************************************************************************
   */
 /* Includes ------------------------------------------------------------------*/
@@ -29,7 +30,7 @@
 int main(void)
 {
   // HAL initialisation
-  BVAT_Init(); // This calls AML_Init -> MX_..._Inits (including I2C and UART)
+  AML_Init(); // This calls AML_Init -> MX_..._Inits (including I2C and UART)
   BuiltinLED_Init();
 
   HAL_Delay(100);

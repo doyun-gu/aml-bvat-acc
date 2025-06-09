@@ -1,5 +1,5 @@
 build/command_handler.o: Core/Src/command_handler/command_handler.c \
- Core/Src/command_handler/command_handler.h Core/Src/library/aml_hal.h \
+ Core/Src/command_handler/command_handler.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  Core/Inc/stm32f4xx_hal_conf.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -29,12 +29,10 @@ build/command_handler.o: Core/Src/command_handler/command_handler.c \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_usart.h \
- Core/Src/timer/timer.h Core/Src/i2c_handler/i2c_handler.h \
- Core/Src/uart_handler/uart_handler.h \
- Core/Src/gpio_handler/gpio_handler.h \
- Core/Src/file_handler/file_handler.h
+ Core/Src/library/aml_hal.h Core/Src/timer/timer.h \
+ Core/Src/i2c_handler/i2c_handler.h Core/Src/uart_handler/uart_handler.h \
+ Core/Src/gpio_handler/gpio_handler.h
 Core/Src/command_handler/command_handler.h:
-Core/Src/library/aml_hal.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 Core/Inc/stm32f4xx_hal_conf.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h:
@@ -66,8 +64,8 @@ Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_usart.h:
+Core/Src/library/aml_hal.h:
 Core/Src/timer/timer.h:
 Core/Src/i2c_handler/i2c_handler.h:
 Core/Src/uart_handler/uart_handler.h:
 Core/Src/gpio_handler/gpio_handler.h:
-Core/Src/file_handler/file_handler.h:

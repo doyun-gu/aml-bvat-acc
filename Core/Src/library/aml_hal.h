@@ -66,9 +66,9 @@ typedef struct {
 #define D6_PIN      GPIO_PIN_10
 #define D6          (Pin_t){D6_PORT, D6_PIN}
 
-#define D7_PORT     GPIOA // Corrected from GPIOB based on common Nucleo-F411RE (e.g. for SPI MOSI)
-#define D7_PIN      GPIO_PIN_8  // Often PA8, check your specific Nucleo variant if D7 is critical
-#define D7          (Pin_t){D7_PORT, D7_PIN} // If D7 is actually PB8, it conflicts with I2C SCL. Please verify.
+#define D7_PORT     GPIOA                     // Corrected from GPIOB based on common Nucleo-F411RE (e.g. for SPI MOSI)
+#define D7_PIN      GPIO_PIN_8                // Often PA8, check your specific Nucleo variant if D7 is critical
+#define D7          (Pin_t){D7_PORT, D7_PIN}  // If D7 is actually PB8, it conflicts with I2C SCL. Please verify.
 
 #define D8_PORT     GPIOA
 #define D8_PIN      GPIO_PIN_9

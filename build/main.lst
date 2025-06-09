@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccgyOupn.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccgyOupn.s 			page 1
   37      70706561 
   37      72732063 
   37      6F6E6669 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccgyOupn.s 			page 2
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s 			page 2
 
 
   38 00db 00       		.align	2
@@ -118,36 +118,37 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccgyOupn.s 			page 1
    2:Core/Src/main.c **** /**
    3:Core/Src/main.c ****   ******************************************************************************
    4:Core/Src/main.c ****   * @file           : main.c
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccgyOupn.s 			page 3
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s 			page 3
 
 
    5:Core/Src/main.c ****   * @brief          : Main program body
    6:Core/Src/main.c ****   ******************************************************************************
    7:Core/Src/main.c ****   * @attention
-   8:Core/Src/main.c ****   *
-   9:Core/Src/main.c ****   * Copyright (c) 2025 Aston Martin Lagonda.
-  10:Core/Src/main.c ****   * All rights reserved.
-  11:Core/Src/main.c ****   *
-  12:Core/Src/main.c ****   * This firmware 
-  13:Core/Src/main.c ****   *
-  14:Core/Src/main.c ****   ******************************************************************************
-  15:Core/Src/main.c ****   */
-  16:Core/Src/main.c **** /* Includes ------------------------------------------------------------------*/
-  17:Core/Src/main.c **** #include "main.h"
-  18:Core/Src/main.c **** #include "aml_hal.h"      // For u8, Error_Handler etc.
-  19:Core/Src/main.c **** #include "gpio_handler.h" // For BuiltinLED_Init, indicate_setup_with_blinks, g_builtinLed
-  20:Core/Src/main.c **** #include "uart_handler.h" // For WriteUART_Blocking
-  21:Core/Src/main.c **** #include "timer.h"
-  22:Core/Src/main.c **** #include "command_handler.h"
-  23:Core/Src/main.c **** #include "i2c_handler.h"  // For BVAT_I2C_Init, readACC, read_I2C_Blocking, LIS3DH_REG_WHO_AM_I etc
-  24:Core/Src/main.c **** #include <stdio.h>        // For sprintf
-  25:Core/Src/main.c **** #include <string.h>       // For strlen
-  26:Core/Src/main.c **** 
-  27:Core/Src/main.c **** // UART_HandleTypeDef huart2; // Should be extern from uart_handler.h
-  28:Core/Src/main.c **** 
-  29:Core/Src/main.c **** int main(void)
-  30:Core/Src/main.c **** {
-  65              		.loc 1 30 1 view -0
+   8:Core/Src/main.c ****   * 
+   9:Core/Src/main.c ****   * This project is part of the Aston Martin Lagonda BVA (Benchmarking Vehicle Analysis) Project.
+  10:Core/Src/main.c ****   * 
+  11:Core/Src/main.c ****   * @defgroup ADAS Team Aston Martin Lagonda
+  12:Core/Src/main.c ****   * 
+  13:Core/Src/main.c ****   * Copyright (c) 2025 Aston Martin Lagonda.
+  14:Core/Src/main.c ****   * All rights reserved.
+  15:Core/Src/main.c ****   ******************************************************************************
+  16:Core/Src/main.c ****   */
+  17:Core/Src/main.c **** /* Includes ------------------------------------------------------------------*/
+  18:Core/Src/main.c **** #include "main.h"
+  19:Core/Src/main.c **** #include "aml_hal.h"      // For u8, Error_Handler etc.
+  20:Core/Src/main.c **** #include "gpio_handler.h" // For BuiltinLED_Init, indicate_setup_with_blinks, g_builtinLed
+  21:Core/Src/main.c **** #include "uart_handler.h" // For WriteUART_Blocking
+  22:Core/Src/main.c **** #include "timer.h"
+  23:Core/Src/main.c **** #include "command_handler.h"
+  24:Core/Src/main.c **** #include "i2c_handler.h"  // For BVAT_I2C_Init, readACC, read_I2C_Blocking, LIS3DH_REG_WHO_AM_I etc
+  25:Core/Src/main.c **** #include <stdio.h>        // For sprintf
+  26:Core/Src/main.c **** #include <string.h>       // For strlen
+  27:Core/Src/main.c **** 
+  28:Core/Src/main.c **** // UART_HandleTypeDef huart2; // Should be extern from uart_handler.h
+  29:Core/Src/main.c **** 
+  30:Core/Src/main.c **** int main(void)
+  31:Core/Src/main.c **** {
+  65              		.loc 1 31 1 view -0
   66              		.cfi_startproc
   67              		@ args = 0, pretend = 0, frame = 128
   68              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -161,226 +162,226 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccgyOupn.s 			page 1
   76 0002 A0B0     		sub	sp, sp, #128
   77              	.LCFI1:
   78              		.cfi_def_cfa_offset 144
-  31:Core/Src/main.c ****   // HAL initialisation
-  32:Core/Src/main.c ****   BVAT_Init(); // This calls AML_Init -> MX_..._Inits (including I2C and UART)
-  79              		.loc 1 32 3 view .LVU1
-  80 0004 FFF7FEFF 		bl	BVAT_Init
+  32:Core/Src/main.c ****   // HAL initialisation
+  33:Core/Src/main.c ****   AML_Init(); // This calls AML_Init -> MX_..._Inits (including I2C and UART)
+  79              		.loc 1 33 3 view .LVU1
+  80 0004 FFF7FEFF 		bl	AML_Init
   81              	.LVL0:
-  33:Core/Src/main.c ****   BuiltinLED_Init();
-  82              		.loc 1 33 3 view .LVU2
+  34:Core/Src/main.c ****   BuiltinLED_Init();
+  82              		.loc 1 34 3 view .LVU2
   83 0008 FFF7FEFF 		bl	BuiltinLED_Init
   84              	.LVL1:
-  34:Core/Src/main.c **** 
-  35:Core/Src/main.c ****   HAL_Delay(100);
-  85              		.loc 1 35 3 view .LVU3
+  35:Core/Src/main.c **** 
+  36:Core/Src/main.c ****   HAL_Delay(100);
+  85              		.loc 1 36 3 view .LVU3
   86 000c 6420     		movs	r0, #100
   87 000e FFF7FEFF 		bl	HAL_Delay
   88              	.LVL2:
-  36:Core/Src/main.c ****   WriteUART_Blocking("Hello from STM32 AML-BVAT!\r\n");
-  89              		.loc 1 36 3 view .LVU4
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccgyOupn.s 			page 4
+  37:Core/Src/main.c ****   WriteUART_Blocking("Hello from STM32 AML-BVAT!\r\n");
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s 			page 4
 
 
+  89              		.loc 1 37 3 view .LVU4
   90 0012 2948     		ldr	r0, .L13
   91 0014 FFF7FEFF 		bl	WriteUART_Blocking
   92              	.LVL3:
-  37:Core/Src/main.c **** 
-  38:Core/Src/main.c ****   bool i2c_system_fully_ok = false;
-  93              		.loc 1 38 3 view .LVU5
-  39:Core/Src/main.c ****   char diag_buffer[128]; // Buffer for diagnostic messages
-  94              		.loc 1 39 3 view .LVU6
-  40:Core/Src/main.c **** 
-  41:Core/Src/main.c ****   WriteUART_Blocking("Starting I2C initialization and sensor check...\r\n");
-  95              		.loc 1 41 3 view .LVU7
+  38:Core/Src/main.c **** 
+  39:Core/Src/main.c ****   bool i2c_system_fully_ok = false;
+  93              		.loc 1 39 3 view .LVU5
+  40:Core/Src/main.c ****   char diag_buffer[128]; // Buffer for diagnostic messages
+  94              		.loc 1 40 3 view .LVU6
+  41:Core/Src/main.c **** 
+  42:Core/Src/main.c ****   WriteUART_Blocking("Starting I2C initialization and sensor check...\r\n");
+  95              		.loc 1 42 3 view .LVU7
   96 0018 2848     		ldr	r0, .L13+4
   97 001a FFF7FEFF 		bl	WriteUART_Blocking
   98              	.LVL4:
-  42:Core/Src/main.c ****   HAL_Delay(100);
-  99              		.loc 1 42 3 view .LVU8
+  43:Core/Src/main.c ****   HAL_Delay(100);
+  99              		.loc 1 43 3 view .LVU8
  100 001e 6420     		movs	r0, #100
  101 0020 FFF7FEFF 		bl	HAL_Delay
  102              	.LVL5:
-  43:Core/Src/main.c ****   if (BVAT_I2C_Init()) { // This now calls the blocking I2C_ACC_Enable
- 103              		.loc 1 43 3 view .LVU9
- 104              		.loc 1 43 7 is_stmt 0 view .LVU10
+  44:Core/Src/main.c ****   if (BVAT_I2C_Init()) { // This now calls the blocking I2C_ACC_Enable
+ 103              		.loc 1 44 3 view .LVU9
+ 104              		.loc 1 44 7 is_stmt 0 view .LVU10
  105 0024 FFF7FEFF 		bl	BVAT_I2C_Init
  106              	.LVL6:
- 107              		.loc 1 43 6 discriminator 1 view .LVU11
+ 107              		.loc 1 44 6 discriminator 1 view .LVU11
  108 0028 0446     		mov	r4, r0
  109 002a 48B3     		cbz	r0, .L2
  110              	.LBB2:
-  44:Core/Src/main.c ****                          // and I2C_connectivity_check (which prints its own status)
-  45:Core/Src/main.c **** 
-  46:Core/Src/main.c ****     // After BVAT_I2C_Init, let's verify sensor state by reading registers
-  47:Core/Src/main.c ****     HAL_Delay(10); // Small delay after enabling sensor
- 111              		.loc 1 47 5 is_stmt 1 view .LVU12
+  45:Core/Src/main.c ****                          // and I2C_connectivity_check (which prints its own status)
+  46:Core/Src/main.c **** 
+  47:Core/Src/main.c ****     // After BVAT_I2C_Init, let's verify sensor state by reading registers
+  48:Core/Src/main.c ****     HAL_Delay(10); // Small delay after enabling sensor
+ 111              		.loc 1 48 5 is_stmt 1 view .LVU12
  112 002c 0A20     		movs	r0, #10
  113 002e FFF7FEFF 		bl	HAL_Delay
  114              	.LVL7:
-  48:Core/Src/main.c **** 
-  49:Core/Src/main.c ****     u8 who_am_i = readACC(LIS3DH_REG_WHO_AM_I); // readACC is blocking
- 115              		.loc 1 49 5 view .LVU13
- 116              		.loc 1 49 19 is_stmt 0 view .LVU14
+  49:Core/Src/main.c **** 
+  50:Core/Src/main.c ****     u8 who_am_i = readACC(LIS3DH_REG_WHO_AM_I); // readACC is blocking
+ 115              		.loc 1 50 5 view .LVU13
+ 116              		.loc 1 50 19 is_stmt 0 view .LVU14
  117 0032 0F20     		movs	r0, #15
  118 0034 FFF7FEFF 		bl	readACC
  119              	.LVL8:
- 120              		.loc 1 49 8 discriminator 1 view .LVU15
+ 120              		.loc 1 50 8 discriminator 1 view .LVU15
  121 0038 C5B2     		uxtb	r5, r0
  122              	.LVL9:
-  50:Core/Src/main.c ****     sprintf(diag_buffer, "LIS3DH WHO_AM_I: 0x%02X (Expected: 0x%02X)\r\n", who_am_i, LIS3DH_WHO_AM_
- 123              		.loc 1 50 5 is_stmt 1 view .LVU16
+  51:Core/Src/main.c ****     sprintf(diag_buffer, "LIS3DH WHO_AM_I: 0x%02X (Expected: 0x%02X)\r\n", who_am_i, LIS3DH_WHO_AM_
+ 123              		.loc 1 51 5 is_stmt 1 view .LVU16
  124 003a 3323     		movs	r3, #51
  125 003c 2A46     		mov	r2, r5
  126 003e 2049     		ldr	r1, .L13+8
  127 0040 6846     		mov	r0, sp
  128 0042 FFF7FEFF 		bl	sprintf
  129              	.LVL10:
-  51:Core/Src/main.c ****     WriteUART_Blocking(diag_buffer);
- 130              		.loc 1 51 5 view .LVU17
+  52:Core/Src/main.c ****     WriteUART_Blocking(diag_buffer);
+ 130              		.loc 1 52 5 view .LVU17
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s 			page 5
+
+
  131 0046 6846     		mov	r0, sp
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccgyOupn.s 			page 5
-
-
  132 0048 FFF7FEFF 		bl	WriteUART_Blocking
  133              	.LVL11:
-  52:Core/Src/main.c **** 
-  53:Core/Src/main.c ****     u8 ctrl_reg1 = readACC(LIS3DH_REG_CTRL_REG1);
- 134              		.loc 1 53 5 view .LVU18
- 135              		.loc 1 53 20 is_stmt 0 view .LVU19
+  53:Core/Src/main.c **** 
+  54:Core/Src/main.c ****     u8 ctrl_reg1 = readACC(LIS3DH_REG_CTRL_REG1);
+ 134              		.loc 1 54 5 view .LVU18
+ 135              		.loc 1 54 20 is_stmt 0 view .LVU19
  136 004c 2020     		movs	r0, #32
  137 004e FFF7FEFF 		bl	readACC
  138              	.LVL12:
- 139              		.loc 1 53 8 discriminator 1 view .LVU20
+ 139              		.loc 1 54 8 discriminator 1 view .LVU20
  140 0052 C6B2     		uxtb	r6, r0
  141              	.LVL13:
-  54:Core/Src/main.c ****     sprintf(diag_buffer, "LIS3DH CTRL_REG1: 0x%02X (Expected: 0x%02X)\r\n", ctrl_reg1, ACC_CTRL_REG
- 142              		.loc 1 54 5 is_stmt 1 view .LVU21
+  55:Core/Src/main.c ****     sprintf(diag_buffer, "LIS3DH CTRL_REG1: 0x%02X (Expected: 0x%02X)\r\n", ctrl_reg1, ACC_CTRL_REG
+ 142              		.loc 1 55 5 is_stmt 1 view .LVU21
  143 0054 5723     		movs	r3, #87
  144 0056 3246     		mov	r2, r6
  145 0058 1A49     		ldr	r1, .L13+12
  146 005a 6846     		mov	r0, sp
  147 005c FFF7FEFF 		bl	sprintf
  148              	.LVL14:
-  55:Core/Src/main.c ****     WriteUART_Blocking(diag_buffer);
- 149              		.loc 1 55 5 view .LVU22
+  56:Core/Src/main.c ****     WriteUART_Blocking(diag_buffer);
+ 149              		.loc 1 56 5 view .LVU22
  150 0060 6846     		mov	r0, sp
  151 0062 FFF7FEFF 		bl	WriteUART_Blocking
  152              	.LVL15:
-  56:Core/Src/main.c **** 
-  57:Core/Src/main.c ****     if (who_am_i == LIS3DH_WHO_AM_I_EXPECTED_VAL && ctrl_reg1 == ACC_CTRL_REG1_CONFIG_100HZ) {
- 153              		.loc 1 57 5 view .LVU23
- 154              		.loc 1 57 8 is_stmt 0 view .LVU24
+  57:Core/Src/main.c **** 
+  58:Core/Src/main.c ****     if (who_am_i == LIS3DH_WHO_AM_I_EXPECTED_VAL && ctrl_reg1 == ACC_CTRL_REG1_CONFIG_100HZ) {
+ 153              		.loc 1 58 5 view .LVU23
+ 154              		.loc 1 58 8 is_stmt 0 view .LVU24
  155 0066 332D     		cmp	r5, #51
  156 0068 01D1     		bne	.L3
- 157              		.loc 1 57 50 discriminator 1 view .LVU25
+ 157              		.loc 1 58 50 discriminator 1 view .LVU25
  158 006a 572E     		cmp	r6, #87
  159 006c 04D0     		beq	.L11
  160              	.L3:
-  58:Core/Src/main.c ****         WriteUART_Blocking("LIS3DH appears configured and ready!\r\n");
-  59:Core/Src/main.c ****         i2c_system_fully_ok = true;
-  60:Core/Src/main.c ****     } else {
-  61:Core/Src/main.c ****         WriteUART_Blocking("LIS3DH configuration mismatch or WHO_AM_I incorrect. Data reads might f
- 161              		.loc 1 61 9 is_stmt 1 view .LVU26
+  59:Core/Src/main.c ****         WriteUART_Blocking("LIS3DH appears configured and ready!\r\n");
+  60:Core/Src/main.c ****         i2c_system_fully_ok = true;
+  61:Core/Src/main.c ****     } else {
+  62:Core/Src/main.c ****         WriteUART_Blocking("LIS3DH configuration mismatch or WHO_AM_I incorrect. Data reads might f
+ 161              		.loc 1 62 9 is_stmt 1 view .LVU26
  162 006e 1648     		ldr	r0, .L13+16
  163 0070 FFF7FEFF 		bl	WriteUART_Blocking
  164              	.LVL16:
-  62:Core/Src/main.c ****         i2c_system_fully_ok = false; // Or keep it as per I2C_connectivity_check's result
- 165              		.loc 1 62 9 view .LVU27
- 166              		.loc 1 62 29 is_stmt 0 view .LVU28
+  63:Core/Src/main.c ****         i2c_system_fully_ok = false; // Or keep it as per I2C_connectivity_check's result
+ 165              		.loc 1 63 9 view .LVU27
+ 166              		.loc 1 63 29 is_stmt 0 view .LVU28
  167 0074 0024     		movs	r4, #0
  168 0076 06E0     		b	.L4
  169              	.L11:
-  58:Core/Src/main.c ****         WriteUART_Blocking("LIS3DH appears configured and ready!\r\n");
- 170              		.loc 1 58 9 is_stmt 1 view .LVU29
+  59:Core/Src/main.c ****         WriteUART_Blocking("LIS3DH appears configured and ready!\r\n");
+ 170              		.loc 1 59 9 is_stmt 1 view .LVU29
  171 0078 1448     		ldr	r0, .L13+20
  172 007a FFF7FEFF 		bl	WriteUART_Blocking
  173              	.LVL17:
-  59:Core/Src/main.c ****     } else {
- 174              		.loc 1 59 9 view .LVU30
-  59:Core/Src/main.c ****     } else {
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccgyOupn.s 			page 6
+  60:Core/Src/main.c ****     } else {
+ 174              		.loc 1 60 9 view .LVU30
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s 			page 6
 
 
- 175              		.loc 1 59 29 is_stmt 0 view .LVU31
+  60:Core/Src/main.c ****     } else {
+ 175              		.loc 1 60 29 is_stmt 0 view .LVU31
  176 007e 02E0     		b	.L4
  177              	.LVL18:
  178              	.L2:
-  59:Core/Src/main.c ****     } else {
- 179              		.loc 1 59 29 view .LVU32
+  60:Core/Src/main.c ****     } else {
+ 179              		.loc 1 60 29 view .LVU32
  180              	.LBE2:
-  63:Core/Src/main.c ****     }
-  64:Core/Src/main.c ****   } else {
-  65:Core/Src/main.c ****     WriteUART_Blocking("BVAT_I2C_Init reported failure (connectivity or enable).\r\n");
- 181              		.loc 1 65 5 is_stmt 1 view .LVU33
+  64:Core/Src/main.c ****     }
+  65:Core/Src/main.c ****   } else {
+  66:Core/Src/main.c ****     WriteUART_Blocking("BVAT_I2C_Init reported failure (connectivity or enable).\r\n");
+ 181              		.loc 1 66 5 is_stmt 1 view .LVU33
  182 0080 1348     		ldr	r0, .L13+24
  183 0082 FFF7FEFF 		bl	WriteUART_Blocking
  184              	.LVL19:
-  66:Core/Src/main.c ****     i2c_system_fully_ok = false;
- 185              		.loc 1 66 5 view .LVU34
+  67:Core/Src/main.c ****     i2c_system_fully_ok = false;
+ 185              		.loc 1 67 5 view .LVU34
  186              	.L4:
-  67:Core/Src/main.c ****   }
-  68:Core/Src/main.c **** 
-  69:Core/Src/main.c ****   indicate_setup_with_blinks(3, 100); // Visual cue
- 187              		.loc 1 69 3 view .LVU35
+  68:Core/Src/main.c ****   }
+  69:Core/Src/main.c **** 
+  70:Core/Src/main.c ****   indicate_setup_with_blinks(3, 100); // Visual cue
+ 187              		.loc 1 70 3 view .LVU35
  188 0086 6421     		movs	r1, #100
  189 0088 0320     		movs	r0, #3
  190 008a FFF7FEFF 		bl	indicate_setup_with_blinks
  191              	.LVL20:
-  70:Core/Src/main.c **** 
-  71:Core/Src/main.c ****   if (i2c_system_fully_ok) {
- 192              		.loc 1 71 3 view .LVU36
- 193              		.loc 1 71 6 is_stmt 0 view .LVU37
+  71:Core/Src/main.c **** 
+  72:Core/Src/main.c ****   if (i2c_system_fully_ok) {
+ 192              		.loc 1 72 3 view .LVU36
+ 193              		.loc 1 72 6 is_stmt 0 view .LVU37
  194 008e 1CB1     		cbz	r4, .L5
-  72:Core/Src/main.c ****     WriteUART_Blocking("AML BVAT ready for measurements.\r\n");
- 195              		.loc 1 72 5 is_stmt 1 view .LVU38
+  73:Core/Src/main.c ****     WriteUART_Blocking("AML BVAT ready for measurements.\r\n");
+ 195              		.loc 1 73 5 is_stmt 1 view .LVU38
  196 0090 1048     		ldr	r0, .L13+28
  197 0092 FFF7FEFF 		bl	WriteUART_Blocking
  198              	.LVL21:
  199 0096 09E0     		b	.L6
  200              	.L5:
-  73:Core/Src/main.c ****   } else {
-  74:Core/Src/main.c ****     WriteUART_Blocking("AML BVAT I2C sensor issue. Measurements may not be accurate.\r\n");
- 201              		.loc 1 74 5 view .LVU39
+  74:Core/Src/main.c ****   } else {
+  75:Core/Src/main.c ****     WriteUART_Blocking("AML BVAT I2C sensor issue. Measurements may not be accurate.\r\n");
+ 201              		.loc 1 75 5 view .LVU39
  202 0098 0F48     		ldr	r0, .L13+32
  203 009a FFF7FEFF 		bl	WriteUART_Blocking
  204              	.LVL22:
  205 009e 05E0     		b	.L6
  206              	.L12:
-  75:Core/Src/main.c ****   }
-  76:Core/Src/main.c **** 
-  77:Core/Src/main.c ****   while (1) {
-  78:Core/Src/main.c ****     if (i2c_system_fully_ok) { // Only attempt to read if setup was okay
-  79:Core/Src/main.c ****         read_I2C_Blocking(); // This function prints its own success/fail/data
- 207              		.loc 1 79 9 view .LVU40
+  76:Core/Src/main.c ****   }
+  77:Core/Src/main.c **** 
+  78:Core/Src/main.c ****   while (1) {
+  79:Core/Src/main.c ****     if (i2c_system_fully_ok) { // Only attempt to read if setup was okay
+  80:Core/Src/main.c ****         read_I2C_Blocking(); // This function prints its own success/fail/data
+ 207              		.loc 1 80 9 view .LVU40
  208 00a0 FFF7FEFF 		bl	read_I2C_Blocking
  209              	.LVL23:
  210              	.L9:
-  80:Core/Src/main.c ****     } else {
-  81:Core/Src/main.c ****         // Optionally, periodically retry I2C init or just don't read
-  82:Core/Src/main.c ****         WriteUART_Blocking("Skipping I2C read due to earlier errors.\r\n");
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccgyOupn.s 			page 7
+  81:Core/Src/main.c ****     } else {
+  82:Core/Src/main.c ****         // Optionally, periodically retry I2C init or just don't read
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s 			page 7
 
 
-  83:Core/Src/main.c ****     }
-  84:Core/Src/main.c ****     indicate_setup_with_blinks(3, 100); // Blinks LEDs and adds delay
- 211              		.loc 1 84 5 view .LVU41
+  83:Core/Src/main.c ****         WriteUART_Blocking("Skipping I2C read due to earlier errors.\r\n");
+  84:Core/Src/main.c ****     }
+  85:Core/Src/main.c ****     indicate_setup_with_blinks(3, 100); // Blinks LEDs and adds delay
+ 211              		.loc 1 85 5 view .LVU41
  212 00a4 6421     		movs	r1, #100
  213 00a6 0320     		movs	r0, #3
  214 00a8 FFF7FEFF 		bl	indicate_setup_with_blinks
  215              	.LVL24:
-  77:Core/Src/main.c ****     if (i2c_system_fully_ok) { // Only attempt to read if setup was okay
- 216              		.loc 1 77 9 view .LVU42
+  78:Core/Src/main.c ****     if (i2c_system_fully_ok) { // Only attempt to read if setup was okay
+ 216              		.loc 1 78 9 view .LVU42
  217              	.L6:
-  77:Core/Src/main.c ****     if (i2c_system_fully_ok) { // Only attempt to read if setup was okay
- 218              		.loc 1 77 3 view .LVU43
-  78:Core/Src/main.c ****         read_I2C_Blocking(); // This function prints its own success/fail/data
- 219              		.loc 1 78 5 view .LVU44
-  78:Core/Src/main.c ****         read_I2C_Blocking(); // This function prints its own success/fail/data
- 220              		.loc 1 78 8 is_stmt 0 view .LVU45
+  78:Core/Src/main.c ****     if (i2c_system_fully_ok) { // Only attempt to read if setup was okay
+ 218              		.loc 1 78 3 view .LVU43
+  79:Core/Src/main.c ****         read_I2C_Blocking(); // This function prints its own success/fail/data
+ 219              		.loc 1 79 5 view .LVU44
+  79:Core/Src/main.c ****         read_I2C_Blocking(); // This function prints its own success/fail/data
+ 220              		.loc 1 79 8 is_stmt 0 view .LVU45
  221 00ac 002C     		cmp	r4, #0
  222 00ae F7D1     		bne	.L12
-  82:Core/Src/main.c ****     }
- 223              		.loc 1 82 9 is_stmt 1 view .LVU46
+  83:Core/Src/main.c ****     }
+ 223              		.loc 1 83 9 is_stmt 1 view .LVU46
  224 00b0 0A48     		ldr	r0, .L13+36
  225 00b2 FFF7FEFF 		bl	WriteUART_Blocking
  226              	.LVL25:
@@ -409,20 +410,19 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccgyOupn.s 			page 1
  250              		.file 6 "Core/Src/uart_handler/uart_handler.h"
  251              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
  252              		.file 8 "Core/Src/i2c_handler/i2c_handler.h"
- 253              		.file 9 "Core/Src/command_handler/command_handler.h"
- 254              		.file 10 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdio.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccgyOupn.s 			page 8
+ 253              		.file 9 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdio.h"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccgyOupn.s:21     .rodata.main.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccgyOupn.s:57     .text.main:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccgyOupn.s:63     .text.main:00000000 main
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccgyOupn.s:231    .text.main:000000b8 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s:21     .rodata.main.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s:57     .text.main:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s:63     .text.main:00000000 main
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s:231    .text.main:000000b8 $d
 
 UNDEFINED SYMBOLS
-BVAT_Init
+AML_Init
 BuiltinLED_Init
 HAL_Delay
 WriteUART_Blocking

@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -20,23 +20,73 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 1
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
   19              		.file 1 "Core/Src/command_handler/command_handler.c"
-  20              		.section	.text.BVAT_Init,"ax",%progbits
+  20              		.section	.text.CommandHandler_Init,"ax",%progbits
   21              		.align	1
-  22              		.global	BVAT_Init
+  22              		.global	CommandHandler_Init
   23              		.syntax unified
   24              		.thumb
   25              		.thumb_func
-  27              	BVAT_Init:
+  27              	CommandHandler_Init:
   28              	.LFB137:
-   1:Core/Src/command_handler/command_handler.c **** #include "command_handler.h"
-   2:Core/Src/command_handler/command_handler.c **** 
-   3:Core/Src/command_handler/command_handler.c **** static u32 command_timer = 0;
-   4:Core/Src/command_handler/command_handler.c **** char UART_buffer[64];
-   5:Core/Src/command_handler/command_handler.c **** 
-   6:Core/Src/command_handler/command_handler.c **** bool i2c_ready = false;
-   7:Core/Src/command_handler/command_handler.c **** 
-   8:Core/Src/command_handler/command_handler.c **** void BVAT_Init(void) {
-  29              		.loc 1 8 22 view -0
+   1:Core/Src/command_handler/command_handler.c **** /**
+   2:Core/Src/command_handler/command_handler.c ****   ******************************************************************************
+   3:Core/Src/command_handler/command_handler.c ****   * @file    command_handler.c
+   4:Core/Src/command_handler/command_handler.c ****   * @brief   This file handles high-level command logic, timing for measurements,
+   5:Core/Src/command_handler/command_handler.c ****   * and triggering data acquisition.
+   6:Core/Src/command_handler/command_handler.c ****   ******************************************************************************
+   7:Core/Src/command_handler/command_handler.c ****   */
+   8:Core/Src/command_handler/command_handler.c **** 
+   9:Core/Src/command_handler/command_handler.c **** /* Includes ------------------------------------------------------------------*/
+  10:Core/Src/command_handler/command_handler.c **** #include "command_handler.h"
+  11:Core/Src/command_handler/command_handler.c **** // Other includes like i2c_handler.h, timer.h, uart_handler.h are brought in via command_handler.h
+  12:Core/Src/command_handler/command_handler.c **** 
+  13:Core/Src/command_handler/command_handler.c **** /* Private define ------------------------------------------------------------*/
+  14:Core/Src/command_handler/command_handler.c **** #define MEASUREMENT_INTERVAL_MS 1000 // Interval for triggering accelerometer reads
+  15:Core/Src/command_handler/command_handler.c **** 
+  16:Core/Src/command_handler/command_handler.c **** /* Private macro -------------------------------------------------------------*/
+  17:Core/Src/command_handler/command_handler.c **** /* Private variables ---------------------------------------------------------*/
+  18:Core/Src/command_handler/command_handler.c **** static u32 s_command_timer = 0;         ///< Timer for periodic command/measurement execution.
+  19:Core/Src/command_handler/command_handler.c **** static bool s_i2c_module_ready = false; ///< Flag indicating if I2C peripheral and target device ar
+  20:Core/Src/command_handler/command_handler.c **** 
+  21:Core/Src/command_handler/command_handler.c **** // The global 'acc_enabled' (from i2c_handler.h) indicates if the LIS3DH has been successfully conf
+  22:Core/Src/command_handler/command_handler.c **** // The global 'rawData' (from i2c_handler.h) is where LIS3DH data is stored by I2C_Read_ACC.
+  23:Core/Src/command_handler/command_handler.c **** 
+  24:Core/Src/command_handler/command_handler.c **** /* Private function prototypes -----------------------------------------------*/
+  25:Core/Src/command_handler/command_handler.c **** // TODO: SD Card needs to be discussed -> Not available with the current setup
+  26:Core/Src/command_handler/command_handler.c **** //* What would be better to log data to SD card or just UART?
+  27:Core/Src/command_handler/command_handler.c **** 
+  28:Core/Src/command_handler/command_handler.c **** // static void log_to_sd(u32 timestamp, int16_t acc_x, int16_t acc_y, int16_t acc_z) {
+  29:Core/Src/command_handler/command_handler.c **** //     FIL file;
+  30:Core/Src/command_handler/command_handler.c **** //     UINT bytes_written;
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s 			page 2
+
+
+  31:Core/Src/command_handler/command_handler.c **** //     char buffer[128]; // Increased buffer size for potentially longer strings
+  32:Core/Src/command_handler/command_handler.c **** 
+  33:Core/Src/command_handler/command_handler.c **** //     if (f_open(&file, "data.csv", FA_OPEN_APPEND | FA_WRITE) != FR_OK) {
+  34:Core/Src/command_handler/command_handler.c **** //         WriteUART_Blocking("SD file open failed.\r\n"); // Assuming WriteUART_Blocking for criti
+  35:Core/Src/command_handler/command_handler.c **** //         return;
+  36:Core/Src/command_handler/command_handler.c **** //     }
+  37:Core/Src/command_handler/command_handler.c **** 
+  38:Core/Src/command_handler/command_handler.c **** //     // Example for logging processed 16-bit values
+  39:Core/Src/command_handler/command_handler.c **** //     snprintf(buffer, sizeof(buffer), "%lu,%d,%d,%d\r\n", timestamp, acc_x, acc_y, acc_z);
+  40:Core/Src/command_handler/command_handler.c **** //     if (f_write(&file, buffer, strlen(buffer), &bytes_written) != FR_OK || bytes_written == 0) {
+  41:Core/Src/command_handler/command_handler.c **** //         WriteUART_Blocking("SD file write failed.\r\n");
+  42:Core/Src/command_handler/command_handler.c **** //     }
+  43:Core/Src/command_handler/command_handler.c **** 
+  44:Core/Src/command_handler/command_handler.c **** //     f_close(&file);
+  45:Core/Src/command_handler/command_handler.c **** // }
+  46:Core/Src/command_handler/command_handler.c **** 
+  47:Core/Src/command_handler/command_handler.c **** 
+  48:Core/Src/command_handler/command_handler.c **** /* Exported functions --------------------------------------------------------*/
+  49:Core/Src/command_handler/command_handler.c **** 
+  50:Core/Src/command_handler/command_handler.c **** /**
+  51:Core/Src/command_handler/command_handler.c ****  * @brief Initializes command handler specific components (e.g., timers).
+  52:Core/Src/command_handler/command_handler.c ****  * @param None
+  53:Core/Src/command_handler/command_handler.c ****  * @retval None
+  54:Core/Src/command_handler/command_handler.c ****  */
+  55:Core/Src/command_handler/command_handler.c **** void CommandHandler_Init(void) {
+  29              		.loc 1 55 32 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -45,400 +95,273 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 1
   35              		.cfi_def_cfa_offset 8
   36              		.cfi_offset 3, -8
   37              		.cfi_offset 14, -4
-   9:Core/Src/command_handler/command_handler.c ****     AML_Init();                         // Handles all HAL init
-  38              		.loc 1 9 5 view .LVU1
-  39 0002 FFF7FEFF 		bl	AML_Init
-  40              	.LVL0:
-  10:Core/Src/command_handler/command_handler.c ****     command_timer = HAL_GetTick();      // Set command timer
-  41              		.loc 1 10 5 view .LVU2
-  42              		.loc 1 10 21 is_stmt 0 view .LVU3
-  43 0006 FFF7FEFF 		bl	HAL_GetTick
-  44              	.LVL1:
-  45              		.loc 1 10 19 discriminator 1 view .LVU4
-  46 000a 034B     		ldr	r3, .L3
-  47 000c 1860     		str	r0, [r3]
-  11:Core/Src/command_handler/command_handler.c **** 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 2
+  56:Core/Src/command_handler/command_handler.c ****     s_command_timer = HAL_GetTick();      // Initialize command timer
+  38              		.loc 1 56 5 view .LVU1
+  39              		.loc 1 56 23 is_stmt 0 view .LVU2
+  40 0002 FFF7FEFF 		bl	HAL_GetTick
+  41              	.LVL0:
+  42              		.loc 1 56 21 discriminator 1 view .LVU3
+  43 0006 014B     		ldr	r3, .L3
+  44 0008 1860     		str	r0, [r3]
+  57:Core/Src/command_handler/command_handler.c ****     // Any other command_handler specific initializations can go here.
+  58:Core/Src/command_handler/command_handler.c **** }
+  45              		.loc 1 58 1 view .LVU4
+  46 000a 08BD     		pop	{r3, pc}
+  47              	.L4:
+  48              		.align	2
+  49              	.L3:
+  50 000c 00000000 		.word	s_command_timer
+  51              		.cfi_endproc
+  52              	.LFE137:
+  54              		.section	.text.CommandHandler_SetI2CReady,"ax",%progbits
+  55              		.align	1
+  56              		.global	CommandHandler_SetI2CReady
+  57              		.syntax unified
+  58              		.thumb
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s 			page 3
 
 
-  12:Core/Src/command_handler/command_handler.c ****     HAL_Delay(100);
-  48              		.loc 1 12 5 is_stmt 1 view .LVU5
-  49 000e 6420     		movs	r0, #100
-  50 0010 FFF7FEFF 		bl	HAL_Delay
-  51              	.LVL2:
-  13:Core/Src/command_handler/command_handler.c **** }
-  52              		.loc 1 13 1 is_stmt 0 view .LVU6
-  53 0014 08BD     		pop	{r3, pc}
-  54              	.L4:
-  55 0016 00BF     		.align	2
-  56              	.L3:
-  57 0018 00000000 		.word	command_timer
-  58              		.cfi_endproc
-  59              	.LFE137:
-  61              		.section	.rodata.log_to_uart.str1.4,"aMS",%progbits,1
-  62              		.align	2
-  63              	.LC0:
-  64 0000 256C752C 		.ascii	"%lu, %d, %d, %d\012\000"
-  64      2025642C 
-  64      2025642C 
-  64      2025640A 
-  64      00
-  65              		.section	.text.log_to_uart,"ax",%progbits
-  66              		.align	1
-  67              		.global	log_to_uart
-  68              		.syntax unified
-  69              		.thumb
-  70              		.thumb_func
-  72              	log_to_uart:
-  73              	.LVL3:
-  74              	.LFB138:
-  14:Core/Src/command_handler/command_handler.c **** 
-  15:Core/Src/command_handler/command_handler.c **** //TODO: SD Card needs to be discussed -> Not available with the current setup
-  16:Core/Src/command_handler/command_handler.c **** //* What would be better to log data to SD card or just UART?
-  17:Core/Src/command_handler/command_handler.c **** 
-  18:Core/Src/command_handler/command_handler.c **** // void log_to_sd(u32 timestamp, u8 x, u8 y, u8 z) {
-  19:Core/Src/command_handler/command_handler.c **** //     FIL file;
-  20:Core/Src/command_handler/command_handler.c **** //     UINT bytes_written;
-  21:Core/Src/command_handler/command_handler.c **** //     char buffer[64];
-  22:Core/Src/command_handler/command_handler.c **** 
-  23:Core/Src/command_handler/command_handler.c **** //     if (f_open(&file, "data.csv", FA_OPEN_APPEND | FA_WRITE) != FR_OK) {
-  24:Core/Src/command_handler/command_handler.c **** //         WriteUART("SD file open failed.\n");
-  25:Core/Src/command_handler/command_handler.c **** //         return;
-  26:Core/Src/command_handler/command_handler.c **** //     }
-  27:Core/Src/command_handler/command_handler.c **** 
-  28:Core/Src/command_handler/command_handler.c **** //     snprintf(buffer, sizeof(buffer), "%lu, %d, %d, %d\n", timestamp, x, y, z);
-  29:Core/Src/command_handler/command_handler.c **** //     f_write(&file, buffer, strlen(buffer), &bytes_written);
-  30:Core/Src/command_handler/command_handler.c **** 
-  31:Core/Src/command_handler/command_handler.c **** //     f_close(&file);
-  32:Core/Src/command_handler/command_handler.c **** // }
-  33:Core/Src/command_handler/command_handler.c **** 
-  34:Core/Src/command_handler/command_handler.c **** //! This is temporarily function to log data via UART
-  35:Core/Src/command_handler/command_handler.c **** 
-  36:Core/Src/command_handler/command_handler.c **** void log_to_uart(u32 timestamp, u8 x, u8 y, u8 z) {
-  75              		.loc 1 36 51 is_stmt 1 view -0
-  76              		.cfi_startproc
-  77              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 3
-
-
-  78              		@ frame_needed = 0, uses_anonymous_args = 0
-  79              		.loc 1 36 51 is_stmt 0 view .LVU8
-  80 0000 10B5     		push	{r4, lr}
-  81              	.LCFI1:
-  82              		.cfi_def_cfa_offset 8
-  83              		.cfi_offset 4, -8
-  84              		.cfi_offset 14, -4
-  85 0002 84B0     		sub	sp, sp, #16
-  86              	.LCFI2:
-  87              		.cfi_def_cfa_offset 24
-  37:Core/Src/command_handler/command_handler.c ****     snprintf(UART_buffer, sizeof(UART_buffer), "%lu, %d, %d, %d\n", timestamp, x, y, z);
-  88              		.loc 1 37 5 is_stmt 1 view .LVU9
-  89 0004 074C     		ldr	r4, .L7
-  90 0006 0293     		str	r3, [sp, #8]
-  91 0008 0192     		str	r2, [sp, #4]
-  92 000a 0091     		str	r1, [sp]
-  93 000c 0346     		mov	r3, r0
-  94              	.LVL4:
-  95              		.loc 1 37 5 is_stmt 0 view .LVU10
-  96 000e 064A     		ldr	r2, .L7+4
-  97              	.LVL5:
-  98              		.loc 1 37 5 view .LVU11
-  99 0010 4021     		movs	r1, #64
- 100              	.LVL6:
- 101              		.loc 1 37 5 view .LVU12
- 102 0012 2046     		mov	r0, r4
- 103              	.LVL7:
- 104              		.loc 1 37 5 view .LVU13
- 105 0014 FFF7FEFF 		bl	snprintf
- 106              	.LVL8:
-  38:Core/Src/command_handler/command_handler.c ****     WriteUART(UART_buffer);
- 107              		.loc 1 38 5 is_stmt 1 view .LVU14
- 108 0018 2046     		mov	r0, r4
- 109 001a FFF7FEFF 		bl	WriteUART
- 110              	.LVL9:
-  39:Core/Src/command_handler/command_handler.c **** }
- 111              		.loc 1 39 1 is_stmt 0 view .LVU15
- 112 001e 04B0     		add	sp, sp, #16
- 113              	.LCFI3:
- 114              		.cfi_def_cfa_offset 8
- 115              		@ sp needed
- 116 0020 10BD     		pop	{r4, pc}
- 117              	.L8:
- 118 0022 00BF     		.align	2
- 119              	.L7:
- 120 0024 00000000 		.word	UART_buffer
- 121 0028 00000000 		.word	.LC0
- 122              		.cfi_endproc
- 123              	.LFE138:
- 125              		.section	.rodata.measure_loop.str1.4,"aMS",%progbits,1
- 126              		.align	2
- 127              	.LC1:
- 128 0000 49324320 		.ascii	"I2C not available, skipping measurement.\012\000"
- 128      6E6F7420 
- 128      61766169 
- 128      6C61626C 
- 128      652C2073 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 4
-
-
- 129 002a 0000     		.align	2
- 130              	.LC2:
- 131 002c 583A2025 		.ascii	"X: %d, Y: %d, Z: %d\012\000"
- 131      642C2059 
- 131      3A202564 
- 131      2C205A3A 
- 131      2025640A 
- 132              		.section	.text.measure_loop,"ax",%progbits
- 133              		.align	1
- 134              		.global	measure_loop
- 135              		.syntax unified
- 136              		.thumb
- 137              		.thumb_func
- 139              	measure_loop:
- 140              	.LFB139:
-  40:Core/Src/command_handler/command_handler.c **** 
-  41:Core/Src/command_handler/command_handler.c **** void measure_loop(void) {
- 141              		.loc 1 41 25 is_stmt 1 view -0
- 142              		.cfi_startproc
- 143              		@ args = 0, pretend = 0, frame = 0
- 144              		@ frame_needed = 0, uses_anonymous_args = 0
- 145 0000 F0B5     		push	{r4, r5, r6, r7, lr}
- 146              	.LCFI4:
- 147              		.cfi_def_cfa_offset 20
- 148              		.cfi_offset 4, -20
- 149              		.cfi_offset 5, -16
- 150              		.cfi_offset 6, -12
- 151              		.cfi_offset 7, -8
- 152              		.cfi_offset 14, -4
- 153 0002 83B0     		sub	sp, sp, #12
- 154              	.LCFI5:
- 155              		.cfi_def_cfa_offset 32
-  42:Core/Src/command_handler/command_handler.c ****     if (!i2c_ready) {
- 156              		.loc 1 42 5 view .LVU17
- 157              		.loc 1 42 9 is_stmt 0 view .LVU18
- 158 0004 1A4B     		ldr	r3, .L17
- 159 0006 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 160              		.loc 1 42 8 view .LVU19
- 161 0008 53B1     		cbz	r3, .L14
-  43:Core/Src/command_handler/command_handler.c ****         WriteUART("I2C not available, skipping measurement.\n");
-  44:Core/Src/command_handler/command_handler.c ****         return;
-  45:Core/Src/command_handler/command_handler.c ****     }
-  46:Core/Src/command_handler/command_handler.c **** 
-  47:Core/Src/command_handler/command_handler.c ****     if (!acc_enabled) {
- 162              		.loc 1 47 5 is_stmt 1 view .LVU20
- 163              		.loc 1 47 9 is_stmt 0 view .LVU21
- 164 000a 1A4B     		ldr	r3, .L17+4
- 165 000c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 166              		.loc 1 47 8 view .LVU22
- 167 000e 5BB1     		cbz	r3, .L15
- 168              	.L12:
-  48:Core/Src/command_handler/command_handler.c ****         I2C_ACC_Enable();
-  49:Core/Src/command_handler/command_handler.c ****         acc_enabled = true;
-  50:Core/Src/command_handler/command_handler.c ****     }
-  51:Core/Src/command_handler/command_handler.c **** 
-  52:Core/Src/command_handler/command_handler.c ****     if (timer_handler(1000, &command_timer)) {
- 169              		.loc 1 52 5 is_stmt 1 view .LVU23
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 5
-
-
- 170              		.loc 1 52 9 is_stmt 0 view .LVU24
- 171 0010 1949     		ldr	r1, .L17+8
- 172 0012 4FF47A70 		mov	r0, #1000
- 173 0016 FFF7FEFF 		bl	timer_handler
- 174              	.LVL10:
- 175              		.loc 1 52 8 discriminator 1 view .LVU25
- 176 001a 58B9     		cbnz	r0, .L16
- 177              	.L9:
-  53:Core/Src/command_handler/command_handler.c ****         u8 x = readACC(0x28);
-  54:Core/Src/command_handler/command_handler.c ****         u8 y = readACC(0x29);
-  55:Core/Src/command_handler/command_handler.c ****         u8 z = readACC(0x2A);
-  56:Core/Src/command_handler/command_handler.c **** 
-  57:Core/Src/command_handler/command_handler.c ****         u32 timestamp = HAL_GetTick();
-  58:Core/Src/command_handler/command_handler.c **** 
-  59:Core/Src/command_handler/command_handler.c ****         // UART Output
-  60:Core/Src/command_handler/command_handler.c ****         snprintf(UART_buffer, sizeof(UART_buffer), "X: %d, Y: %d, Z: %d\n", x, y, z);
-  61:Core/Src/command_handler/command_handler.c **** 
-  62:Core/Src/command_handler/command_handler.c ****         //* To write to UART -> deactivated to prevent double logging
-  63:Core/Src/command_handler/command_handler.c ****         // WriteUART(UART_buffer);
-  64:Core/Src/command_handler/command_handler.c **** 
-  65:Core/Src/command_handler/command_handler.c ****         // // SD Logging
-  66:Core/Src/command_handler/command_handler.c ****         // log_to_sd(timestamp, x, y, z);
-  67:Core/Src/command_handler/command_handler.c ****         log_to_uart(timestamp, x, y, z);
-  68:Core/Src/command_handler/command_handler.c ****     }
+  59              		.thumb_func
+  61              	CommandHandler_SetI2CReady:
+  62              	.LVL1:
+  63              	.LFB138:
+  59:Core/Src/command_handler/command_handler.c **** 
+  60:Core/Src/command_handler/command_handler.c **** /**
+  61:Core/Src/command_handler/command_handler.c ****  * @brief Sets the status of I2C module readiness.
+  62:Core/Src/command_handler/command_handler.c ****  * @note This should be called from main after BVAT_I2C_Init() has determined
+  63:Core/Src/command_handler/command_handler.c ****  * the I2C system and target device status.
+  64:Core/Src/command_handler/command_handler.c ****  * @param is_ready: true if the I2C peripheral and target device are initialized and ready, false o
+  65:Core/Src/command_handler/command_handler.c ****  * @retval None
+  66:Core/Src/command_handler/command_handler.c ****  */
+  67:Core/Src/command_handler/command_handler.c **** void CommandHandler_SetI2CReady(bool is_ready) {
+  64              		.loc 1 67 48 is_stmt 1 view -0
+  65              		.cfi_startproc
+  66              		@ args = 0, pretend = 0, frame = 0
+  67              		@ frame_needed = 0, uses_anonymous_args = 0
+  68              		@ link register save eliminated.
+  68:Core/Src/command_handler/command_handler.c ****     s_i2c_module_ready = is_ready;
+  69              		.loc 1 68 5 view .LVU6
+  70              		.loc 1 68 24 is_stmt 0 view .LVU7
+  71 0000 014B     		ldr	r3, .L6
+  72 0002 1870     		strb	r0, [r3]
   69:Core/Src/command_handler/command_handler.c **** }
- 178              		.loc 1 69 1 view .LVU26
- 179 001c 03B0     		add	sp, sp, #12
- 180              	.LCFI6:
- 181              		.cfi_remember_state
- 182              		.cfi_def_cfa_offset 20
- 183              		@ sp needed
- 184 001e F0BD     		pop	{r4, r5, r6, r7, pc}
- 185              	.L14:
- 186              	.LCFI7:
- 187              		.cfi_restore_state
-  43:Core/Src/command_handler/command_handler.c ****         return;
- 188              		.loc 1 43 9 is_stmt 1 view .LVU27
- 189 0020 1648     		ldr	r0, .L17+12
- 190 0022 FFF7FEFF 		bl	WriteUART
- 191              	.LVL11:
-  44:Core/Src/command_handler/command_handler.c ****     }
- 192              		.loc 1 44 9 view .LVU28
- 193 0026 F9E7     		b	.L9
- 194              	.L15:
-  48:Core/Src/command_handler/command_handler.c ****         acc_enabled = true;
- 195              		.loc 1 48 9 view .LVU29
- 196 0028 FFF7FEFF 		bl	I2C_ACC_Enable
- 197              	.LVL12:
-  49:Core/Src/command_handler/command_handler.c ****     }
- 198              		.loc 1 49 9 view .LVU30
-  49:Core/Src/command_handler/command_handler.c ****     }
- 199              		.loc 1 49 21 is_stmt 0 view .LVU31
- 200 002c 114B     		ldr	r3, .L17+4
- 201 002e 0122     		movs	r2, #1
- 202 0030 1A70     		strb	r2, [r3]
- 203 0032 EDE7     		b	.L12
- 204              	.L16:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 6
+  73              		.loc 1 69 1 view .LVU8
+  74 0004 7047     		bx	lr
+  75              	.L7:
+  76 0006 00BF     		.align	2
+  77              	.L6:
+  78 0008 00000000 		.word	s_i2c_module_ready
+  79              		.cfi_endproc
+  80              	.LFE138:
+  82              		.section	.rodata.measure_loop.str1.4,"aMS",%progbits,1
+  83              		.align	2
+  84              	.LC0:
+  85 0000 41636365 		.ascii	"Accelerometer not enabled, attempting to enable...\015"
+  85      6C65726F 
+  85      6D657465 
+  85      72206E6F 
+  85      7420656E 
+  86 0033 0A00     		.ascii	"\012\000"
+  87 0035 000000   		.align	2
+  88              	.LC1:
+  89 0038 4D656173 		.ascii	"Measurement interval: Accelerometer not yet enabled"
+  89      7572656D 
+  89      656E7420 
+  89      696E7465 
+  89      7276616C 
+  90 006b 20627920 		.ascii	" by IT callback.\015\012\000"
+  90      49542063 
+  90      616C6C62 
+  90      61636B2E 
+  90      0D0A00
+  91              		.section	.text.measure_loop,"ax",%progbits
+  92              		.align	1
+  93              		.global	measure_loop
+  94              		.syntax unified
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s 			page 4
 
 
- 205              	.LBB2:
-  53:Core/Src/command_handler/command_handler.c ****         u8 y = readACC(0x29);
- 206              		.loc 1 53 9 is_stmt 1 view .LVU32
-  53:Core/Src/command_handler/command_handler.c ****         u8 y = readACC(0x29);
- 207              		.loc 1 53 16 is_stmt 0 view .LVU33
- 208 0034 2820     		movs	r0, #40
- 209 0036 FFF7FEFF 		bl	readACC
- 210              	.LVL13:
-  53:Core/Src/command_handler/command_handler.c ****         u8 y = readACC(0x29);
- 211              		.loc 1 53 12 discriminator 1 view .LVU34
- 212 003a C4B2     		uxtb	r4, r0
- 213              	.LVL14:
-  54:Core/Src/command_handler/command_handler.c ****         u8 z = readACC(0x2A);
- 214              		.loc 1 54 9 is_stmt 1 view .LVU35
-  54:Core/Src/command_handler/command_handler.c ****         u8 z = readACC(0x2A);
- 215              		.loc 1 54 16 is_stmt 0 view .LVU36
- 216 003c 2920     		movs	r0, #41
- 217 003e FFF7FEFF 		bl	readACC
- 218              	.LVL15:
-  54:Core/Src/command_handler/command_handler.c ****         u8 z = readACC(0x2A);
- 219              		.loc 1 54 12 discriminator 1 view .LVU37
- 220 0042 C5B2     		uxtb	r5, r0
- 221              	.LVL16:
-  55:Core/Src/command_handler/command_handler.c **** 
- 222              		.loc 1 55 9 is_stmt 1 view .LVU38
-  55:Core/Src/command_handler/command_handler.c **** 
- 223              		.loc 1 55 16 is_stmt 0 view .LVU39
- 224 0044 2A20     		movs	r0, #42
- 225 0046 FFF7FEFF 		bl	readACC
- 226              	.LVL17:
-  55:Core/Src/command_handler/command_handler.c **** 
- 227              		.loc 1 55 12 discriminator 1 view .LVU40
- 228 004a C6B2     		uxtb	r6, r0
- 229              	.LVL18:
-  57:Core/Src/command_handler/command_handler.c **** 
- 230              		.loc 1 57 9 is_stmt 1 view .LVU41
-  57:Core/Src/command_handler/command_handler.c **** 
- 231              		.loc 1 57 25 is_stmt 0 view .LVU42
- 232 004c FFF7FEFF 		bl	HAL_GetTick
- 233              	.LVL19:
- 234 0050 0746     		mov	r7, r0
- 235              	.LVL20:
-  60:Core/Src/command_handler/command_handler.c **** 
- 236              		.loc 1 60 9 is_stmt 1 view .LVU43
- 237 0052 0196     		str	r6, [sp, #4]
- 238 0054 0095     		str	r5, [sp]
- 239 0056 2346     		mov	r3, r4
- 240 0058 094A     		ldr	r2, .L17+16
- 241 005a 4021     		movs	r1, #64
- 242 005c 0948     		ldr	r0, .L17+20
- 243              	.LVL21:
-  60:Core/Src/command_handler/command_handler.c **** 
- 244              		.loc 1 60 9 is_stmt 0 view .LVU44
- 245 005e FFF7FEFF 		bl	snprintf
- 246              	.LVL22:
-  67:Core/Src/command_handler/command_handler.c ****     }
- 247              		.loc 1 67 9 is_stmt 1 view .LVU45
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 7
+  95              		.thumb
+  96              		.thumb_func
+  98              	measure_loop:
+  99              	.LFB139:
+  70:Core/Src/command_handler/command_handler.c **** 
+  71:Core/Src/command_handler/command_handler.c **** /**
+  72:Core/Src/command_handler/command_handler.c ****  * @brief Main measurement loop logic.
+  73:Core/Src/command_handler/command_handler.c ****  * Checks I2C and accelerometer status, and periodically triggers an accelerometer data read.
+  74:Core/Src/command_handler/command_handler.c ****  * Actual data processing and UART logging of accelerometer data is expected to occur
+  75:Core/Src/command_handler/command_handler.c ****  * within I2C HAL callbacks (e.g., HAL_I2C_MemRxCpltCallback in i2c_handler.c).
+  76:Core/Src/command_handler/command_handler.c ****  * @param None
+  77:Core/Src/command_handler/command_handler.c ****  * @retval None
+  78:Core/Src/command_handler/command_handler.c ****  */
+  79:Core/Src/command_handler/command_handler.c **** void measure_loop(void) {
+ 100              		.loc 1 79 25 is_stmt 1 view -0
+ 101              		.cfi_startproc
+ 102              		@ args = 0, pretend = 0, frame = 0
+ 103              		@ frame_needed = 0, uses_anonymous_args = 0
+ 104 0000 08B5     		push	{r3, lr}
+ 105              	.LCFI1:
+ 106              		.cfi_def_cfa_offset 8
+ 107              		.cfi_offset 3, -8
+ 108              		.cfi_offset 14, -4
+  80:Core/Src/command_handler/command_handler.c ****     if (!s_i2c_module_ready) {
+ 109              		.loc 1 80 5 view .LVU10
+ 110              		.loc 1 80 9 is_stmt 0 view .LVU11
+ 111 0002 144B     		ldr	r3, .L17
+ 112 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 113              		.loc 1 80 8 view .LVU12
+ 114 0006 B3B1     		cbz	r3, .L14
+  81:Core/Src/command_handler/command_handler.c ****         // This message might be too frequent if I2C init failed.
+  82:Core/Src/command_handler/command_handler.c ****         // Consider printing it once or less often from main loop.
+  83:Core/Src/command_handler/command_handler.c ****         // WriteUART_Blocking("I2C system not ready, skipping measurement.\r\n");
+  84:Core/Src/command_handler/command_handler.c ****         HAL_Delay(MEASUREMENT_INTERVAL_MS); // Still delay to keep a rhythm
+  85:Core/Src/command_handler/command_handler.c ****         return;
+  86:Core/Src/command_handler/command_handler.c ****     }
+  87:Core/Src/command_handler/command_handler.c **** 
+  88:Core/Src/command_handler/command_handler.c ****     // acc_enabled is a volatile bool externed from i2c_handler.h
+  89:Core/Src/command_handler/command_handler.c ****     // It should be set to true in HAL_I2C_MemTxCpltCallback after I2C_ACC_Enable's IT write comple
+  90:Core/Src/command_handler/command_handler.c ****     if (!acc_enabled) {
+ 115              		.loc 1 90 5 is_stmt 1 view .LVU13
+ 116              		.loc 1 90 9 is_stmt 0 view .LVU14
+ 117 0008 134B     		ldr	r3, .L17+4
+ 118 000a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 119              		.loc 1 90 8 view .LVU15
+ 120 000c C3B1     		cbz	r3, .L15
+ 121              	.L11:
+  91:Core/Src/command_handler/command_handler.c ****         WriteUART_Blocking("Accelerometer not enabled, attempting to enable...\r\n");
+  92:Core/Src/command_handler/command_handler.c ****         I2C_ACC_Enable(); // This function uses IT write, acc_enabled will be set in its callback.
+  93:Core/Src/command_handler/command_handler.c ****                           // We might not read immediately after this call in the same loop iterati
+  94:Core/Src/command_handler/command_handler.c ****     }
+  95:Core/Src/command_handler/command_handler.c **** 
+  96:Core/Src/command_handler/command_handler.c ****     // Check timer for periodic measurement trigger
+  97:Core/Src/command_handler/command_handler.c ****     if (timer_handler(MEASUREMENT_INTERVAL_MS, &s_command_timer)) {
+ 122              		.loc 1 97 5 is_stmt 1 view .LVU16
+ 123              		.loc 1 97 9 is_stmt 0 view .LVU17
+ 124 000e 1349     		ldr	r1, .L17+8
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s 			page 5
 
 
- 248 0062 3346     		mov	r3, r6
- 249 0064 2A46     		mov	r2, r5
- 250 0066 2146     		mov	r1, r4
- 251 0068 3846     		mov	r0, r7
- 252 006a FFF7FEFF 		bl	log_to_uart
- 253              	.LVL23:
- 254 006e D5E7     		b	.L9
- 255              	.L18:
- 256              		.align	2
- 257              	.L17:
- 258 0070 00000000 		.word	i2c_ready
- 259 0074 00000000 		.word	acc_enabled
- 260 0078 00000000 		.word	command_timer
- 261 007c 00000000 		.word	.LC1
- 262 0080 2C000000 		.word	.LC2
- 263 0084 00000000 		.word	UART_buffer
- 264              	.LBE2:
- 265              		.cfi_endproc
- 266              	.LFE139:
- 268              		.global	i2c_ready
- 269              		.section	.bss.i2c_ready,"aw",%nobits
- 272              	i2c_ready:
- 273 0000 00       		.space	1
- 274              		.global	UART_buffer
- 275              		.section	.bss.UART_buffer,"aw",%nobits
- 276              		.align	2
- 279              	UART_buffer:
- 280 0000 00000000 		.space	64
- 280      00000000 
- 280      00000000 
- 280      00000000 
- 280      00000000 
- 281              		.section	.bss.command_timer,"aw",%nobits
- 282              		.align	2
- 285              	command_timer:
- 286 0000 00000000 		.space	4
- 287              		.text
- 288              	.Letext0:
- 289              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
- 290              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
- 291              		.file 4 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/13.3.1/includ
- 292              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
- 293              		.file 6 "Core/Src/library/aml_hal.h"
- 294              		.file 7 "Core/Src/i2c_handler/i2c_handler.h"
- 295              		.file 8 "Core/Src/timer/timer.h"
- 296              		.file 9 "Core/Src/uart_handler/uart_handler.h"
- 297              		.file 10 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdio.h"
- 298              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s 			page 8
+ 125 0010 4FF47A70 		mov	r0, #1000
+ 126 0014 FFF7FEFF 		bl	timer_handler
+ 127              	.LVL2:
+ 128              		.loc 1 97 8 discriminator 1 view .LVU18
+ 129 0018 88B1     		cbz	r0, .L8
+  98:Core/Src/command_handler/command_handler.c ****         if (s_i2c_module_ready && acc_enabled) {
+ 130              		.loc 1 98 9 is_stmt 1 view .LVU19
+ 131              		.loc 1 98 13 is_stmt 0 view .LVU20
+ 132 001a 0E4B     		ldr	r3, .L17
+ 133 001c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 134              		.loc 1 98 12 view .LVU21
+ 135 001e 13B1     		cbz	r3, .L12
+ 136              		.loc 1 98 32 discriminator 1 view .LVU22
+ 137 0020 0D4A     		ldr	r2, .L17+4
+ 138 0022 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 139 0024 92B9     		cbnz	r2, .L16
+ 140              	.L12:
+  99:Core/Src/command_handler/command_handler.c ****             // WriteUART_Blocking("Triggering I2C Accelerometer Read (IT)...\r\n"); // Optional deb
+ 100:Core/Src/command_handler/command_handler.c ****             I2C_Read_ACC(); // Initiate an interrupt-driven read into global rawData.
+ 101:Core/Src/command_handler/command_handler.c ****                             // The result will be processed and printed in HAL_I2C_MemRxCpltCallbac
+ 102:Core/Src/command_handler/command_handler.c ****                             // (defined in i2c_handler.c).
+ 103:Core/Src/command_handler/command_handler.c ****         } else if (s_i2c_module_ready && !acc_enabled) {
+ 141              		.loc 1 103 16 is_stmt 1 view .LVU23
+ 142              		.loc 1 103 19 is_stmt 0 view .LVU24
+ 143 0026 53B1     		cbz	r3, .L8
+ 144              		.loc 1 103 42 discriminator 1 view .LVU25
+ 145 0028 0B4B     		ldr	r3, .L17+4
+ 146 002a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 147              		.loc 1 103 39 discriminator 1 view .LVU26
+ 148 002c 3BB9     		cbnz	r3, .L8
+ 104:Core/Src/command_handler/command_handler.c ****             WriteUART_Blocking("Measurement interval: Accelerometer not yet enabled by IT callback.
+ 149              		.loc 1 104 13 is_stmt 1 view .LVU27
+ 150 002e 0C48     		ldr	r0, .L17+12
+ 151 0030 FFF7FEFF 		bl	WriteUART_Blocking
+ 152              	.LVL3:
+ 153 0034 03E0     		b	.L8
+ 154              	.L14:
+  84:Core/Src/command_handler/command_handler.c ****         return;
+ 155              		.loc 1 84 9 view .LVU28
+ 156 0036 4FF47A70 		mov	r0, #1000
+ 157 003a FFF7FEFF 		bl	HAL_Delay
+ 158              	.LVL4:
+  85:Core/Src/command_handler/command_handler.c ****     }
+ 159              		.loc 1 85 9 view .LVU29
+ 160              	.L8:
+ 105:Core/Src/command_handler/command_handler.c ****         }
+ 106:Core/Src/command_handler/command_handler.c ****     }
+ 107:Core/Src/command_handler/command_handler.c **** }...
+ 161              		.loc 1 107 1 is_stmt 0 view .LVU30
+ 162 003e 08BD     		pop	{r3, pc}
+ 163              	.L15:
+  91:Core/Src/command_handler/command_handler.c ****         WriteUART_Blocking("Accelerometer not enabled, attempting to enable...\r\n");
+ 164              		.loc 1 91 9 is_stmt 1 view .LVU31
+ 165 0040 0848     		ldr	r0, .L17+16
+ 166 0042 FFF7FEFF 		bl	WriteUART_Blocking
+ 167              	.LVL5:
+  92:Core/Src/command_handler/command_handler.c ****         I2C_ACC_Enable(); // This function uses IT write, acc_enabled will be set in its callback.
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s 			page 6
+
+
+ 168              		.loc 1 92 9 view .LVU32
+ 169 0046 FFF7FEFF 		bl	I2C_ACC_Enable
+ 170              	.LVL6:
+ 171 004a E0E7     		b	.L11
+ 172              	.L16:
+ 100:Core/Src/command_handler/command_handler.c ****             I2C_Read_ACC(); // Initiate an interrupt-driven read into global rawData.
+ 173              		.loc 1 100 13 view .LVU33
+ 174 004c FFF7FEFF 		bl	I2C_Read_ACC
+ 175              	.LVL7:
+ 176 0050 F5E7     		b	.L8
+ 177              	.L18:
+ 178 0052 00BF     		.align	2
+ 179              	.L17:
+ 180 0054 00000000 		.word	s_i2c_module_ready
+ 181 0058 00000000 		.word	acc_enabled
+ 182 005c 00000000 		.word	s_command_timer
+ 183 0060 38000000 		.word	.LC1
+ 184 0064 00000000 		.word	.LC0
+ 185              		.cfi_endproc
+ 186              	.LFE139:
+ 188              		.section	.bss.s_i2c_module_ready,"aw",%nobits
+ 191              	s_i2c_module_ready:
+ 192 0000 00       		.space	1
+ 193              		.section	.bss.s_command_timer,"aw",%nobits
+ 194              		.align	2
+ 197              	s_command_timer:
+ 198 0000 00000000 		.space	4
+ 199              		.text
+ 200              	.Letext0:
+ 201              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+ 202              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 203              		.file 4 "Core/Src/i2c_handler/i2c_handler.h"
+ 204              		.file 5 "Core/Src/uart_handler/uart_handler.h"
+ 205              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 206              		.file 7 "Core/Src/library/aml_hal.h"
+ 207              		.file 8 "Core/Src/timer/timer.h"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s 			page 7
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 command_handler.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:21     .text.BVAT_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:27     .text.BVAT_Init:00000000 BVAT_Init
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:57     .text.BVAT_Init:00000018 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:285    .bss.command_timer:00000000 command_timer
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:62     .rodata.log_to_uart.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:66     .text.log_to_uart:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:72     .text.log_to_uart:00000000 log_to_uart
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:120    .text.log_to_uart:00000024 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:279    .bss.UART_buffer:00000000 UART_buffer
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:126    .rodata.measure_loop.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:133    .text.measure_loop:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:139    .text.measure_loop:00000000 measure_loop
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:258    .text.measure_loop:00000070 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:272    .bss.i2c_ready:00000000 i2c_ready
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:273    .bss.i2c_ready:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:276    .bss.UART_buffer:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc3Z4i1Z.s:282    .bss.command_timer:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s:21     .text.CommandHandler_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s:27     .text.CommandHandler_Init:00000000 CommandHandler_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s:50     .text.CommandHandler_Init:0000000c $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s:197    .bss.s_command_timer:00000000 s_command_timer
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s:55     .text.CommandHandler_SetI2CReady:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s:61     .text.CommandHandler_SetI2CReady:00000000 CommandHandler_SetI2CReady
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s:78     .text.CommandHandler_SetI2CReady:00000008 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s:191    .bss.s_i2c_module_ready:00000000 s_i2c_module_ready
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s:83     .rodata.measure_loop.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s:92     .text.measure_loop:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s:98     .text.measure_loop:00000000 measure_loop
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s:180    .text.measure_loop:00000054 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s:192    .bss.s_i2c_module_ready:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclyHnDa.s:194    .bss.s_command_timer:00000000 $d
 
 UNDEFINED SYMBOLS
-AML_Init
 HAL_GetTick
-HAL_Delay
-snprintf
-WriteUART
 timer_handler
+WriteUART_Blocking
+HAL_Delay
 I2C_ACC_Enable
-readACC
+I2C_Read_ACC
 acc_enabled

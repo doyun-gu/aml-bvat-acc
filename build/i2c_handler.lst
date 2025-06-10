@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
    5:Core/Src/i2c_handler/i2c_handler.c ****   * LIS3DH accelerometer.
    6:Core/Src/i2c_handler/i2c_handler.c ****   ******************************************************************************
    7:Core/Src/i2c_handler/i2c_handler.c ****   */
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 2
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 2
 
 
    8:Core/Src/i2c_handler/i2c_handler.c **** 
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
   55 0008 1648     		ldr	r0, .L5+4
   56 000a 174B     		ldr	r3, .L5+8
   57 000c 0360     		str	r3, [r0]
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 3
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 3
 
 
   47:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Init.ClockSpeed = 100000; // 100 kHz
@@ -178,7 +178,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
   63:Core/Src/i2c_handler/i2c_handler.c ****     // NVIC configuration for I2C1 interrupts (Event and Error)
   64:Core/Src/i2c_handler/i2c_handler.c ****     HAL_NVIC_SetPriority(I2C1_EV_IRQn, 0, 0);
   96              		.loc 1 64 5 view .LVU24
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 4
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 4
 
 
   97 0032 0022     		movs	r2, #0
@@ -238,7 +238,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  142      29206973 
  143 001e 0000     		.align	2
  144              	.LC4:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 5
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 5
 
 
  145 0020 49324320 		.ascii	"I2C LIS3DH (0x18) error. Status: HAL_ERROR\015\012\000"
@@ -298,7 +298,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
   88:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking("LIS3DH Accelerometer NOT configured due to I2C issue.\r\n");
   89:Core/Src/i2c_handler/i2c_handler.c ****     }
   90:Core/Src/i2c_handler/i2c_handler.c ****     return device_is_ok;
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 6
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 6
 
 
   91:Core/Src/i2c_handler/i2c_handler.c **** }
@@ -358,7 +358,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  117:Core/Src/i2c_handler/i2c_handler.c ****         switch (status) {
  193              		.loc 1 117 9 is_stmt 1 view .LVU40
  194 0012 0228     		cmp	r0, #2
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 7
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 7
 
 
  195 0014 17D0     		beq	.L10
@@ -418,7 +418,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  230 003e FFF7FEFF 		bl	WriteUART_Blocking
  231              	.LVL15:
  115:Core/Src/i2c_handler/i2c_handler.c ****     } else {
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 8
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 8
 
 
  232              		.loc 1 115 9 is_stmt 1 view .LVU50
@@ -478,7 +478,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  277              		.loc 1 128 17 is_stmt 0 view .LVU59
  278 007c FFF7FEFF 		bl	sprintf
  279              	.LVL22:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 9
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 9
 
 
  129:Core/Src/i2c_handler/i2c_handler.c ****         }
@@ -538,7 +538,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  317              	.LCFI2:
  318              		.cfi_def_cfa_offset 8
  319              		.cfi_offset 4, -8
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 10
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 10
 
 
  320              		.cfi_offset 14, -4
@@ -598,7 +598,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  162:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(err_buf, "LIS3DH CTRL_REG1 Write FAILED (Blocking). Status: %d\r\n", status);
  163:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_buf);
  164:Core/Src/i2c_handler/i2c_handler.c ****         acc_enabled = false;
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 11
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 11
 
 
  165:Core/Src/i2c_handler/i2c_handler.c ****     }
@@ -658,7 +658,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  404              		.align	2
  405              	.LC10:
  406 0000 50657266 		.ascii	"Performing I2C device checks (LIS3DH)...\015\012\000"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 12
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 12
 
 
  406      6F726D69 
@@ -718,7 +718,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
   84:Core/Src/i2c_handler/i2c_handler.c ****         I2C_ACC_Enable(); // Call to the function defined below
  443              		.loc 1 84 8 is_stmt 0 view .LVU88
  444 000c 0446     		mov	r4, r0
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 13
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 13
 
 
  445 000e 30B1     		cbz	r0, .L25
@@ -778,7 +778,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  485              		.loc 1 176 25 is_stmt 1 view -0
  486              		.cfi_startproc
  487              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 14
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 14
 
 
  488              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -838,7 +838,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  533              	.LVL38:
  534              	.LFB142:
  184:Core/Src/i2c_handler/i2c_handler.c **** 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 15
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 15
 
 
  185:Core/Src/i2c_handler/i2c_handler.c **** /**
@@ -898,7 +898,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  200:Core/Src/i2c_handler/i2c_handler.c ****         static char err_buf[64]; // Static for safety if WriteUART_Blocking is IT-based
  201:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(err_buf, "Error reading I2C reg 0x%02X. Status: %d\r\n", reg, status);
  202:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_buf);
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 16
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 16
 
 
  203:Core/Src/i2c_handler/i2c_handler.c ****     }
@@ -958,7 +958,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  618      4B3A2058 
  619 0033 5A4C3D25 		.ascii	"ZL=%02X ZH=%02X\015\012\000"
  619      30325820 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 17
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 17
 
 
  619      5A483D25 
@@ -1018,7 +1018,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  655 0012 0123     		movs	r3, #1
  656 0014 A822     		movs	r2, #168
  657 0016 3021     		movs	r1, #48
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 18
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 18
 
 
  658 0018 1348     		ldr	r0, .L44
@@ -1078,7 +1078,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  695              		.cfi_def_cfa_offset 8
  696              		@ sp needed
  697 0052 10BD     		pop	{r4, pc}
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 19
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 19
 
 
  698              	.LVL50:
@@ -1138,7 +1138,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  240:Core/Src/i2c_handler/i2c_handler.c ****   * @param  hi2c: I2C handle pointer.
  241:Core/Src/i2c_handler/i2c_handler.c ****   * @retval None
  242:Core/Src/i2c_handler/i2c_handler.c ****   */
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 20
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 20
 
 
  243:Core/Src/i2c_handler/i2c_handler.c **** void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *hi2c) {
@@ -1198,7 +1198,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  787              		.section	.rodata.HAL_I2C_MemRxCpltCallback.str1.4,"aMS",%progbits,1
  788              		.align	2
  789              	.LC17:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 21
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 21
 
 
  790 0000 49324320 		.ascii	"I2C IT Read OK: XL=%02X XH=%02X YL=%02X YH=%02X ZL="
@@ -1258,7 +1258,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  259:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(temp_buffer, "I2C IT Read OK: XL=%02X XH=%02X YL=%02X YH=%02X ZL=%02X ZH=%02X\r\n",
  827              		.loc 1 259 9 view .LVU152
  260:Core/Src/i2c_handler/i2c_handler.c ****                 rawData[0], rawData[1], rawData[2], rawData[3], rawData[4], rawData[5]);
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 22
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 22
 
 
  828              		.loc 1 260 24 is_stmt 0 view .LVU153
@@ -1318,7 +1318,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  875      65642E20 
  876              		.section	.text.HAL_I2C_ErrorCallback,"ax",%progbits
  877              		.align	1
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 23
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 23
 
 
  878              		.global	HAL_I2C_ErrorCallback
@@ -1378,7 +1378,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  920 001a FFF7FEFF 		bl	WriteUART_Blocking
  921              	.LVL66:
  922              	.LBE5:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 24
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 24
 
 
  276:Core/Src/i2c_handler/i2c_handler.c ****     }
@@ -1438,7 +1438,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  968              	msg_buffer.5:
  969 0000 00000000 		.space	64
  969      00000000 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 25
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 25
 
 
  969      00000000 
@@ -1476,71 +1476,71 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 1
  1000              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h"
  1001              		.file 11 "Core/Src/uart_handler/uart_handler.h"
  1002              		.file 12 "Core/Src/library/aml_hal.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 26
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 26
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 i2c_handler.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:21     .rodata.MX_I2C1_Init.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:32     .text.MX_I2C1_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:38     .text.MX_I2C1_Init:00000000 MX_I2C1_Init
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:130    .text.MX_I2C1_Init:00000060 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:988    .bss.hi2c1:00000000 hi2c1
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:140    .rodata.I2C_connectivity_check.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:157    .text.I2C_connectivity_check:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:163    .text.I2C_connectivity_check:00000000 I2C_connectivity_check
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:285    .text.I2C_connectivity_check:00000084 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:968    .bss.msg_buffer.5:00000000 msg_buffer.5
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:296    .rodata.I2C_ACC_Enable.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:304    .text.I2C_ACC_Enable:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:310    .text.I2C_ACC_Enable:00000000 I2C_ACC_Enable
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:395    .text.I2C_ACC_Enable:00000050 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:981    .bss.acc_enabled:00000000 acc_enabled
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:962    .bss.err_buf.4:00000000 err_buf.4
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:404    .rodata.BVAT_I2C_Init.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:416    .text.BVAT_I2C_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:422    .text.BVAT_I2C_Init:00000000 BVAT_I2C_Init
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:470    .text.BVAT_I2C_Init:00000028 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:477    .text.I2C_Read_ACC:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:483    .text.I2C_Read_ACC:00000000 I2C_Read_ACC
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:516    .text.I2C_Read_ACC:00000020 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:975    .bss.rawData:00000000 rawData
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:522    .rodata.readACC.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:526    .text.readACC:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:532    .text.readACC:00000000 readACC
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:608    .text.readACC:00000048 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:956    .bss.err_buf.3:00000000 err_buf.3
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:616    .rodata.read_I2C_Blocking.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:624    .text.read_I2C_Blocking:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:630    .text.read_I2C_Blocking:00000000 read_I2C_Blocking
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:721    .text.read_I2C_Blocking:00000068 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:950    .bss.temp_buffer.2:00000000 temp_buffer.2
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:729    .rodata.HAL_I2C_MemTxCpltCallback.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:733    .text.HAL_I2C_MemTxCpltCallback:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:739    .text.HAL_I2C_MemTxCpltCallback:00000000 HAL_I2C_MemTxCpltCallback
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:781    .text.HAL_I2C_MemTxCpltCallback:0000001c $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:788    .rodata.HAL_I2C_MemRxCpltCallback.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:793    .text.HAL_I2C_MemRxCpltCallback:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:799    .text.HAL_I2C_MemRxCpltCallback:00000000 HAL_I2C_MemRxCpltCallback
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:865    .text.HAL_I2C_MemRxCpltCallback:00000038 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:944    .bss.temp_buffer.1:00000000 temp_buffer.1
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:873    .rodata.HAL_I2C_ErrorCallback.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:877    .text.HAL_I2C_ErrorCallback:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:883    .text.HAL_I2C_ErrorCallback:00000000 HAL_I2C_ErrorCallback
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:928    .text.HAL_I2C_ErrorCallback:00000020 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:938    .bss.err_buf.0:00000000 err_buf.0
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:935    .bss.err_buf.0:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:941    .bss.temp_buffer.1:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:947    .bss.temp_buffer.2:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:953    .bss.err_buf.3:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:959    .bss.err_buf.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:965    .bss.msg_buffer.5:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:972    .bss.rawData:00000000 $d
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s 			page 27
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:21     .rodata.MX_I2C1_Init.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:32     .text.MX_I2C1_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:38     .text.MX_I2C1_Init:00000000 MX_I2C1_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:130    .text.MX_I2C1_Init:00000060 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:988    .bss.hi2c1:00000000 hi2c1
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:140    .rodata.I2C_connectivity_check.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:157    .text.I2C_connectivity_check:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:163    .text.I2C_connectivity_check:00000000 I2C_connectivity_check
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:285    .text.I2C_connectivity_check:00000084 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:968    .bss.msg_buffer.5:00000000 msg_buffer.5
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:296    .rodata.I2C_ACC_Enable.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:304    .text.I2C_ACC_Enable:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:310    .text.I2C_ACC_Enable:00000000 I2C_ACC_Enable
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:395    .text.I2C_ACC_Enable:00000050 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:981    .bss.acc_enabled:00000000 acc_enabled
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:962    .bss.err_buf.4:00000000 err_buf.4
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:404    .rodata.BVAT_I2C_Init.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:416    .text.BVAT_I2C_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:422    .text.BVAT_I2C_Init:00000000 BVAT_I2C_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:470    .text.BVAT_I2C_Init:00000028 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:477    .text.I2C_Read_ACC:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:483    .text.I2C_Read_ACC:00000000 I2C_Read_ACC
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:516    .text.I2C_Read_ACC:00000020 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:975    .bss.rawData:00000000 rawData
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:522    .rodata.readACC.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:526    .text.readACC:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:532    .text.readACC:00000000 readACC
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:608    .text.readACC:00000048 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:956    .bss.err_buf.3:00000000 err_buf.3
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:616    .rodata.read_I2C_Blocking.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:624    .text.read_I2C_Blocking:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:630    .text.read_I2C_Blocking:00000000 read_I2C_Blocking
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:721    .text.read_I2C_Blocking:00000068 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:950    .bss.temp_buffer.2:00000000 temp_buffer.2
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:729    .rodata.HAL_I2C_MemTxCpltCallback.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:733    .text.HAL_I2C_MemTxCpltCallback:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:739    .text.HAL_I2C_MemTxCpltCallback:00000000 HAL_I2C_MemTxCpltCallback
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:781    .text.HAL_I2C_MemTxCpltCallback:0000001c $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:788    .rodata.HAL_I2C_MemRxCpltCallback.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:793    .text.HAL_I2C_MemRxCpltCallback:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:799    .text.HAL_I2C_MemRxCpltCallback:00000000 HAL_I2C_MemRxCpltCallback
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:865    .text.HAL_I2C_MemRxCpltCallback:00000038 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:944    .bss.temp_buffer.1:00000000 temp_buffer.1
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:873    .rodata.HAL_I2C_ErrorCallback.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:877    .text.HAL_I2C_ErrorCallback:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:883    .text.HAL_I2C_ErrorCallback:00000000 HAL_I2C_ErrorCallback
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:928    .text.HAL_I2C_ErrorCallback:00000020 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:938    .bss.err_buf.0:00000000 err_buf.0
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:935    .bss.err_buf.0:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:941    .bss.temp_buffer.1:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:947    .bss.temp_buffer.2:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:953    .bss.err_buf.3:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:959    .bss.err_buf.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:965    .bss.msg_buffer.5:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:972    .bss.rawData:00000000 $d
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s 			page 27
 
 
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:982    .bss.acc_enabled:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cciZJRxh.s:985    .bss.hi2c1:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:982    .bss.acc_enabled:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccvJp6Tu.s:985    .bss.hi2c1:00000000 $d
 
 UNDEFINED SYMBOLS
 WriteUART_Blocking

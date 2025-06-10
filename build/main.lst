@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -23,411 +23,278 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s 			page 1
   20              		.section	.rodata.main.str1.4,"aMS",%progbits,1
   21              		.align	2
   22              	.LC0:
-  23 0000 48656C6C 		.ascii	"Hello from STM32 AML-BVAT!\015\012\000"
-  23      6F206672 
-  23      6F6D2053 
-  23      544D3332 
-  23      20414D4C 
-  24 001d 000000   		.align	2
+  23 0000 2D2D2D2D 		.ascii	"---------------------------------------\015\012\000"
+  23      2D2D2D2D 
+  23      2D2D2D2D 
+  23      2D2D2D2D 
+  23      2D2D2D2D 
+  24 002a 0000     		.align	2
   25              	.LC1:
-  26 0020 53746172 		.ascii	"Starting I2C initialization and sensor check...\015"
-  26      74696E67 
-  26      20493243 
-  26      20696E69 
-  26      7469616C 
-  27 0050 0A00     		.ascii	"\012\000"
-  28 0052 0000     		.align	2
-  29              	.LC2:
-  30 0054 4C495333 		.ascii	"LIS3DH WHO_AM_I: 0x%02X (Expected: 0x%02X)\015\012\000"
-  30      44482057 
-  30      484F5F41 
-  30      4D5F493A 
-  30      20307825 
-  31 0081 000000   		.align	2
+  26 002c 53797374 		.ascii	"System Boot: Hello from STM32 AML-BVAT!\015\012\000"
+  26      656D2042 
+  26      6F6F743A 
+  26      2048656C 
+  26      6C6F2066 
+  27 0056 0000     		.align	2
+  28              	.LC2:
+  29 0058 53797374 		.ascii	"System ready. Press USER button to start/stop loggi"
+  29      656D2072 
+  29      65616479 
+  29      2E205072 
+  29      65737320 
+  30 008b 6E672E0D 		.ascii	"ng.\015\012\000"
+  30      0A00
+  31 0091 000000   		.align	2
   32              	.LC3:
-  33 0084 4C495333 		.ascii	"LIS3DH CTRL_REG1: 0x%02X (Expected: 0x%02X)\015\012"
-  33      44482043 
-  33      54524C5F 
-  33      52454731 
-  33      3A203078 
-  34 00b1 00       		.ascii	"\000"
-  35 00b2 0000     		.align	2
-  36              	.LC4:
-  37 00b4 4C495333 		.ascii	"LIS3DH appears configured and ready!\015\012\000"
-  37      44482061 
-  37      70706561 
-  37      72732063 
-  37      6F6E6669 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s 			page 2
+  33 0094 53797374 		.ascii	"System setup complete, but I2C SENSOR ISSUE DETECTE"
+  33      656D2073 
+  33      65747570 
+  33      20636F6D 
+  33      706C6574 
+  34 00c7 442E0D0A 		.ascii	"D.\015\012\000"
+  34      00
+  35              		.section	.text.main,"ax",%progbits
+  36              		.align	1
+  37              		.global	main
+  38              		.syntax unified
+  39              		.thumb
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s 			page 2
 
 
-  38 00db 00       		.align	2
-  39              	.LC5:
-  40 00dc 4C495333 		.ascii	"LIS3DH configuration mismatch or WHO_AM_I incorrect"
-  40      44482063 
-  40      6F6E6669 
-  40      67757261 
-  40      74696F6E 
-  41 010f 2E204461 		.ascii	". Data reads might fail.\015\012\000"
-  41      74612072 
-  41      65616473 
-  41      206D6967 
-  41      68742066 
-  42 012a 0000     		.align	2
-  43              	.LC6:
-  44 012c 42564154 		.ascii	"BVAT_I2C_Init reported failure (connectivity or ena"
-  44      5F493243 
-  44      5F496E69 
-  44      74207265 
-  44      706F7274 
-  45 015f 626C6529 		.ascii	"ble).\015\012\000"
-  45      2E0D0A00 
-  46 0167 00       		.align	2
-  47              	.LC7:
-  48 0168 414D4C20 		.ascii	"AML BVAT ready for measurements.\015\012\000"
-  48      42564154 
-  48      20726561 
-  48      64792066 
-  48      6F72206D 
-  49 018b 00       		.align	2
-  50              	.LC8:
-  51 018c 414D4C20 		.ascii	"AML BVAT I2C sensor issue. Measurements may not be "
-  51      42564154 
-  51      20493243 
-  51      2073656E 
-  51      736F7220 
-  52 01bf 61636375 		.ascii	"accurate.\015\012\000"
-  52      72617465 
-  52      2E0D0A00 
-  53 01cb 00       		.align	2
-  54              	.LC9:
-  55 01cc 536B6970 		.ascii	"Skipping I2C read due to earlier errors.\015\012\000"
-  55      70696E67 
-  55      20493243 
-  55      20726561 
-  55      64206475 
-  56              		.section	.text.main,"ax",%progbits
-  57              		.align	1
-  58              		.global	main
-  59              		.syntax unified
-  60              		.thumb
-  61              		.thumb_func
-  63              	main:
-  64              	.LFB137:
-   1:Core/Src/main.c **** /* USER CODE BEGIN Header */
-   2:Core/Src/main.c **** /**
-   3:Core/Src/main.c ****   ******************************************************************************
-   4:Core/Src/main.c ****   * @file           : main.c
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s 			page 3
-
-
-   5:Core/Src/main.c ****   * @brief          : Main program body
-   6:Core/Src/main.c ****   ******************************************************************************
-   7:Core/Src/main.c ****   * @attention
-   8:Core/Src/main.c ****   * 
-   9:Core/Src/main.c ****   * This project is part of the Aston Martin Lagonda BVA (Benchmarking Vehicle Analysis) Project.
-  10:Core/Src/main.c ****   * 
-  11:Core/Src/main.c ****   * @defgroup ADAS Team Aston Martin Lagonda
-  12:Core/Src/main.c ****   * 
-  13:Core/Src/main.c ****   * Copyright (c) 2025 Aston Martin Lagonda.
-  14:Core/Src/main.c ****   * All rights reserved.
-  15:Core/Src/main.c ****   ******************************************************************************
-  16:Core/Src/main.c ****   */
-  17:Core/Src/main.c **** /* Includes ------------------------------------------------------------------*/
-  18:Core/Src/main.c **** #include "main.h"
-  19:Core/Src/main.c **** #include "aml_hal.h"      // For u8, Error_Handler etc.
-  20:Core/Src/main.c **** #include "gpio_handler.h" // For BuiltinLED_Init, indicate_setup_with_blinks, g_builtinLed
-  21:Core/Src/main.c **** #include "uart_handler.h" // For WriteUART_Blocking
-  22:Core/Src/main.c **** #include "timer.h"
-  23:Core/Src/main.c **** #include "command_handler.h"
-  24:Core/Src/main.c **** #include "i2c_handler.h"  // For BVAT_I2C_Init, readACC, read_I2C_Blocking, LIS3DH_REG_WHO_AM_I etc
-  25:Core/Src/main.c **** #include <stdio.h>        // For sprintf
-  26:Core/Src/main.c **** #include <string.h>       // For strlen
+  40              		.thumb_func
+  42              	main:
+  43              	.LFB137:
+   1:Core/Src/main.c **** /**
+   2:Core/Src/main.c ****   ******************************************************************************
+   3:Core/Src/main.c ****   * @file           : main.c
+   4:Core/Src/main.c ****   * @brief          : Main program body for AML BVAT Project.
+   5:Core/Src/main.c ****   ******************************************************************************
+   6:Core/Src/main.c ****   */
+   7:Core/Src/main.c **** 
+   8:Core/Src/main.c **** /* Includes ------------------------------------------------------------------*/
+   9:Core/Src/main.c **** #include "main.h"
+  10:Core/Src/main.c **** #include "aml_hal.h"
+  11:Core/Src/main.c **** #include "gpio_handler.h"
+  12:Core/Src/main.c **** #include "uart_handler.h"
+  13:Core/Src/main.c **** #include "command_handler.h"
+  14:Core/Src/main.c **** #include "i2c_handler.h"
+  15:Core/Src/main.c **** 
+  16:Core/Src/main.c **** /* Private variables ---------------------------------------------------------*/
+  17:Core/Src/main.c **** // Global state variables like g_builtinLed, g_is_logging_active, etc. are
+  18:Core/Src/main.c **** // defined in their respective handler files and declared 'extern' in their headers.
+  19:Core/Src/main.c **** 
+  20:Core/Src/main.c **** /**
+  21:Core/Src/main.c ****   * @brief  The application entry point.
+  22:Core/Src/main.c ****   * @retval int
+  23:Core/Src/main.c ****   */
+  24:Core/Src/main.c **** int main(void)
+  25:Core/Src/main.c **** {
+  44              		.loc 1 25 1 view -0
+  45              		.cfi_startproc
+  46              		@ args = 0, pretend = 0, frame = 0
+  47              		@ frame_needed = 0, uses_anonymous_args = 0
+  48 0000 10B5     		push	{r4, lr}
+  49              	.LCFI0:
+  50              		.cfi_def_cfa_offset 8
+  51              		.cfi_offset 4, -8
+  52              		.cfi_offset 14, -4
+  26:Core/Src/main.c ****   bool system_ready_for_logging = false;
+  53              		.loc 1 26 3 view .LVU1
+  54              	.LVL0:
   27:Core/Src/main.c **** 
-  28:Core/Src/main.c **** // UART_HandleTypeDef huart2; // Should be extern from uart_handler.h
-  29:Core/Src/main.c **** 
-  30:Core/Src/main.c **** int main(void)
-  31:Core/Src/main.c **** {
-  65              		.loc 1 31 1 view -0
-  66              		.cfi_startproc
-  67              		@ args = 0, pretend = 0, frame = 128
-  68              		@ frame_needed = 0, uses_anonymous_args = 0
-  69 0000 70B5     		push	{r4, r5, r6, lr}
-  70              	.LCFI0:
-  71              		.cfi_def_cfa_offset 16
-  72              		.cfi_offset 4, -16
-  73              		.cfi_offset 5, -12
-  74              		.cfi_offset 6, -8
-  75              		.cfi_offset 14, -4
-  76 0002 A0B0     		sub	sp, sp, #128
-  77              	.LCFI1:
-  78              		.cfi_def_cfa_offset 144
-  32:Core/Src/main.c ****   // HAL initialisation
-  33:Core/Src/main.c ****   AML_Init(); // This calls AML_Init -> MX_..._Inits (including I2C and UART)
-  79              		.loc 1 33 3 view .LVU1
-  80 0004 FFF7FEFF 		bl	AML_Init
-  81              	.LVL0:
-  34:Core/Src/main.c ****   BuiltinLED_Init();
-  82              		.loc 1 34 3 view .LVU2
-  83 0008 FFF7FEFF 		bl	BuiltinLED_Init
-  84              	.LVL1:
-  35:Core/Src/main.c **** 
-  36:Core/Src/main.c ****   HAL_Delay(100);
-  85              		.loc 1 36 3 view .LVU3
-  86 000c 6420     		movs	r0, #100
-  87 000e FFF7FEFF 		bl	HAL_Delay
-  88              	.LVL2:
-  37:Core/Src/main.c ****   WriteUART_Blocking("Hello from STM32 AML-BVAT!\r\n");
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s 			page 4
+  28:Core/Src/main.c ****   // --- 1. Core System & Peripheral Initialization ---
+  29:Core/Src/main.c ****   AML_Init();             // Initializes HAL, Clocks, GPIO, UART, I2C, Timers.
+  55              		.loc 1 29 3 view .LVU2
+  56 0002 FFF7FEFF 		bl	AML_Init
+  57              	.LVL1:
+  30:Core/Src/main.c ****   BuiltinLED_Init();        // Initializes the software struct for the built-in LED.
+  58              		.loc 1 30 3 view .LVU3
+  59 0006 FFF7FEFF 		bl	BuiltinLED_Init
+  60              	.LVL2:
+  31:Core/Src/main.c ****   BuiltinPushButton_Init(); // Initializes the software struct and hardware for the user button int
+  61              		.loc 1 31 3 view .LVU4
+  62 000a FFF7FEFF 		bl	BuiltinPushButton_Init
+  63              	.LVL3:
+  32:Core/Src/main.c ****   CommandHandler_Init();    // Initializes timers or states needed by the command handler.
+  64              		.loc 1 32 3 view .LVU5
+  65 000e FFF7FEFF 		bl	CommandHandler_Init
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s 			page 3
 
 
-  89              		.loc 1 37 3 view .LVU4
-  90 0012 2948     		ldr	r0, .L13
-  91 0014 FFF7FEFF 		bl	WriteUART_Blocking
-  92              	.LVL3:
-  38:Core/Src/main.c **** 
-  39:Core/Src/main.c ****   bool i2c_system_fully_ok = false;
-  93              		.loc 1 39 3 view .LVU5
-  40:Core/Src/main.c ****   char diag_buffer[128]; // Buffer for diagnostic messages
-  94              		.loc 1 40 3 view .LVU6
-  41:Core/Src/main.c **** 
-  42:Core/Src/main.c ****   WriteUART_Blocking("Starting I2C initialization and sensor check...\r\n");
-  95              		.loc 1 42 3 view .LVU7
-  96 0018 2848     		ldr	r0, .L13+4
-  97 001a FFF7FEFF 		bl	WriteUART_Blocking
-  98              	.LVL4:
-  43:Core/Src/main.c ****   HAL_Delay(100);
-  99              		.loc 1 43 3 view .LVU8
- 100 001e 6420     		movs	r0, #100
- 101 0020 FFF7FEFF 		bl	HAL_Delay
- 102              	.LVL5:
-  44:Core/Src/main.c ****   if (BVAT_I2C_Init()) { // This now calls the blocking I2C_ACC_Enable
- 103              		.loc 1 44 3 view .LVU9
- 104              		.loc 1 44 7 is_stmt 0 view .LVU10
- 105 0024 FFF7FEFF 		bl	BVAT_I2C_Init
- 106              	.LVL6:
- 107              		.loc 1 44 6 discriminator 1 view .LVU11
- 108 0028 0446     		mov	r4, r0
- 109 002a 48B3     		cbz	r0, .L2
- 110              	.LBB2:
-  45:Core/Src/main.c ****                          // and I2C_connectivity_check (which prints its own status)
-  46:Core/Src/main.c **** 
-  47:Core/Src/main.c ****     // After BVAT_I2C_Init, let's verify sensor state by reading registers
-  48:Core/Src/main.c ****     HAL_Delay(10); // Small delay after enabling sensor
- 111              		.loc 1 48 5 is_stmt 1 view .LVU12
- 112 002c 0A20     		movs	r0, #10
- 113 002e FFF7FEFF 		bl	HAL_Delay
- 114              	.LVL7:
-  49:Core/Src/main.c **** 
-  50:Core/Src/main.c ****     u8 who_am_i = readACC(LIS3DH_REG_WHO_AM_I); // readACC is blocking
- 115              		.loc 1 50 5 view .LVU13
- 116              		.loc 1 50 19 is_stmt 0 view .LVU14
- 117 0032 0F20     		movs	r0, #15
- 118 0034 FFF7FEFF 		bl	readACC
- 119              	.LVL8:
- 120              		.loc 1 50 8 discriminator 1 view .LVU15
- 121 0038 C5B2     		uxtb	r5, r0
- 122              	.LVL9:
-  51:Core/Src/main.c ****     sprintf(diag_buffer, "LIS3DH WHO_AM_I: 0x%02X (Expected: 0x%02X)\r\n", who_am_i, LIS3DH_WHO_AM_
- 123              		.loc 1 51 5 is_stmt 1 view .LVU16
- 124 003a 3323     		movs	r3, #51
- 125 003c 2A46     		mov	r2, r5
- 126 003e 2049     		ldr	r1, .L13+8
- 127 0040 6846     		mov	r0, sp
- 128 0042 FFF7FEFF 		bl	sprintf
- 129              	.LVL10:
-  52:Core/Src/main.c ****     WriteUART_Blocking(diag_buffer);
- 130              		.loc 1 52 5 view .LVU17
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s 			page 5
+  66              	.LVL4:
+  33:Core/Src/main.c **** 
+  34:Core/Src/main.c ****   // --- 2. Startup Messaging and Diagnostics ---
+  35:Core/Src/main.c ****   HAL_Delay(100); // Give peripherals a moment to stabilize after power-on.
+  67              		.loc 1 35 3 view .LVU6
+  68 0012 6420     		movs	r0, #100
+  69 0014 FFF7FEFF 		bl	HAL_Delay
+  70              	.LVL5:
+  36:Core/Src/main.c ****   WriteUART_Blocking("---------------------------------------\r\n");
+  71              		.loc 1 36 3 view .LVU7
+  72 0018 184C     		ldr	r4, .L9
+  73 001a 2046     		mov	r0, r4
+  74 001c FFF7FEFF 		bl	WriteUART_Blocking
+  75              	.LVL6:
+  37:Core/Src/main.c ****   WriteUART_Blocking("System Boot: Hello from STM32 AML-BVAT!\r\n");
+  76              		.loc 1 37 3 view .LVU8
+  77 0020 1748     		ldr	r0, .L9+4
+  78 0022 FFF7FEFF 		bl	WriteUART_Blocking
+  79              	.LVL7:
+  38:Core/Src/main.c ****   WriteUART_Blocking("---------------------------------------\r\n");
+  80              		.loc 1 38 3 view .LVU9
+  81 0026 2046     		mov	r0, r4
+  82 0028 FFF7FEFF 		bl	WriteUART_Blocking
+  83              	.LVL8:
+  39:Core/Src/main.c **** 
+  40:Core/Src/main.c ****   // --- 3. I2C System Initialization and Sensor Verification ---
+  41:Core/Src/main.c ****   if (BVAT_I2C_Init()) { // This function initializes the I2C bus, pings the sensor, and enables it
+  84              		.loc 1 41 3 view .LVU10
+  85              		.loc 1 41 7 is_stmt 0 view .LVU11
+  86 002c FFF7FEFF 		bl	BVAT_I2C_Init
+  87              	.LVL9:
+  88              		.loc 1 41 6 discriminator 1 view .LVU12
+  89 0030 0446     		mov	r4, r0
+  90 0032 D0B9     		cbnz	r0, .L8
+  91              	.L2:
+  92              	.LVL10:
+  42:Core/Src/main.c ****                          // It prints its own detailed status messages.
+  43:Core/Src/main.c **** 
+  44:Core/Src/main.c ****       // Now, perform a detailed verification of the sensor's configuration.
+  45:Core/Src/main.c ****       if (Verify_LIS3DH_Sensor()) { // This new function is in command_handler.c
+  46:Core/Src/main.c ****           system_ready_for_logging = true;
+  47:Core/Src/main.c ****       }
+  48:Core/Src/main.c ****   }
+  49:Core/Src/main.c ****   
+  50:Core/Src/main.c ****   // --- 4. Final Setup Indication ---
+  51:Core/Src/main.c ****   indicate_setup_with_blinks(3, 100); // Visual cue that setup sequence is complete.
+  93              		.loc 1 51 3 is_stmt 1 view .LVU13
+  94 0034 6421     		movs	r1, #100
+  95 0036 0320     		movs	r0, #3
+  96 0038 FFF7FEFF 		bl	indicate_setup_with_blinks
+  97              	.LVL11:
+  52:Core/Src/main.c **** 
+  53:Core/Src/main.c ****   if (system_ready_for_logging) {
+  98              		.loc 1 53 3 view .LVU14
+  99              		.loc 1 53 6 is_stmt 0 view .LVU15
+ 100 003c CCB1     		cbz	r4, .L3
+  54:Core/Src/main.c ****     WriteUART_Blocking("System ready. Press USER button to start/stop logging.\r\n");
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s 			page 4
 
 
- 131 0046 6846     		mov	r0, sp
- 132 0048 FFF7FEFF 		bl	WriteUART_Blocking
- 133              	.LVL11:
-  53:Core/Src/main.c **** 
-  54:Core/Src/main.c ****     u8 ctrl_reg1 = readACC(LIS3DH_REG_CTRL_REG1);
- 134              		.loc 1 54 5 view .LVU18
- 135              		.loc 1 54 20 is_stmt 0 view .LVU19
- 136 004c 2020     		movs	r0, #32
- 137 004e FFF7FEFF 		bl	readACC
- 138              	.LVL12:
- 139              		.loc 1 54 8 discriminator 1 view .LVU20
- 140 0052 C6B2     		uxtb	r6, r0
- 141              	.LVL13:
-  55:Core/Src/main.c ****     sprintf(diag_buffer, "LIS3DH CTRL_REG1: 0x%02X (Expected: 0x%02X)\r\n", ctrl_reg1, ACC_CTRL_REG
- 142              		.loc 1 55 5 is_stmt 1 view .LVU21
- 143 0054 5723     		movs	r3, #87
- 144 0056 3246     		mov	r2, r6
- 145 0058 1A49     		ldr	r1, .L13+12
- 146 005a 6846     		mov	r0, sp
- 147 005c FFF7FEFF 		bl	sprintf
- 148              	.LVL14:
-  56:Core/Src/main.c ****     WriteUART_Blocking(diag_buffer);
- 149              		.loc 1 56 5 view .LVU22
- 150 0060 6846     		mov	r0, sp
- 151 0062 FFF7FEFF 		bl	WriteUART_Blocking
- 152              	.LVL15:
-  57:Core/Src/main.c **** 
-  58:Core/Src/main.c ****     if (who_am_i == LIS3DH_WHO_AM_I_EXPECTED_VAL && ctrl_reg1 == ACC_CTRL_REG1_CONFIG_100HZ) {
- 153              		.loc 1 58 5 view .LVU23
- 154              		.loc 1 58 8 is_stmt 0 view .LVU24
- 155 0066 332D     		cmp	r5, #51
- 156 0068 01D1     		bne	.L3
- 157              		.loc 1 58 50 discriminator 1 view .LVU25
- 158 006a 572E     		cmp	r6, #87
- 159 006c 04D0     		beq	.L11
- 160              	.L3:
-  59:Core/Src/main.c ****         WriteUART_Blocking("LIS3DH appears configured and ready!\r\n");
-  60:Core/Src/main.c ****         i2c_system_fully_ok = true;
-  61:Core/Src/main.c ****     } else {
-  62:Core/Src/main.c ****         WriteUART_Blocking("LIS3DH configuration mismatch or WHO_AM_I incorrect. Data reads might f
- 161              		.loc 1 62 9 is_stmt 1 view .LVU26
- 162 006e 1648     		ldr	r0, .L13+16
- 163 0070 FFF7FEFF 		bl	WriteUART_Blocking
- 164              	.LVL16:
-  63:Core/Src/main.c ****         i2c_system_fully_ok = false; // Or keep it as per I2C_connectivity_check's result
- 165              		.loc 1 63 9 view .LVU27
- 166              		.loc 1 63 29 is_stmt 0 view .LVU28
- 167 0074 0024     		movs	r4, #0
- 168 0076 06E0     		b	.L4
- 169              	.L11:
-  59:Core/Src/main.c ****         WriteUART_Blocking("LIS3DH appears configured and ready!\r\n");
- 170              		.loc 1 59 9 is_stmt 1 view .LVU29
- 171 0078 1448     		ldr	r0, .L13+20
- 172 007a FFF7FEFF 		bl	WriteUART_Blocking
- 173              	.LVL17:
-  60:Core/Src/main.c ****     } else {
- 174              		.loc 1 60 9 view .LVU30
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s 			page 6
+ 101              		.loc 1 54 5 is_stmt 1 view .LVU16
+ 102 003e 1148     		ldr	r0, .L9+8
+ 103 0040 FFF7FEFF 		bl	WriteUART_Blocking
+ 104              	.LVL12:
+ 105              	.L4:
+  55:Core/Src/main.c ****   } else {
+  56:Core/Src/main.c ****     WriteUART_Blocking("System setup complete, but I2C SENSOR ISSUE DETECTED.\r\n");
+  57:Core/Src/main.c ****   }
+  58:Core/Src/main.c ****   WriteUART_Blocking("---------------------------------------\r\n");
+ 106              		.loc 1 58 3 view .LVU17
+ 107 0044 0D48     		ldr	r0, .L9
+ 108 0046 FFF7FEFF 		bl	WriteUART_Blocking
+ 109              	.LVL13:
+ 110              	.L5:
+  59:Core/Src/main.c **** 
+  60:Core/Src/main.c ****   // --- 5. Main Execution Loop ---
+  61:Core/Src/main.c ****   while (1)
+ 111              		.loc 1 61 3 view .LVU18
+  62:Core/Src/main.c ****   {
+  63:Core/Src/main.c ****     // The main operational logic is now handled by measure_loop().
+  64:Core/Src/main.c ****     // It internally checks if logging is active.
+  65:Core/Src/main.c ****     measure_loop();
+ 112              		.loc 1 65 5 view .LVU19
+ 113 004a FFF7FEFF 		bl	measure_loop
+ 114              	.LVL14:
+  66:Core/Src/main.c ****     
+  67:Core/Src/main.c ****     // If logging is NOT active, perform an idle "heartbeat" blink.
+  68:Core/Src/main.c ****     // This shows the system is alive and waiting for a button press.
+  69:Core/Src/main.c ****     if (!g_is_logging_active) {
+ 115              		.loc 1 69 5 view .LVU20
+ 116              		.loc 1 69 9 is_stmt 0 view .LVU21
+ 117 004e 0E4B     		ldr	r3, .L9+12
+ 118 0050 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 119              		.loc 1 69 8 view .LVU22
+ 120 0052 002B     		cmp	r3, #0
+ 121 0054 F9D1     		bne	.L5
+  70:Core/Src/main.c ****         HAL_GPIO_TogglePin(g_builtinLed.pin.port, g_builtinLed.pin.pin);
+ 122              		.loc 1 70 9 is_stmt 1 view .LVU23
+ 123 0056 0D4B     		ldr	r3, .L9+16
+ 124 0058 9988     		ldrh	r1, [r3, #4]
+ 125 005a 1868     		ldr	r0, [r3]
+ 126 005c FFF7FEFF 		bl	HAL_GPIO_TogglePin
+ 127              	.LVL15:
+  71:Core/Src/main.c ****         HAL_Delay(500); // Slow heartbeat blink
+ 128              		.loc 1 71 9 view .LVU24
+ 129 0060 4FF4FA70 		mov	r0, #500
+ 130 0064 FFF7FEFF 		bl	HAL_Delay
+ 131              	.LVL16:
+ 132 0068 EFE7     		b	.L5
+ 133              	.LVL17:
+ 134              	.L8:
+  45:Core/Src/main.c ****           system_ready_for_logging = true;
+ 135              		.loc 1 45 7 view .LVU25
+  45:Core/Src/main.c ****           system_ready_for_logging = true;
+ 136              		.loc 1 45 11 is_stmt 0 view .LVU26
+ 137 006a FFF7FEFF 		bl	Verify_LIS3DH_Sensor
+ 138              	.LVL18:
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s 			page 5
 
 
-  60:Core/Src/main.c ****     } else {
- 175              		.loc 1 60 29 is_stmt 0 view .LVU31
- 176 007e 02E0     		b	.L4
- 177              	.LVL18:
- 178              	.L2:
-  60:Core/Src/main.c ****     } else {
- 179              		.loc 1 60 29 view .LVU32
- 180              	.LBE2:
-  64:Core/Src/main.c ****     }
-  65:Core/Src/main.c ****   } else {
-  66:Core/Src/main.c ****     WriteUART_Blocking("BVAT_I2C_Init reported failure (connectivity or enable).\r\n");
- 181              		.loc 1 66 5 is_stmt 1 view .LVU33
- 182 0080 1348     		ldr	r0, .L13+24
- 183 0082 FFF7FEFF 		bl	WriteUART_Blocking
- 184              	.LVL19:
-  67:Core/Src/main.c ****     i2c_system_fully_ok = false;
- 185              		.loc 1 67 5 view .LVU34
- 186              	.L4:
-  68:Core/Src/main.c ****   }
-  69:Core/Src/main.c **** 
-  70:Core/Src/main.c ****   indicate_setup_with_blinks(3, 100); // Visual cue
- 187              		.loc 1 70 3 view .LVU35
- 188 0086 6421     		movs	r1, #100
- 189 0088 0320     		movs	r0, #3
- 190 008a FFF7FEFF 		bl	indicate_setup_with_blinks
- 191              	.LVL20:
-  71:Core/Src/main.c **** 
-  72:Core/Src/main.c ****   if (i2c_system_fully_ok) {
- 192              		.loc 1 72 3 view .LVU36
- 193              		.loc 1 72 6 is_stmt 0 view .LVU37
- 194 008e 1CB1     		cbz	r4, .L5
-  73:Core/Src/main.c ****     WriteUART_Blocking("AML BVAT ready for measurements.\r\n");
- 195              		.loc 1 73 5 is_stmt 1 view .LVU38
- 196 0090 1048     		ldr	r0, .L13+28
- 197 0092 FFF7FEFF 		bl	WriteUART_Blocking
- 198              	.LVL21:
- 199 0096 09E0     		b	.L6
- 200              	.L5:
-  74:Core/Src/main.c ****   } else {
-  75:Core/Src/main.c ****     WriteUART_Blocking("AML BVAT I2C sensor issue. Measurements may not be accurate.\r\n");
- 201              		.loc 1 75 5 view .LVU39
- 202 0098 0F48     		ldr	r0, .L13+32
- 203 009a FFF7FEFF 		bl	WriteUART_Blocking
- 204              	.LVL22:
- 205 009e 05E0     		b	.L6
- 206              	.L12:
-  76:Core/Src/main.c ****   }
-  77:Core/Src/main.c **** 
-  78:Core/Src/main.c ****   while (1) {
-  79:Core/Src/main.c ****     if (i2c_system_fully_ok) { // Only attempt to read if setup was okay
-  80:Core/Src/main.c ****         read_I2C_Blocking(); // This function prints its own success/fail/data
- 207              		.loc 1 80 9 view .LVU40
- 208 00a0 FFF7FEFF 		bl	read_I2C_Blocking
- 209              	.LVL23:
- 210              	.L9:
-  81:Core/Src/main.c ****     } else {
-  82:Core/Src/main.c ****         // Optionally, periodically retry I2C init or just don't read
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s 			page 7
-
-
-  83:Core/Src/main.c ****         WriteUART_Blocking("Skipping I2C read due to earlier errors.\r\n");
-  84:Core/Src/main.c ****     }
-  85:Core/Src/main.c ****     indicate_setup_with_blinks(3, 100); // Blinks LEDs and adds delay
- 211              		.loc 1 85 5 view .LVU41
- 212 00a4 6421     		movs	r1, #100
- 213 00a6 0320     		movs	r0, #3
- 214 00a8 FFF7FEFF 		bl	indicate_setup_with_blinks
- 215              	.LVL24:
-  78:Core/Src/main.c ****     if (i2c_system_fully_ok) { // Only attempt to read if setup was okay
- 216              		.loc 1 78 9 view .LVU42
- 217              	.L6:
-  78:Core/Src/main.c ****     if (i2c_system_fully_ok) { // Only attempt to read if setup was okay
- 218              		.loc 1 78 3 view .LVU43
-  79:Core/Src/main.c ****         read_I2C_Blocking(); // This function prints its own success/fail/data
- 219              		.loc 1 79 5 view .LVU44
-  79:Core/Src/main.c ****         read_I2C_Blocking(); // This function prints its own success/fail/data
- 220              		.loc 1 79 8 is_stmt 0 view .LVU45
- 221 00ac 002C     		cmp	r4, #0
- 222 00ae F7D1     		bne	.L12
-  83:Core/Src/main.c ****     }
- 223              		.loc 1 83 9 is_stmt 1 view .LVU46
- 224 00b0 0A48     		ldr	r0, .L13+36
- 225 00b2 FFF7FEFF 		bl	WriteUART_Blocking
- 226              	.LVL25:
- 227 00b6 F5E7     		b	.L9
- 228              	.L14:
- 229              		.align	2
- 230              	.L13:
- 231 00b8 00000000 		.word	.LC0
- 232 00bc 20000000 		.word	.LC1
- 233 00c0 54000000 		.word	.LC2
- 234 00c4 84000000 		.word	.LC3
- 235 00c8 DC000000 		.word	.LC5
- 236 00cc B4000000 		.word	.LC4
- 237 00d0 2C010000 		.word	.LC6
- 238 00d4 68010000 		.word	.LC7
- 239 00d8 8C010000 		.word	.LC8
- 240 00dc CC010000 		.word	.LC9
- 241              		.cfi_endproc
- 242              	.LFE137:
- 244              		.text
- 245              	.Letext0:
- 246              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
- 247              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
- 248              		.file 4 "Core/Src/library/aml_hal.h"
- 249              		.file 5 "Core/Src/gpio_handler/gpio_handler.h"
- 250              		.file 6 "Core/Src/uart_handler/uart_handler.h"
- 251              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
- 252              		.file 8 "Core/Src/i2c_handler/i2c_handler.h"
- 253              		.file 9 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdio.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s 			page 8
+ 139 006e 0446     		mov	r4, r0
+ 140 0070 E0E7     		b	.L2
+ 141              	.LVL19:
+ 142              	.L3:
+  56:Core/Src/main.c ****   }
+ 143              		.loc 1 56 5 is_stmt 1 view .LVU27
+ 144 0072 0748     		ldr	r0, .L9+20
+ 145 0074 FFF7FEFF 		bl	WriteUART_Blocking
+ 146              	.LVL20:
+ 147 0078 E4E7     		b	.L4
+ 148              	.L10:
+ 149 007a 00BF     		.align	2
+ 150              	.L9:
+ 151 007c 00000000 		.word	.LC0
+ 152 0080 2C000000 		.word	.LC1
+ 153 0084 58000000 		.word	.LC2
+ 154 0088 00000000 		.word	g_is_logging_active
+ 155 008c 00000000 		.word	g_builtinLed
+ 156 0090 94000000 		.word	.LC3
+ 157              		.cfi_endproc
+ 158              	.LFE137:
+ 160              		.text
+ 161              	.Letext0:
+ 162              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+ 163              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 164              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
+ 165              		.file 5 "Core/Src/library/aml_hal.h"
+ 166              		.file 6 "Core/Src/gpio_handler/gpio_handler.h"
+ 167              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 168              		.file 8 "Core/Src/command_handler/command_handler.h"
+ 169              		.file 9 "Core/Src/i2c_handler/i2c_handler.h"
+ 170              		.file 10 "Core/Src/uart_handler/uart_handler.h"
+ 171              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s 			page 6
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s:21     .rodata.main.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s:57     .text.main:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s:63     .text.main:00000000 main
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccdVZzpU.s:231    .text.main:000000b8 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s:21     .rodata.main.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s:36     .text.main:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s:42     .text.main:00000000 main
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s:151    .text.main:0000007c $d
 
 UNDEFINED SYMBOLS
 AML_Init
 BuiltinLED_Init
+BuiltinPushButton_Init
+CommandHandler_Init
 HAL_Delay
 WriteUART_Blocking
 BVAT_I2C_Init
-readACC
-sprintf
 indicate_setup_with_blinks
-read_I2C_Blocking
+measure_loop
+HAL_GPIO_TogglePin
+Verify_LIS3DH_Sensor
+g_is_logging_active
+g_builtinLed

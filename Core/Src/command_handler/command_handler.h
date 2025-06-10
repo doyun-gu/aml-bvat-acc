@@ -3,23 +3,9 @@
 //==============================================================================
 // Includes
 //==============================================================================
-// Standard C Includes
-#include <stdio.h>      // For snprintf if used (though removed from .c for now)
-#include <string.h>     // For strlen if used
-#include <stdbool.h>    // For bool type
-
-// STM32 HAL Includes
-#include "stm32f4xx_hal.h"
-
-// Custom Project HAL/Type Includes
+#include <stdbool.h>      // For bool type
+#include "stm32f4xx_hal.h" // For core HAL types
 #include "aml_hal.h"       // For u32, u8 etc.
-
-// Other Project Modules
-#include "timer.h"         // For timer_handler
-#include "uart_handler.h"  // For WriteUART (though direct calls removed from .c)
-#include "i2c_handler.h"   // For I2C_ACC_Enable, I2C_Read_ACC, acc_enabled
-#include "gpio_handler.h"  // If any direct GPIO manipulation was needed (not currently)
-// #include "file_handler.h" // For SD card logging (currently commented out)
 
 //==============================================================================
 // Function Prototypes
@@ -33,22 +19,22 @@
 void CommandHandler_Init(void);
 
 /**
- * @brief Sets the status of I2C module readiness.
- * @param is_ready: true if the I2C peripheral and target device are initialized and ready, false otherwise.
- * @retval None
+ * @brief Performs detailed verification of the LIS3DH sensor after I2C initialization.
+ * @note  Reads the WHO_AM_I and configuration registers to confirm the sensor
+ * is present, correct, and properly configured. Prints detailed
+ * diagnostic messages via UART.
+ * @param None
+ * @retval bool: true if sensor verification is successful, false otherwise.
  */
-void CommandHandler_SetI2CReady(bool is_ready);
+bool Verify_LIS3DH_Sensor(void);
 
 /**
  * @brief Main measurement loop logic.
- * Checks I2C and accelerometer status, and periodically triggers an accelerometer data read.
- * Actual data processing and UART logging of accelerometer data is expected to occur
- * within I2C HAL callbacks (e.g., HAL_I2C_MemRxCpltCallback in i2c_handler.c).
+ * Checks if logging is active and periodically triggers an accelerometer data read.
  * @param None
  * @retval None
  */
 void measure_loop(void);
 
-// void log_to_sd(u32 timestamp, u8 x, u8 y, u8 z); // Kept commented as per original
-
 // #endif /* COMMAND_HANDLER_H */
+

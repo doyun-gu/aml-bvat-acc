@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s 			page 1
   28:Core/Src/stm32f4xx_it.c **** void NMI_Handler(void)
   29:Core/Src/stm32f4xx_it.c **** {
   29              		.loc 1 29 1 view -0
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s 			page 2
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s 			page 2
 
 
   30              		.cfi_startproc
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s 			page 1
   42:Core/Src/stm32f4xx_it.c **** /**
   43:Core/Src/stm32f4xx_it.c ****   * @brief This function handles Memory management fault.
   44:Core/Src/stm32f4xx_it.c ****   */
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s 			page 3
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s 			page 3
 
 
   45:Core/Src/stm32f4xx_it.c **** void MemManage_Handler(void) {
@@ -178,7 +178,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s 			page 1
  120              	.LFB141:
   56:Core/Src/stm32f4xx_it.c **** }
   57:Core/Src/stm32f4xx_it.c **** 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s 			page 4
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s 			page 4
 
 
   58:Core/Src/stm32f4xx_it.c **** /**
@@ -238,7 +238,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s 			page 1
   73:Core/Src/stm32f4xx_it.c **** /**
   74:Core/Src/stm32f4xx_it.c ****   * @brief This function handles Debug monitor.
   75:Core/Src/stm32f4xx_it.c ****   */
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s 			page 5
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s 			page 5
 
 
   76:Core/Src/stm32f4xx_it.c **** void DebugMon_Handler(void) {}
@@ -298,7 +298,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s 			page 1
  209              		.cfi_offset 14, -4
   88:Core/Src/stm32f4xx_it.c ****   HAL_IncTick();
  210              		.loc 1 88 3 view .LVU27
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s 			page 6
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s 			page 6
 
 
  211 0002 FFF7FEFF 		bl	HAL_IncTick
@@ -340,7 +340,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s 			page 1
  237 0002 0248     		ldr	r0, .L18
  238 0004 FFF7FEFF 		bl	HAL_UART_IRQHandler
  239              	.LVL1:
- 101:Core/Src/stm32f4xx_it.c **** }...
+ 101:Core/Src/stm32f4xx_it.c **** }
  240              		.loc 1 101 1 is_stmt 0 view .LVU31
  241 0008 08BD     		pop	{r3, pc}
  242              	.L19:
@@ -349,47 +349,89 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s 			page 1
  245 000c 00000000 		.word	huart2
  246              		.cfi_endproc
  247              	.LFE146:
- 249              		.text
- 250              	.Letext0:
- 251              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
- 252              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
- 253              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
- 254              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
- 255              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
- 256              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
- 257              		.file 8 "Core/Src/uart_handler/uart_handler.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s 			page 7
+ 249              		.section	.text.EXTI15_10_IRQHandler,"ax",%progbits
+ 250              		.align	1
+ 251              		.global	EXTI15_10_IRQHandler
+ 252              		.syntax unified
+ 253              		.thumb
+ 254              		.thumb_func
+ 256              	EXTI15_10_IRQHandler:
+ 257              	.LFB147:
+ 102:Core/Src/stm32f4xx_it.c **** 
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s 			page 7
 
 
- 258              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s 			page 8
+ 103:Core/Src/stm32f4xx_it.c **** void EXTI15_10_IRQHandler(void)
+ 104:Core/Src/stm32f4xx_it.c **** {
+ 258              		.loc 1 104 1 is_stmt 1 view -0
+ 259              		.cfi_startproc
+ 260              		@ args = 0, pretend = 0, frame = 0
+ 261              		@ frame_needed = 0, uses_anonymous_args = 0
+ 262 0000 08B5     		push	{r3, lr}
+ 263              	.LCFI2:
+ 264              		.cfi_def_cfa_offset 8
+ 265              		.cfi_offset 3, -8
+ 266              		.cfi_offset 14, -4
+ 105:Core/Src/stm32f4xx_it.c ****   /* USER CODE BEGIN EXTI15_10_IRQn 0 */
+ 106:Core/Src/stm32f4xx_it.c **** 
+ 107:Core/Src/stm32f4xx_it.c ****   /* USER CODE END EXTI15_10_IRQn 0 */
+ 108:Core/Src/stm32f4xx_it.c ****   // Check if the interrupt was triggered on Pin 13, then call the HAL handler.
+ 109:Core/Src/stm32f4xx_it.c ****   // The HAL handler will clear the interrupt flag and call your HAL_GPIO_EXTI_Callback.
+ 110:Core/Src/stm32f4xx_it.c ****   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_13);
+ 267              		.loc 1 110 3 view .LVU33
+ 268 0002 4FF40050 		mov	r0, #8192
+ 269 0006 FFF7FEFF 		bl	HAL_GPIO_EXTI_IRQHandler
+ 270              	.LVL2:
+ 111:Core/Src/stm32f4xx_it.c ****   /* USER CODE BEGIN EXTI15_10_IRQn 1 */
+ 112:Core/Src/stm32f4xx_it.c **** 
+ 113:Core/Src/stm32f4xx_it.c ****   /* USER CODE END EXTI15_10_IRQn 1 */
+ 114:Core/Src/stm32f4xx_it.c **** }...
+ 271              		.loc 1 114 1 is_stmt 0 view .LVU34
+ 272 000a 08BD     		pop	{r3, pc}
+ 273              		.cfi_endproc
+ 274              	.LFE147:
+ 276              		.text
+ 277              	.Letext0:
+ 278              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+ 279              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 280              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
+ 281              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 282              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 283              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 284              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 285              		.file 9 "Core/Src/uart_handler/uart_handler.h"
+ 286              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_it.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:21     .text.NMI_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:27     .text.NMI_Handler:00000000 NMI_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:44     .text.HardFault_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:50     .text.HardFault_Handler:00000000 HardFault_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:67     .text.MemManage_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:73     .text.MemManage_Handler:00000000 MemManage_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:90     .text.BusFault_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:96     .text.BusFault_Handler:00000000 BusFault_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:113    .text.UsageFault_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:119    .text.UsageFault_Handler:00000000 UsageFault_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:136    .text.SVC_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:142    .text.SVC_Handler:00000000 SVC_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:155    .text.DebugMon_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:161    .text.DebugMon_Handler:00000000 DebugMon_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:174    .text.PendSV_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:180    .text.PendSV_Handler:00000000 PendSV_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:193    .text.SysTick_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:199    .text.SysTick_Handler:00000000 SysTick_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:219    .text.USART2_IRQHandler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:225    .text.USART2_IRQHandler:00000000 USART2_IRQHandler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccElFclf.s:245    .text.USART2_IRQHandler:0000000c $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:21     .text.NMI_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:27     .text.NMI_Handler:00000000 NMI_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:44     .text.HardFault_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:50     .text.HardFault_Handler:00000000 HardFault_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:67     .text.MemManage_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:73     .text.MemManage_Handler:00000000 MemManage_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:90     .text.BusFault_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:96     .text.BusFault_Handler:00000000 BusFault_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:113    .text.UsageFault_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:119    .text.UsageFault_Handler:00000000 UsageFault_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:136    .text.SVC_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:142    .text.SVC_Handler:00000000 SVC_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:155    .text.DebugMon_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:161    .text.DebugMon_Handler:00000000 DebugMon_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:174    .text.PendSV_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:180    .text.PendSV_Handler:00000000 PendSV_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:193    .text.SysTick_Handler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:199    .text.SysTick_Handler:00000000 SysTick_Handler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:219    .text.USART2_IRQHandler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:225    .text.USART2_IRQHandler:00000000 USART2_IRQHandler
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:245    .text.USART2_IRQHandler:0000000c $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:250    .text.EXTI15_10_IRQHandler:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccd3nnes.s:256    .text.EXTI15_10_IRQHandler:00000000 EXTI15_10_IRQHandler
 
 UNDEFINED SYMBOLS
 HAL_IncTick
 HAL_UART_IRQHandler
 huart2
+HAL_GPIO_EXTI_IRQHandler

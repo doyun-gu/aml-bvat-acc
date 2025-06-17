@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s 			page 1
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -20,550 +20,1046 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s 			page 1
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
   19              		.file 1 "Core/Src/command_handler/command_handler.c"
-  20              		.section	.text.CommandHandler_Init,"ax",%progbits
-  21              		.align	1
-  22              		.global	CommandHandler_Init
-  23              		.syntax unified
-  24              		.thumb
-  25              		.thumb_func
-  27              	CommandHandler_Init:
-  28              	.LFB137:
+  20              		.section	.rodata.get_all_sensor_data.str1.4,"aMS",%progbits,1
+  21              		.align	2
+  22              	.LC0:
+  23 0000 5741524E 		.ascii	"WARNING: LIS3DH_Read_Accel_Data returned false\015\012"
+  23      494E473A 
+  23      204C4953 
+  23      3344485F 
+  23      52656164 
+  24 0030 00       		.ascii	"\000"
+  25              		.section	.text.get_all_sensor_data,"ax",%progbits
+  26              		.align	1
+  27              		.syntax unified
+  28              		.thumb
+  29              		.thumb_func
+  31              	get_all_sensor_data:
+  32              	.LFB143:
    1:Core/Src/command_handler/command_handler.c **** /**
    2:Core/Src/command_handler/command_handler.c ****   ******************************************************************************
    3:Core/Src/command_handler/command_handler.c ****   * @file    command_handler.c
-   4:Core/Src/command_handler/command_handler.c ****   * @brief   This file handles high-level command logic, timing for measurements,
-   5:Core/Src/command_handler/command_handler.c ****   * and triggering data acquisition.
-   6:Core/Src/command_handler/command_handler.c ****   ******************************************************************************
-   7:Core/Src/command_handler/command_handler.c ****   */
-   8:Core/Src/command_handler/command_handler.c **** 
-   9:Core/Src/command_handler/command_handler.c **** /* Includes ------------------------------------------------------------------*/
-  10:Core/Src/command_handler/command_handler.c **** #include "command_handler.h"
-  11:Core/Src/command_handler/command_handler.c **** #include "i2c_handler.h"
-  12:Core/Src/command_handler/command_handler.c **** #include "uart_handler.h"
-  13:Core/Src/command_handler/command_handler.c **** #include "timer.h"
-  14:Core/Src/command_handler/command_handler.c **** #include "gps_handler.h"
-  15:Core/Src/command_handler/command_handler.c **** #include <stdio.h>
-  16:Core/Src/command_handler/command_handler.c **** 
-  17:Core/Src/command_handler/command_handler.c **** /* Private define ------------------------------------------------------------*/
-  18:Core/Src/command_handler/command_handler.c **** #define MEASUREMENT_INTERVAL_MS 1000 // Log a data packet once per second
-  19:Core/Src/command_handler/command_handler.c **** #define GPS_FIX_TIMEOUT_MS      300000   // Timeout for getting a GPS fix (5 minutes)
-  20:Core/Src/command_handler/command_handler.c **** 
-  21:Core/Src/command_handler/command_handler.c **** /* Private variables ---------------------------------------------------------*/
-  22:Core/Src/command_handler/command_handler.c **** static u32 s_measurement_timer = 0;
+   4:Core/Src/command_handler/command_handler.c ****   * @brief   This file handles the main application logic and state machine.
+   5:Core/Src/command_handler/command_handler.c ****   ******************************************************************************
+   6:Core/Src/command_handler/command_handler.c ****   */
+   7:Core/Src/command_handler/command_handler.c **** 
+   8:Core/Src/command_handler/command_handler.c **** #include "command_handler.h"
+   9:Core/Src/command_handler/command_handler.c **** #include "i2c_handler.h"
+  10:Core/Src/command_handler/command_handler.c **** #include "uart_handler.h"
+  11:Core/Src/command_handler/command_handler.c **** #include "timer.h"
+  12:Core/Src/command_handler/command_handler.c **** #include "gps_handler.h"
+  13:Core/Src/command_handler/command_handler.c **** #include <stdio.h>
+  14:Core/Src/command_handler/command_handler.c **** #include <string.h>
+  15:Core/Src/command_handler/command_handler.c **** 
+  16:Core/Src/command_handler/command_handler.c **** /* External debug flag for GPS output */
+  17:Core/Src/command_handler/command_handler.c **** extern bool g_gps_debug_output_enabled;
+  18:Core/Src/command_handler/command_handler.c **** 
+  19:Core/Src/command_handler/command_handler.c **** /* Defines ------------------------------------------------------------*/
+  20:Core/Src/command_handler/command_handler.c **** #define MEASUREMENT_INTERVAL_MS 1000  // Log a data packet once per second
+  21:Core/Src/command_handler/command_handler.c **** #define IDLE_BLINK_INTERVAL_MS  1000  // Blink the LED once per second in idle mode
+  22:Core/Src/command_handler/command_handler.c **** #define GPS_FIX_TIMEOUT_MS      300000 // 5 minutes
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 2
+
+
   23:Core/Src/command_handler/command_handler.c **** 
-  24:Core/Src/command_handler/command_handler.c **** /* Exported functions --------------------------------------------------------*/
-  25:Core/Src/command_handler/command_handler.c **** 
-  26:Core/Src/command_handler/command_handler.c **** void CommandHandler_Init(void) {
-  29              		.loc 1 26 32 view -0
-  30              		.cfi_startproc
-  31              		@ args = 0, pretend = 0, frame = 0
-  32              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s 			page 2
-
-
-  33 0000 08B5     		push	{r3, lr}
-  34              	.LCFI0:
-  35              		.cfi_def_cfa_offset 8
-  36              		.cfi_offset 3, -8
-  37              		.cfi_offset 14, -4
-  27:Core/Src/command_handler/command_handler.c ****     s_measurement_timer = HAL_GetTick();
-  38              		.loc 1 27 5 view .LVU1
-  39              		.loc 1 27 27 is_stmt 0 view .LVU2
-  40 0002 FFF7FEFF 		bl	HAL_GetTick
-  41              	.LVL0:
-  42              		.loc 1 27 25 discriminator 1 view .LVU3
-  43 0006 014B     		ldr	r3, .L3
-  44 0008 1860     		str	r0, [r3]
-  28:Core/Src/command_handler/command_handler.c **** }
-  45              		.loc 1 28 1 view .LVU4
-  46 000a 08BD     		pop	{r3, pc}
-  47              	.L4:
-  48              		.align	2
-  49              	.L3:
-  50 000c 00000000 		.word	s_measurement_timer
-  51              		.cfi_endproc
-  52              	.LFE137:
-  54              		.section	.rodata.Verify_LIS3DH_Sensor.str1.4,"aMS",%progbits,1
-  55              		.align	2
-  56              	.LC0:
-  57 0000 56657269 		.ascii	"Verifying LIS3DH Sensor State...\015\012\000"
-  57      6679696E 
-  57      67204C49 
-  57      53334448 
-  57      2053656E 
-  58 0023 00       		.align	2
-  59              	.LC1:
-  60 0024 52656164 		.ascii	"Read WHO_AM_I: 0x%02X (Expected: 0x%02X)\015\012\000"
-  60      2057484F 
-  60      5F414D5F 
-  60      493A2030 
-  60      78253032 
-  61 004f 00       		.align	2
-  62              	.LC2:
-  63 0050 52656164 		.ascii	"Read CTRL_REG1: 0x%02X (Expected: 0x%02X)\015\012\000"
-  63      20435452 
-  63      4C5F5245 
-  63      47313A20 
-  63      30782530 
-  64              		.align	2
-  65              	.LC3:
-  66 007c 53554343 		.ascii	"SUCCESS: LIS3DH sensor verification passed!\015\012"
-  66      4553533A 
-  66      204C4953 
-  66      33444820 
-  66      73656E73 
-  67 00a9 00       		.ascii	"\000"
-  68 00aa 0000     		.align	2
-  69              	.LC4:
-  70 00ac 4552524F 		.ascii	"ERROR: LIS3DH verification failed.\015\012\000"
-  70      523A204C 
-  70      49533344 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s 			page 3
-
-
-  70      48207665 
-  70      72696669 
-  71              		.section	.text.Verify_LIS3DH_Sensor,"ax",%progbits
-  72              		.align	1
-  73              		.global	Verify_LIS3DH_Sensor
-  74              		.syntax unified
-  75              		.thumb
-  76              		.thumb_func
-  78              	Verify_LIS3DH_Sensor:
-  79              	.LFB138:
-  29:Core/Src/command_handler/command_handler.c **** 
-  30:Core/Src/command_handler/command_handler.c **** bool Verify_LIS3DH_Sensor(void) {
-  80              		.loc 1 30 33 is_stmt 1 view -0
-  81              		.cfi_startproc
-  82              		@ args = 0, pretend = 0, frame = 128
-  83              		@ frame_needed = 0, uses_anonymous_args = 0
-  84 0000 30B5     		push	{r4, r5, lr}
-  85              	.LCFI1:
-  86              		.cfi_def_cfa_offset 12
-  87              		.cfi_offset 4, -12
-  88              		.cfi_offset 5, -8
-  89              		.cfi_offset 14, -4
-  90 0002 A1B0     		sub	sp, sp, #132
-  91              	.LCFI2:
-  92              		.cfi_def_cfa_offset 144
-  31:Core/Src/command_handler/command_handler.c ****     char diag_buffer[128];
-  93              		.loc 1 31 5 view .LVU6
-  32:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking("Verifying LIS3DH Sensor State...\r\n");
-  94              		.loc 1 32 5 view .LVU7
-  95 0004 1748     		ldr	r0, .L10
-  96 0006 FFF7FEFF 		bl	WriteUART_Blocking
-  97              	.LVL1:
-  33:Core/Src/command_handler/command_handler.c ****     HAL_Delay(10);
-  98              		.loc 1 33 5 view .LVU8
-  99 000a 0A20     		movs	r0, #10
- 100 000c FFF7FEFF 		bl	HAL_Delay
- 101              	.LVL2:
-  34:Core/Src/command_handler/command_handler.c ****     u8 who_am_i = readACC(LIS3DH_REG_WHO_AM_I);
- 102              		.loc 1 34 5 view .LVU9
- 103              		.loc 1 34 19 is_stmt 0 view .LVU10
- 104 0010 0F20     		movs	r0, #15
- 105 0012 FFF7FEFF 		bl	readACC
- 106              	.LVL3:
- 107 0016 0446     		mov	r4, r0
- 108              	.LVL4:
-  35:Core/Src/command_handler/command_handler.c ****     sprintf(diag_buffer, "Read WHO_AM_I: 0x%02X (Expected: 0x%02X)\r\n", who_am_i, LIS3DH_WHO_AM_I_
- 109              		.loc 1 35 5 is_stmt 1 view .LVU11
- 110 0018 3323     		movs	r3, #51
- 111 001a 0246     		mov	r2, r0
- 112 001c 1249     		ldr	r1, .L10+4
- 113 001e 6846     		mov	r0, sp
- 114              	.LVL5:
- 115              		.loc 1 35 5 is_stmt 0 view .LVU12
- 116 0020 FFF7FEFF 		bl	sprintf
- 117              	.LVL6:
-  36:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking(diag_buffer);
- 118              		.loc 1 36 5 is_stmt 1 view .LVU13
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s 			page 4
-
-
- 119 0024 6846     		mov	r0, sp
- 120 0026 FFF7FEFF 		bl	WriteUART_Blocking
- 121              	.LVL7:
-  37:Core/Src/command_handler/command_handler.c ****     u8 ctrl_reg1 = readACC(LIS3DH_REG_CTRL_REG1);
- 122              		.loc 1 37 5 view .LVU14
- 123              		.loc 1 37 20 is_stmt 0 view .LVU15
- 124 002a 2020     		movs	r0, #32
- 125 002c FFF7FEFF 		bl	readACC
- 126              	.LVL8:
- 127 0030 0546     		mov	r5, r0
- 128              	.LVL9:
-  38:Core/Src/command_handler/command_handler.c ****     sprintf(diag_buffer, "Read CTRL_REG1: 0x%02X (Expected: 0x%02X)\r\n", ctrl_reg1, ACC_CTRL_REG1_
- 129              		.loc 1 38 5 is_stmt 1 view .LVU16
- 130 0032 5723     		movs	r3, #87
- 131 0034 0246     		mov	r2, r0
- 132 0036 0D49     		ldr	r1, .L10+8
- 133 0038 6846     		mov	r0, sp
- 134              	.LVL10:
- 135              		.loc 1 38 5 is_stmt 0 view .LVU17
- 136 003a FFF7FEFF 		bl	sprintf
- 137              	.LVL11:
-  39:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking(diag_buffer);
- 138              		.loc 1 39 5 is_stmt 1 view .LVU18
- 139 003e 6846     		mov	r0, sp
- 140 0040 FFF7FEFF 		bl	WriteUART_Blocking
- 141              	.LVL12:
-  40:Core/Src/command_handler/command_handler.c ****     if (who_am_i == LIS3DH_WHO_AM_I_EXPECTED_VAL && ctrl_reg1 == ACC_CTRL_REG1_CONFIG_100HZ) {
- 142              		.loc 1 40 5 view .LVU19
- 143              		.loc 1 40 8 is_stmt 0 view .LVU20
- 144 0044 332C     		cmp	r4, #51
- 145 0046 01D1     		bne	.L6
- 146              		.loc 1 40 50 discriminator 1 view .LVU21
- 147 0048 572D     		cmp	r5, #87
- 148 004a 05D0     		beq	.L9
- 149              	.L6:
-  41:Core/Src/command_handler/command_handler.c ****         WriteUART_Blocking("SUCCESS: LIS3DH sensor verification passed!\r\n");
-  42:Core/Src/command_handler/command_handler.c ****         return true;
-  43:Core/Src/command_handler/command_handler.c ****     } else {
-  44:Core/Src/command_handler/command_handler.c ****         WriteUART_Blocking("ERROR: LIS3DH verification failed.\r\n");
- 150              		.loc 1 44 9 is_stmt 1 view .LVU22
- 151 004c 0848     		ldr	r0, .L10+12
- 152 004e FFF7FEFF 		bl	WriteUART_Blocking
- 153              	.LVL13:
-  45:Core/Src/command_handler/command_handler.c ****         return false;
- 154              		.loc 1 45 9 view .LVU23
- 155              		.loc 1 45 16 is_stmt 0 view .LVU24
- 156 0052 0020     		movs	r0, #0
- 157              	.L7:
-  46:Core/Src/command_handler/command_handler.c ****     }
-  47:Core/Src/command_handler/command_handler.c **** }
- 158              		.loc 1 47 1 view .LVU25
- 159 0054 21B0     		add	sp, sp, #132
- 160              	.LCFI3:
- 161              		.cfi_remember_state
- 162              		.cfi_def_cfa_offset 12
- 163              		@ sp needed
- 164 0056 30BD     		pop	{r4, r5, pc}
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s 			page 5
-
-
- 165              	.L9:
- 166              	.LCFI4:
- 167              		.cfi_restore_state
-  41:Core/Src/command_handler/command_handler.c ****         return true;
- 168              		.loc 1 41 9 is_stmt 1 view .LVU26
- 169 0058 0648     		ldr	r0, .L10+16
- 170 005a FFF7FEFF 		bl	WriteUART_Blocking
- 171              	.LVL14:
-  42:Core/Src/command_handler/command_handler.c ****     } else {
- 172              		.loc 1 42 9 view .LVU27
-  42:Core/Src/command_handler/command_handler.c ****     } else {
- 173              		.loc 1 42 16 is_stmt 0 view .LVU28
- 174 005e 0120     		movs	r0, #1
- 175 0060 F8E7     		b	.L7
- 176              	.L11:
- 177 0062 00BF     		.align	2
- 178              	.L10:
- 179 0064 00000000 		.word	.LC0
- 180 0068 24000000 		.word	.LC1
- 181 006c 50000000 		.word	.LC2
- 182 0070 AC000000 		.word	.LC4
- 183 0074 7C000000 		.word	.LC3
- 184              		.cfi_endproc
- 185              	.LFE138:
- 187              		.section	.rodata.Check_GPS_Status.str1.4,"aMS",%progbits,1
- 188              		.align	2
- 189              	.LC5:
- 190 0000 57616974 		.ascii	"Waiting for GPS fix... (This can take several minut"
- 190      696E6720 
- 190      666F7220 
- 190      47505320 
- 190      6669782E 
- 191 0033 6573290D 		.ascii	"es)\015\012\000"
- 191      0A00
- 192 0039 000000   		.align	2
- 193              	.LC6:
- 194 003c 4552524F 		.ascii	"ERROR: Timed out waiting for GPS fix.\015\012\000"
- 194      523A2054 
- 194      696D6564 
- 194      206F7574 
- 194      20776169 
- 195              		.align	2
- 196              	.LC7:
- 197 0064 53554343 		.ascii	"SUCCESS: GPS fix acquired.\015\012\000"
- 197      4553533A 
- 197      20475053 
- 197      20666978 
- 197      20616371 
- 198              		.section	.text.Check_GPS_Status,"ax",%progbits
- 199              		.align	1
- 200              		.global	Check_GPS_Status
- 201              		.syntax unified
- 202              		.thumb
- 203              		.thumb_func
- 205              	Check_GPS_Status:
- 206              	.LFB139:
+  24:Core/Src/command_handler/command_handler.c **** /* Private Variables ---------------------------------------------------------*/
+  25:Core/Src/command_handler/command_handler.c **** static u32 s_measurement_timer = 0;
+  26:Core/Src/command_handler/command_handler.c **** static u32 s_idle_blink_timer = 0;
+  27:Core/Src/command_handler/command_handler.c **** static SensorData_t s_latest_sensor_data; // A single struct to hold all sensor data
+  28:Core/Src/command_handler/command_handler.c **** 
+  29:Core/Src/command_handler/command_handler.c **** /* Private Function Prototypes -----------------------------------------------*/
+  30:Core/Src/command_handler/command_handler.c **** static void get_all_sensor_data(void);
+  31:Core/Src/command_handler/command_handler.c **** static void log_all_sensor_data(void);
+  32:Core/Src/command_handler/command_handler.c **** static void handle_idle_state(void);
+  33:Core/Src/command_handler/command_handler.c **** static void handle_logging_state(void);
+  34:Core/Src/command_handler/command_handler.c **** 
+  35:Core/Src/command_handler/command_handler.c **** 
+  36:Core/Src/command_handler/command_handler.c **** /* Public Functions --------------------------------------------------------*/
+  37:Core/Src/command_handler/command_handler.c **** 
+  38:Core/Src/command_handler/command_handler.c **** void CommandHandler_Init(void) {
+  39:Core/Src/command_handler/command_handler.c ****     s_measurement_timer = HAL_GetTick();
+  40:Core/Src/command_handler/command_handler.c ****     s_idle_blink_timer = HAL_GetTick();
+  41:Core/Src/command_handler/command_handler.c ****     memset(&s_latest_sensor_data, 0, sizeof(SensorData_t));
+  42:Core/Src/command_handler/command_handler.c **** }
+  43:Core/Src/command_handler/command_handler.c **** 
+  44:Core/Src/command_handler/command_handler.c **** void measure_loop(void) {
+  45:Core/Src/command_handler/command_handler.c ****     // The GPS DMA buffer needs to be processed continuously in the background
+  46:Core/Src/command_handler/command_handler.c ****     // regardless of the logging state, to keep it from overflowing.
+  47:Core/Src/command_handler/command_handler.c ****     GPS_Process_Buffer();
   48:Core/Src/command_handler/command_handler.c **** 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s 			page 6
+  49:Core/Src/command_handler/command_handler.c ****     // This is the core state machine.
+  50:Core/Src/command_handler/command_handler.c ****     if (g_is_logging_active) {
+  51:Core/Src/command_handler/command_handler.c ****         handle_logging_state();
+  52:Core/Src/command_handler/command_handler.c ****     } else {
+  53:Core/Src/command_handler/command_handler.c ****         handle_idle_state();
+  54:Core/Src/command_handler/command_handler.c ****     }
+  55:Core/Src/command_handler/command_handler.c **** }
+  56:Core/Src/command_handler/command_handler.c **** 
+  57:Core/Src/command_handler/command_handler.c **** bool Verify_LIS3DH_Sensor(void) {
+  58:Core/Src/command_handler/command_handler.c ****     char diag_buffer[128];
+  59:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking("Verifying LIS3DH Sensor State...\r\n");
+  60:Core/Src/command_handler/command_handler.c ****     HAL_Delay(10);
+  61:Core/Src/command_handler/command_handler.c ****     u8 who_am_i = readACC(LIS3DH_REG_WHO_AM_I);
+  62:Core/Src/command_handler/command_handler.c ****     sprintf(diag_buffer, "Read WHO_AM_I: 0x%02X (Expected: 0x%02X)\r\n", who_am_i, LIS3DH_WHO_AM_I_
+  63:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking(diag_buffer);
+  64:Core/Src/command_handler/command_handler.c ****     u8 ctrl_reg1 = readACC(LIS3DH_REG_CTRL_REG1);
+  65:Core/Src/command_handler/command_handler.c ****     sprintf(diag_buffer, "Read CTRL_REG1: 0x%02X (Expected: 0x%02X)\r\n", ctrl_reg1, ACC_CTRL_REG1_
+  66:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking(diag_buffer);
+  67:Core/Src/command_handler/command_handler.c ****     if (who_am_i == LIS3DH_WHO_AM_I_EXPECTED_VAL && ctrl_reg1 == ACC_CTRL_REG1_CONFIG_100HZ) {
+  68:Core/Src/command_handler/command_handler.c ****         WriteUART_Blocking("SUCCESS: LIS3DH sensor verification passed!\r\n");
+  69:Core/Src/command_handler/command_handler.c ****         return true;
+  70:Core/Src/command_handler/command_handler.c ****     } else {
+  71:Core/Src/command_handler/command_handler.c ****         WriteUART_Blocking("ERROR: LIS3DH verification failed.\r\n");
+  72:Core/Src/command_handler/command_handler.c ****         return false;
+  73:Core/Src/command_handler/command_handler.c ****     }
+  74:Core/Src/command_handler/command_handler.c **** }
+  75:Core/Src/command_handler/command_handler.c **** 
+  76:Core/Src/command_handler/command_handler.c **** bool Check_GPS_Status(void) {
+  77:Core/Src/command_handler/command_handler.c ****     uint32_t start_time = HAL_GetTick();
+  78:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking("Waiting for GPS fix... (This can take several minutes)\r\n");
+  79:Core/Src/command_handler/command_handler.c **** 
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 3
 
 
-  49:Core/Src/command_handler/command_handler.c **** /**
-  50:Core/Src/command_handler/command_handler.c ****  * @brief Checks for a valid GPS fix, with a timeout.
-  51:Core/Src/command_handler/command_handler.c ****  * @note  This is a blocking function that will loop until a fix is acquired
-  52:Core/Src/command_handler/command_handler.c ****  * or the timeout is reached. It provides visual feedback while searching.
-  53:Core/Src/command_handler/command_handler.c ****  * @retval bool: true if a valid GPS fix was acquired, false if it timed out.
-  54:Core/Src/command_handler/command_handler.c ****  */
-  55:Core/Src/command_handler/command_handler.c **** bool Check_GPS_Status(void) {
- 207              		.loc 1 55 29 is_stmt 1 view -0
- 208              		.cfi_startproc
- 209              		@ args = 0, pretend = 0, frame = 0
- 210              		@ frame_needed = 0, uses_anonymous_args = 0
- 211 0000 38B5     		push	{r3, r4, r5, lr}
- 212              	.LCFI5:
- 213              		.cfi_def_cfa_offset 16
- 214              		.cfi_offset 3, -16
- 215              		.cfi_offset 4, -12
- 216              		.cfi_offset 5, -8
- 217              		.cfi_offset 14, -4
-  56:Core/Src/command_handler/command_handler.c ****     uint32_t start_time = HAL_GetTick();
- 218              		.loc 1 56 5 view .LVU30
- 219              		.loc 1 56 27 is_stmt 0 view .LVU31
- 220 0002 FFF7FEFF 		bl	HAL_GetTick
+  80:Core/Src/command_handler/command_handler.c ****     uint8_t retry_count = 0;
+  81:Core/Src/command_handler/command_handler.c **** 
+  82:Core/Src/command_handler/command_handler.c ****     while (retry_count < 50) {  // ~5 seconds
+  83:Core/Src/command_handler/command_handler.c ****         GPS_Process_Buffer();
+  84:Core/Src/command_handler/command_handler.c ****         if (GPS_Get_Latest_Data(NULL)) {
+  85:Core/Src/command_handler/command_handler.c ****             WriteUART_Blocking("SUCCESS: GPS fix acquired.\r\n");
+  86:Core/Src/command_handler/command_handler.c ****             WriteDigitalOut(&g_builtinLed, 0);
+  87:Core/Src/command_handler/command_handler.c ****             return true;
+  88:Core/Src/command_handler/command_handler.c ****         }
+  89:Core/Src/command_handler/command_handler.c ****         HAL_GPIO_TogglePin(g_builtinLed.pin.port, g_builtinLed.pin.pin);
+  90:Core/Src/command_handler/command_handler.c ****         HAL_Delay(100);
+  91:Core/Src/command_handler/command_handler.c ****         retry_count++;
+  92:Core/Src/command_handler/command_handler.c ****     }
+  93:Core/Src/command_handler/command_handler.c **** 
+  94:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking("ERROR: GPS fix not detected. Continuing without GPS.\r\n");
+  95:Core/Src/command_handler/command_handler.c ****     WriteDigitalOut(&g_builtinLed, 0);
+  96:Core/Src/command_handler/command_handler.c ****     return false;
+  97:Core/Src/command_handler/command_handler.c **** }
+  98:Core/Src/command_handler/command_handler.c **** 
+  99:Core/Src/command_handler/command_handler.c **** /* Private Functions --------------------------------------------------------*/
+ 100:Core/Src/command_handler/command_handler.c **** 
+ 101:Core/Src/command_handler/command_handler.c **** static void handle_idle_state(void) {
+ 102:Core/Src/command_handler/command_handler.c ****     g_gps_debug_output_enabled = false;  // Disable GPS debug output
+ 103:Core/Src/command_handler/command_handler.c **** 
+ 104:Core/Src/command_handler/command_handler.c ****     // Slow LED heartbeat to show system is idle
+ 105:Core/Src/command_handler/command_handler.c ****     if (timer_handler(IDLE_BLINK_INTERVAL_MS, &s_idle_blink_timer)) {
+ 106:Core/Src/command_handler/command_handler.c ****         HAL_GPIO_TogglePin(g_builtinLed.pin.port, g_builtinLed.pin.pin);
+ 107:Core/Src/command_handler/command_handler.c ****     }
+ 108:Core/Src/command_handler/command_handler.c **** }
+ 109:Core/Src/command_handler/command_handler.c **** 
+ 110:Core/Src/command_handler/command_handler.c **** static void handle_logging_state(void) {
+ 111:Core/Src/command_handler/command_handler.c ****     g_gps_debug_output_enabled = true;  // Enable GPS debug output
+ 112:Core/Src/command_handler/command_handler.c **** 
+ 113:Core/Src/command_handler/command_handler.c ****     WriteDigitalOut(&g_builtinLed, 1); // Solid LED ON
+ 114:Core/Src/command_handler/command_handler.c ****     if (timer_handler(MEASUREMENT_INTERVAL_MS, &s_measurement_timer)) {
+ 115:Core/Src/command_handler/command_handler.c ****         get_all_sensor_data();
+ 116:Core/Src/command_handler/command_handler.c ****         log_all_sensor_data();
+ 117:Core/Src/command_handler/command_handler.c ****     }
+ 118:Core/Src/command_handler/command_handler.c **** }
+ 119:Core/Src/command_handler/command_handler.c **** 
+ 120:Core/Src/command_handler/command_handler.c **** static void get_all_sensor_data(void) {
+  33              		.loc 1 120 39 view -0
+  34              		.cfi_startproc
+  35              		@ args = 0, pretend = 0, frame = 0
+  36              		@ frame_needed = 0, uses_anonymous_args = 0
+  37 0000 10B5     		push	{r4, lr}
+  38              	.LCFI0:
+  39              		.cfi_def_cfa_offset 8
+  40              		.cfi_offset 4, -8
+  41              		.cfi_offset 14, -4
+ 121:Core/Src/command_handler/command_handler.c ****     GPS_Get_Latest_Data(&s_latest_sensor_data.gps_data);
+  42              		.loc 1 121 5 view .LVU1
+  43 0002 0B4C     		ldr	r4, .L5
+  44 0004 2046     		mov	r0, r4
+  45 0006 FFF7FEFF 		bl	GPS_Get_Latest_Data
+  46              	.LVL0:
+ 122:Core/Src/command_handler/command_handler.c **** 
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 4
+
+
+ 123:Core/Src/command_handler/command_handler.c ****     bool success = LIS3DH_Read_Accel_Data(
+  47              		.loc 1 123 5 view .LVU2
+  48              		.loc 1 123 20 is_stmt 0 view .LVU3
+  49 000a 04F12002 		add	r2, r4, #32
+  50 000e 04F11C01 		add	r1, r4, #28
+  51 0012 04F11800 		add	r0, r4, #24
+  52 0016 FFF7FEFF 		bl	LIS3DH_Read_Accel_Data
+  53              	.LVL1:
+ 124:Core/Src/command_handler/command_handler.c ****         &s_latest_sensor_data.accel_x_g,
+ 125:Core/Src/command_handler/command_handler.c ****         &s_latest_sensor_data.accel_y_g,
+ 126:Core/Src/command_handler/command_handler.c ****         &s_latest_sensor_data.accel_z_g);
+ 127:Core/Src/command_handler/command_handler.c **** 
+ 128:Core/Src/command_handler/command_handler.c ****     if (!success) {
+  54              		.loc 1 128 5 is_stmt 1 view .LVU4
+  55              		.loc 1 128 8 is_stmt 0 view .LVU5
+  56 001a 00B1     		cbz	r0, .L4
+  57              	.LVL2:
+  58              	.L1:
+ 129:Core/Src/command_handler/command_handler.c ****         WriteUART_Blocking("WARNING: LIS3DH_Read_Accel_Data returned false\r\n");
+ 130:Core/Src/command_handler/command_handler.c ****         s_latest_sensor_data.accel_x_g = 0.0f;
+ 131:Core/Src/command_handler/command_handler.c ****         s_latest_sensor_data.accel_y_g = 0.0f;
+ 132:Core/Src/command_handler/command_handler.c ****         s_latest_sensor_data.accel_z_g = 0.0f;
+ 133:Core/Src/command_handler/command_handler.c ****     }
+ 134:Core/Src/command_handler/command_handler.c **** }
+  59              		.loc 1 134 1 view .LVU6
+  60 001c 10BD     		pop	{r4, pc}
+  61              	.LVL3:
+  62              	.L4:
+ 129:Core/Src/command_handler/command_handler.c ****         WriteUART_Blocking("WARNING: LIS3DH_Read_Accel_Data returned false\r\n");
+  63              		.loc 1 129 9 is_stmt 1 view .LVU7
+  64 001e 0548     		ldr	r0, .L5+4
+  65              	.LVL4:
+ 129:Core/Src/command_handler/command_handler.c ****         WriteUART_Blocking("WARNING: LIS3DH_Read_Accel_Data returned false\r\n");
+  66              		.loc 1 129 9 is_stmt 0 view .LVU8
+  67 0020 FFF7FEFF 		bl	WriteUART_Blocking
+  68              	.LVL5:
+ 130:Core/Src/command_handler/command_handler.c ****         s_latest_sensor_data.accel_y_g = 0.0f;
+  69              		.loc 1 130 9 is_stmt 1 view .LVU9
+ 130:Core/Src/command_handler/command_handler.c ****         s_latest_sensor_data.accel_y_g = 0.0f;
+  70              		.loc 1 130 40 is_stmt 0 view .LVU10
+  71 0024 0022     		movs	r2, #0
+  72 0026 A261     		str	r2, [r4, #24]	@ float
+ 131:Core/Src/command_handler/command_handler.c ****         s_latest_sensor_data.accel_z_g = 0.0f;
+  73              		.loc 1 131 9 is_stmt 1 view .LVU11
+ 131:Core/Src/command_handler/command_handler.c ****         s_latest_sensor_data.accel_z_g = 0.0f;
+  74              		.loc 1 131 40 is_stmt 0 view .LVU12
+  75 0028 E261     		str	r2, [r4, #28]	@ float
+ 132:Core/Src/command_handler/command_handler.c ****     }
+  76              		.loc 1 132 9 is_stmt 1 view .LVU13
+ 132:Core/Src/command_handler/command_handler.c ****     }
+  77              		.loc 1 132 40 is_stmt 0 view .LVU14
+  78 002a 2262     		str	r2, [r4, #32]	@ float
+  79              		.loc 1 134 1 view .LVU15
+  80 002c F6E7     		b	.L1
+  81              	.L6:
+  82 002e 00BF     		.align	2
+  83              	.L5:
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 5
+
+
+  84 0030 00000000 		.word	s_latest_sensor_data
+  85 0034 00000000 		.word	.LC0
+  86              		.cfi_endproc
+  87              	.LFE143:
+  89              		.section	.rodata.log_all_sensor_data.str1.4,"aMS",%progbits,1
+  90              		.align	2
+  91              	.LC1:
+  92 0000 44415441 		.ascii	"DATA, Accel(X:%d, Y:%d, Z:%d), GPS(Fix:%d, Spd:%d)\015"
+  92      2C204163 
+  92      63656C28 
+  92      583A2564 
+  92      2C20593A 
+  93 0033 0A00     		.ascii	"\012\000"
+  94              		.section	.text.log_all_sensor_data,"ax",%progbits
+  95              		.align	1
+  96              		.syntax unified
+  97              		.thumb
+  98              		.thumb_func
+ 100              	log_all_sensor_data:
+ 101              	.LFB144:
+ 135:Core/Src/command_handler/command_handler.c **** 
+ 136:Core/Src/command_handler/command_handler.c **** static void log_all_sensor_data(void) {
+ 102              		.loc 1 136 39 is_stmt 1 view -0
+ 103              		.cfi_startproc
+ 104              		@ args = 0, pretend = 0, frame = 256
+ 105              		@ frame_needed = 0, uses_anonymous_args = 0
+ 106 0000 10B5     		push	{r4, lr}
+ 107              	.LCFI1:
+ 108              		.cfi_def_cfa_offset 8
+ 109              		.cfi_offset 4, -8
+ 110              		.cfi_offset 14, -4
+ 111 0002 C4B0     		sub	sp, sp, #272
+ 112              	.LCFI2:
+ 113              		.cfi_def_cfa_offset 280
+ 137:Core/Src/command_handler/command_handler.c ****     char buffer[256];
+ 114              		.loc 1 137 5 view .LVU17
+ 138:Core/Src/command_handler/command_handler.c **** 
+ 139:Core/Src/command_handler/command_handler.c ****     // Convert accelerometer values from g to mg
+ 140:Core/Src/command_handler/command_handler.c ****     int16_t accel_x_mg = (int16_t)(s_latest_sensor_data.accel_x_g * 1000.0f);
+ 115              		.loc 1 140 5 view .LVU18
+ 116              		.loc 1 140 56 is_stmt 0 view .LVU19
+ 117 0004 1949     		ldr	r1, .L9
+ 118 0006 91ED067A 		vldr.32	s14, [r1, #24]
+ 119              		.loc 1 140 67 view .LVU20
+ 120 000a 9FED196A 		vldr.32	s12, .L9+4
+ 121 000e 27EE067A 		vmul.f32	s14, s14, s12
+ 122              		.loc 1 140 13 view .LVU21
+ 123 0012 BDEEC77A 		vcvt.s32.f32	s14, s14
+ 124              	.LVL6:
+ 141:Core/Src/command_handler/command_handler.c ****     int16_t accel_y_mg = (int16_t)(s_latest_sensor_data.accel_y_g * 1000.0f);
+ 125              		.loc 1 141 5 is_stmt 1 view .LVU22
+ 126              		.loc 1 141 56 is_stmt 0 view .LVU23
+ 127 0016 D1ED076A 		vldr.32	s13, [r1, #28]
+ 128              		.loc 1 141 67 view .LVU24
+ 129 001a 66EE866A 		vmul.f32	s13, s13, s12
+ 130              		.loc 1 141 13 view .LVU25
+ 131 001e FDEEE66A 		vcvt.s32.f32	s13, s13
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 6
+
+
+ 132              	.LVL7:
+ 142:Core/Src/command_handler/command_handler.c ****     int16_t accel_z_mg = (int16_t)(s_latest_sensor_data.accel_z_g * 1000.0f);
+ 133              		.loc 1 142 5 is_stmt 1 view .LVU26
+ 134              		.loc 1 142 56 is_stmt 0 view .LVU27
+ 135 0022 D1ED087A 		vldr.32	s15, [r1, #32]
+ 136              		.loc 1 142 67 view .LVU28
+ 137 0026 67EE867A 		vmul.f32	s15, s15, s12
+ 138              		.loc 1 142 13 view .LVU29
+ 139 002a FDEEE77A 		vcvt.s32.f32	s15, s15
+ 140 002e 17EE903A 		vmov	r3, s15	@ int
+ 141 0032 1BB2     		sxth	r3, r3
+ 142              	.LVL8:
+ 143:Core/Src/command_handler/command_handler.c **** 
+ 144:Core/Src/command_handler/command_handler.c ****     // Convert speed to integer
+ 145:Core/Src/command_handler/command_handler.c ****     int16_t speed_int = (int16_t)s_latest_sensor_data.gps_data.speed_kmh;
+ 143              		.loc 1 145 5 is_stmt 1 view .LVU30
+ 144              		.loc 1 145 63 is_stmt 0 view .LVU31
+ 145 0034 D1ED037A 		vldr.32	s15, [r1, #12]
+ 146              		.loc 1 145 13 view .LVU32
+ 147 0038 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 148 003c 17EE902A 		vmov	r2, s15	@ int
+ 149 0040 12B2     		sxth	r2, r2
+ 150              	.LVL9:
+ 146:Core/Src/command_handler/command_handler.c **** 
+ 147:Core/Src/command_handler/command_handler.c ****     // Format and print the final data string (clean version)
+ 148:Core/Src/command_handler/command_handler.c ****     sprintf(buffer, "DATA, Accel(X:%d, Y:%d, Z:%d), GPS(Fix:%d, Spd:%d)\r\n",
+ 151              		.loc 1 148 5 is_stmt 1 view .LVU33
+ 149:Core/Src/command_handler/command_handler.c ****         accel_x_mg,
+ 150:Core/Src/command_handler/command_handler.c ****         accel_y_mg,
+ 151:Core/Src/command_handler/command_handler.c ****         accel_z_mg,
+ 152:Core/Src/command_handler/command_handler.c ****         s_latest_sensor_data.gps_data.is_valid_fix,
+ 152              		.loc 1 152 38 is_stmt 0 view .LVU34
+ 153 0042 097D     		ldrb	r1, [r1, #20]	@ zero_extendqisi2
+ 148:Core/Src/command_handler/command_handler.c ****         accel_x_mg,
+ 154              		.loc 1 148 5 view .LVU35
+ 155 0044 04AC     		add	r4, sp, #16
+ 156 0046 0292     		str	r2, [sp, #8]
+ 157 0048 0191     		str	r1, [sp, #4]
+ 158 004a 0093     		str	r3, [sp]
+ 159 004c 16EE903A 		vmov	r3, s13	@ int
+ 160              	.LVL10:
+ 148:Core/Src/command_handler/command_handler.c ****         accel_x_mg,
+ 161              		.loc 1 148 5 view .LVU36
+ 162 0050 1BB2     		sxth	r3, r3
+ 163 0052 17EE102A 		vmov	r2, s14	@ int
+ 164              	.LVL11:
+ 148:Core/Src/command_handler/command_handler.c ****         accel_x_mg,
+ 165              		.loc 1 148 5 view .LVU37
+ 166 0056 12B2     		sxth	r2, r2
+ 167 0058 0649     		ldr	r1, .L9+8
+ 168 005a 2046     		mov	r0, r4
+ 169 005c FFF7FEFF 		bl	sprintf
+ 170              	.LVL12:
+ 153:Core/Src/command_handler/command_handler.c ****         speed_int
+ 154:Core/Src/command_handler/command_handler.c ****     );
+ 155:Core/Src/command_handler/command_handler.c **** 
+ 156:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking(buffer);
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 7
+
+
+ 171              		.loc 1 156 5 is_stmt 1 view .LVU38
+ 172 0060 2046     		mov	r0, r4
+ 173 0062 FFF7FEFF 		bl	WriteUART_Blocking
+ 174              	.LVL13:
+ 157:Core/Src/command_handler/command_handler.c **** }
+ 175              		.loc 1 157 1 is_stmt 0 view .LVU39
+ 176 0066 44B0     		add	sp, sp, #272
+ 177              	.LCFI3:
+ 178              		.cfi_def_cfa_offset 8
+ 179              		@ sp needed
+ 180 0068 10BD     		pop	{r4, pc}
+ 181              	.L10:
+ 182 006a 00BF     		.align	2
+ 183              	.L9:
+ 184 006c 00000000 		.word	s_latest_sensor_data
+ 185 0070 00007A44 		.word	1148846080
+ 186 0074 00000000 		.word	.LC1
+ 187              		.cfi_endproc
+ 188              	.LFE144:
+ 190              		.section	.text.handle_logging_state,"ax",%progbits
+ 191              		.align	1
+ 192              		.syntax unified
+ 193              		.thumb
+ 194              		.thumb_func
+ 196              	handle_logging_state:
+ 197              	.LFB142:
+ 110:Core/Src/command_handler/command_handler.c ****     g_gps_debug_output_enabled = true;  // Enable GPS debug output
+ 198              		.loc 1 110 40 is_stmt 1 view -0
+ 199              		.cfi_startproc
+ 200              		@ args = 0, pretend = 0, frame = 0
+ 201              		@ frame_needed = 0, uses_anonymous_args = 0
+ 202 0000 08B5     		push	{r3, lr}
+ 203              	.LCFI4:
+ 204              		.cfi_def_cfa_offset 8
+ 205              		.cfi_offset 3, -8
+ 206              		.cfi_offset 14, -4
+ 111:Core/Src/command_handler/command_handler.c **** 
+ 207              		.loc 1 111 5 view .LVU41
+ 111:Core/Src/command_handler/command_handler.c **** 
+ 208              		.loc 1 111 32 is_stmt 0 view .LVU42
+ 209 0002 0121     		movs	r1, #1
+ 210 0004 084B     		ldr	r3, .L15
+ 211 0006 1970     		strb	r1, [r3]
+ 113:Core/Src/command_handler/command_handler.c ****     if (timer_handler(MEASUREMENT_INTERVAL_MS, &s_measurement_timer)) {
+ 212              		.loc 1 113 5 is_stmt 1 view .LVU43
+ 213 0008 0848     		ldr	r0, .L15+4
+ 214 000a FFF7FEFF 		bl	WriteDigitalOut
+ 215              	.LVL14:
+ 114:Core/Src/command_handler/command_handler.c ****         get_all_sensor_data();
+ 216              		.loc 1 114 5 view .LVU44
+ 114:Core/Src/command_handler/command_handler.c ****         get_all_sensor_data();
+ 217              		.loc 1 114 9 is_stmt 0 view .LVU45
+ 218 000e 0849     		ldr	r1, .L15+8
+ 219 0010 4FF47A70 		mov	r0, #1000
+ 220 0014 FFF7FEFF 		bl	timer_handler
  221              	.LVL15:
- 222 0006 0446     		mov	r4, r0
- 223              	.LVL16:
-  57:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking("Waiting for GPS fix... (This can take several minutes)\r\n");
- 224              		.loc 1 57 5 is_stmt 1 view .LVU32
- 225 0008 1348     		ldr	r0, .L19
- 226              	.LVL17:
- 227              		.loc 1 57 5 is_stmt 0 view .LVU33
- 228 000a FFF7FEFF 		bl	WriteUART_Blocking
- 229              	.LVL18:
-  58:Core/Src/command_handler/command_handler.c **** 
-  59:Core/Src/command_handler/command_handler.c ****     // Loop until we get a valid fix or we time out
-  60:Core/Src/command_handler/command_handler.c ****     while (GPS_Get_Latest_Data(NULL) == false) {
- 230              		.loc 1 60 5 is_stmt 1 view .LVU34
- 231              		.loc 1 60 11 is_stmt 0 view .LVU35
- 232 000e 07E0     		b	.L13
- 233              	.L14:
-  61:Core/Src/command_handler/command_handler.c ****         // Check for timeout
-  62:Core/Src/command_handler/command_handler.c ****         if ((HAL_GetTick() - start_time) > GPS_FIX_TIMEOUT_MS) {
-  63:Core/Src/command_handler/command_handler.c ****             WriteUART_Blocking("ERROR: Timed out waiting for GPS fix.\r\n");
-  64:Core/Src/command_handler/command_handler.c ****             WriteDigitalOut(&g_builtinLed, 0); // Turn off blinking LED
-  65:Core/Src/command_handler/command_handler.c ****             return false; // Return failure
-  66:Core/Src/command_handler/command_handler.c ****         }
-  67:Core/Src/command_handler/command_handler.c **** 
-  68:Core/Src/command_handler/command_handler.c ****         // Provide visual "searching" feedback with a fast blink
-  69:Core/Src/command_handler/command_handler.c ****         HAL_GPIO_TogglePin(g_builtinLed.pin.port, g_builtinLed.pin.pin);
- 234              		.loc 1 69 9 is_stmt 1 view .LVU36
- 235 0010 124B     		ldr	r3, .L19+4
- 236 0012 9988     		ldrh	r1, [r3, #4]
- 237 0014 1868     		ldr	r0, [r3]
- 238 0016 FFF7FEFF 		bl	HAL_GPIO_TogglePin
- 239              	.LVL19:
-  70:Core/Src/command_handler/command_handler.c ****         HAL_Delay(100); // Fast blink
- 240              		.loc 1 70 9 view .LVU37
- 241 001a 6420     		movs	r0, #100
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s 			page 7
+ 114:Core/Src/command_handler/command_handler.c ****         get_all_sensor_data();
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 8
 
 
- 242 001c FFF7FEFF 		bl	HAL_Delay
- 243              	.LVL20:
- 244              	.L13:
-  60:Core/Src/command_handler/command_handler.c ****         // Check for timeout
- 245              		.loc 1 60 38 view .LVU38
-  60:Core/Src/command_handler/command_handler.c ****         // Check for timeout
- 246              		.loc 1 60 12 is_stmt 0 view .LVU39
- 247 0020 0020     		movs	r0, #0
- 248 0022 FFF7FEFF 		bl	GPS_Get_Latest_Data
- 249              	.LVL21:
-  60:Core/Src/command_handler/command_handler.c ****         // Check for timeout
- 250              		.loc 1 60 38 discriminator 1 view .LVU40
- 251 0026 0546     		mov	r5, r0
- 252 0028 68B9     		cbnz	r0, .L18
-  62:Core/Src/command_handler/command_handler.c ****             WriteUART_Blocking("ERROR: Timed out waiting for GPS fix.\r\n");
- 253              		.loc 1 62 9 is_stmt 1 view .LVU41
-  62:Core/Src/command_handler/command_handler.c ****             WriteUART_Blocking("ERROR: Timed out waiting for GPS fix.\r\n");
- 254              		.loc 1 62 14 is_stmt 0 view .LVU42
- 255 002a FFF7FEFF 		bl	HAL_GetTick
- 256              	.LVL22:
-  62:Core/Src/command_handler/command_handler.c ****             WriteUART_Blocking("ERROR: Timed out waiting for GPS fix.\r\n");
- 257              		.loc 1 62 28 discriminator 1 view .LVU43
- 258 002e 001B     		subs	r0, r0, r4
-  62:Core/Src/command_handler/command_handler.c ****             WriteUART_Blocking("ERROR: Timed out waiting for GPS fix.\r\n");
- 259              		.loc 1 62 12 discriminator 1 view .LVU44
- 260 0030 0B4B     		ldr	r3, .L19+8
- 261 0032 9842     		cmp	r0, r3
- 262 0034 ECD9     		bls	.L14
-  63:Core/Src/command_handler/command_handler.c ****             WriteDigitalOut(&g_builtinLed, 0); // Turn off blinking LED
- 263              		.loc 1 63 13 is_stmt 1 view .LVU45
- 264 0036 0B48     		ldr	r0, .L19+12
- 265 0038 FFF7FEFF 		bl	WriteUART_Blocking
- 266              	.LVL23:
-  64:Core/Src/command_handler/command_handler.c ****             return false; // Return failure
- 267              		.loc 1 64 13 view .LVU46
- 268 003c 0021     		movs	r1, #0
- 269 003e 0748     		ldr	r0, .L19+4
- 270 0040 FFF7FEFF 		bl	WriteDigitalOut
- 271              	.LVL24:
-  65:Core/Src/command_handler/command_handler.c ****         }
- 272              		.loc 1 65 13 view .LVU47
-  65:Core/Src/command_handler/command_handler.c ****         }
- 273              		.loc 1 65 20 is_stmt 0 view .LVU48
- 274 0044 06E0     		b	.L15
- 275              	.L18:
-  71:Core/Src/command_handler/command_handler.c ****     }
-  72:Core/Src/command_handler/command_handler.c **** 
-  73:Core/Src/command_handler/command_handler.c ****     // If we exit the loop, we have a fix!
-  74:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking("SUCCESS: GPS fix acquired.\r\n");
- 276              		.loc 1 74 5 is_stmt 1 view .LVU49
- 277 0046 0848     		ldr	r0, .L19+16
- 278 0048 FFF7FEFF 		bl	WriteUART_Blocking
- 279              	.LVL25:
-  75:Core/Src/command_handler/command_handler.c ****     WriteDigitalOut(&g_builtinLed, 0); // Turn LED off to prepare for "ready" blinks
- 280              		.loc 1 75 5 view .LVU50
- 281 004c 0021     		movs	r1, #0
- 282 004e 0348     		ldr	r0, .L19+4
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s 			page 8
+ 222              		.loc 1 114 8 discriminator 1 view .LVU46
+ 223 0018 00B9     		cbnz	r0, .L14
+ 224              	.L11:
+ 118:Core/Src/command_handler/command_handler.c **** 
+ 225              		.loc 1 118 1 view .LVU47
+ 226 001a 08BD     		pop	{r3, pc}
+ 227              	.L14:
+ 115:Core/Src/command_handler/command_handler.c ****         log_all_sensor_data();
+ 228              		.loc 1 115 9 is_stmt 1 view .LVU48
+ 229 001c FFF7FEFF 		bl	get_all_sensor_data
+ 230              	.LVL16:
+ 116:Core/Src/command_handler/command_handler.c ****     }
+ 231              		.loc 1 116 9 view .LVU49
+ 232 0020 FFF7FEFF 		bl	log_all_sensor_data
+ 233              	.LVL17:
+ 118:Core/Src/command_handler/command_handler.c **** 
+ 234              		.loc 1 118 1 is_stmt 0 view .LVU50
+ 235 0024 F9E7     		b	.L11
+ 236              	.L16:
+ 237 0026 00BF     		.align	2
+ 238              	.L15:
+ 239 0028 00000000 		.word	g_gps_debug_output_enabled
+ 240 002c 00000000 		.word	g_builtinLed
+ 241 0030 00000000 		.word	s_measurement_timer
+ 242              		.cfi_endproc
+ 243              	.LFE142:
+ 245              		.section	.text.handle_idle_state,"ax",%progbits
+ 246              		.align	1
+ 247              		.syntax unified
+ 248              		.thumb
+ 249              		.thumb_func
+ 251              	handle_idle_state:
+ 252              	.LFB141:
+ 101:Core/Src/command_handler/command_handler.c ****     g_gps_debug_output_enabled = false;  // Disable GPS debug output
+ 253              		.loc 1 101 37 is_stmt 1 view -0
+ 254              		.cfi_startproc
+ 255              		@ args = 0, pretend = 0, frame = 0
+ 256              		@ frame_needed = 0, uses_anonymous_args = 0
+ 257 0000 08B5     		push	{r3, lr}
+ 258              	.LCFI5:
+ 259              		.cfi_def_cfa_offset 8
+ 260              		.cfi_offset 3, -8
+ 261              		.cfi_offset 14, -4
+ 102:Core/Src/command_handler/command_handler.c **** 
+ 262              		.loc 1 102 5 view .LVU52
+ 102:Core/Src/command_handler/command_handler.c **** 
+ 263              		.loc 1 102 32 is_stmt 0 view .LVU53
+ 264 0002 084B     		ldr	r3, .L21
+ 265 0004 0022     		movs	r2, #0
+ 266 0006 1A70     		strb	r2, [r3]
+ 105:Core/Src/command_handler/command_handler.c ****         HAL_GPIO_TogglePin(g_builtinLed.pin.port, g_builtinLed.pin.pin);
+ 267              		.loc 1 105 5 is_stmt 1 view .LVU54
+ 105:Core/Src/command_handler/command_handler.c ****         HAL_GPIO_TogglePin(g_builtinLed.pin.port, g_builtinLed.pin.pin);
+ 268              		.loc 1 105 9 is_stmt 0 view .LVU55
+ 269 0008 0749     		ldr	r1, .L21+4
+ 270 000a 4FF47A70 		mov	r0, #1000
+ 271 000e FFF7FEFF 		bl	timer_handler
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 9
 
 
- 283 0050 FFF7FEFF 		bl	WriteDigitalOut
- 284              	.LVL26:
-  76:Core/Src/command_handler/command_handler.c ****     return true; // Return success
- 285              		.loc 1 76 5 view .LVU51
- 286              	.L15:
-  77:Core/Src/command_handler/command_handler.c **** }
- 287              		.loc 1 77 1 is_stmt 0 view .LVU52
- 288 0054 2846     		mov	r0, r5
- 289 0056 38BD     		pop	{r3, r4, r5, pc}
- 290              	.LVL27:
- 291              	.L20:
- 292              		.loc 1 77 1 view .LVU53
- 293              		.align	2
- 294              	.L19:
- 295 0058 00000000 		.word	.LC5
- 296 005c 00000000 		.word	g_builtinLed
- 297 0060 E0930400 		.word	300000
- 298 0064 3C000000 		.word	.LC6
- 299 0068 64000000 		.word	.LC7
- 300              		.cfi_endproc
- 301              	.LFE139:
- 303              		.section	.text.measure_loop,"ax",%progbits
- 304              		.align	1
- 305              		.global	measure_loop
- 306              		.syntax unified
- 307              		.thumb
- 308              		.thumb_func
- 310              	measure_loop:
- 311              	.LFB140:
+ 272              	.LVL18:
+ 105:Core/Src/command_handler/command_handler.c ****         HAL_GPIO_TogglePin(g_builtinLed.pin.port, g_builtinLed.pin.pin);
+ 273              		.loc 1 105 8 discriminator 1 view .LVU56
+ 274 0012 00B9     		cbnz	r0, .L20
+ 275              	.L17:
+ 108:Core/Src/command_handler/command_handler.c **** 
+ 276              		.loc 1 108 1 view .LVU57
+ 277 0014 08BD     		pop	{r3, pc}
+ 278              	.L20:
+ 106:Core/Src/command_handler/command_handler.c ****     }
+ 279              		.loc 1 106 9 is_stmt 1 view .LVU58
+ 280 0016 054B     		ldr	r3, .L21+8
+ 281 0018 9988     		ldrh	r1, [r3, #4]
+ 282 001a 1868     		ldr	r0, [r3]
+ 283 001c FFF7FEFF 		bl	HAL_GPIO_TogglePin
+ 284              	.LVL19:
+ 108:Core/Src/command_handler/command_handler.c **** 
+ 285              		.loc 1 108 1 is_stmt 0 view .LVU59
+ 286 0020 F8E7     		b	.L17
+ 287              	.L22:
+ 288 0022 00BF     		.align	2
+ 289              	.L21:
+ 290 0024 00000000 		.word	g_gps_debug_output_enabled
+ 291 0028 00000000 		.word	s_idle_blink_timer
+ 292 002c 00000000 		.word	g_builtinLed
+ 293              		.cfi_endproc
+ 294              	.LFE141:
+ 296              		.section	.text.CommandHandler_Init,"ax",%progbits
+ 297              		.align	1
+ 298              		.global	CommandHandler_Init
+ 299              		.syntax unified
+ 300              		.thumb
+ 301              		.thumb_func
+ 303              	CommandHandler_Init:
+ 304              	.LFB137:
+  38:Core/Src/command_handler/command_handler.c ****     s_measurement_timer = HAL_GetTick();
+ 305              		.loc 1 38 32 is_stmt 1 view -0
+ 306              		.cfi_startproc
+ 307              		@ args = 0, pretend = 0, frame = 0
+ 308              		@ frame_needed = 0, uses_anonymous_args = 0
+ 309 0000 08B5     		push	{r3, lr}
+ 310              	.LCFI6:
+ 311              		.cfi_def_cfa_offset 8
+ 312              		.cfi_offset 3, -8
+ 313              		.cfi_offset 14, -4
+  39:Core/Src/command_handler/command_handler.c ****     s_idle_blink_timer = HAL_GetTick();
+ 314              		.loc 1 39 5 view .LVU61
+  39:Core/Src/command_handler/command_handler.c ****     s_idle_blink_timer = HAL_GetTick();
+ 315              		.loc 1 39 27 is_stmt 0 view .LVU62
+ 316 0002 FFF7FEFF 		bl	HAL_GetTick
+ 317              	.LVL20:
+  39:Core/Src/command_handler/command_handler.c ****     s_idle_blink_timer = HAL_GetTick();
+ 318              		.loc 1 39 25 discriminator 1 view .LVU63
+ 319 0006 064B     		ldr	r3, .L25
+ 320 0008 1860     		str	r0, [r3]
+  40:Core/Src/command_handler/command_handler.c ****     memset(&s_latest_sensor_data, 0, sizeof(SensorData_t));
+ 321              		.loc 1 40 5 is_stmt 1 view .LVU64
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 10
+
+
+  40:Core/Src/command_handler/command_handler.c ****     memset(&s_latest_sensor_data, 0, sizeof(SensorData_t));
+ 322              		.loc 1 40 26 is_stmt 0 view .LVU65
+ 323 000a FFF7FEFF 		bl	HAL_GetTick
+ 324              	.LVL21:
+  40:Core/Src/command_handler/command_handler.c ****     memset(&s_latest_sensor_data, 0, sizeof(SensorData_t));
+ 325              		.loc 1 40 24 discriminator 1 view .LVU66
+ 326 000e 054B     		ldr	r3, .L25+4
+ 327 0010 1860     		str	r0, [r3]
+  41:Core/Src/command_handler/command_handler.c **** }
+ 328              		.loc 1 41 5 is_stmt 1 view .LVU67
+ 329 0012 2422     		movs	r2, #36
+ 330 0014 0021     		movs	r1, #0
+ 331 0016 0448     		ldr	r0, .L25+8
+ 332 0018 FFF7FEFF 		bl	memset
+ 333              	.LVL22:
+  42:Core/Src/command_handler/command_handler.c **** 
+ 334              		.loc 1 42 1 is_stmt 0 view .LVU68
+ 335 001c 08BD     		pop	{r3, pc}
+ 336              	.L26:
+ 337 001e 00BF     		.align	2
+ 338              	.L25:
+ 339 0020 00000000 		.word	s_measurement_timer
+ 340 0024 00000000 		.word	s_idle_blink_timer
+ 341 0028 00000000 		.word	s_latest_sensor_data
+ 342              		.cfi_endproc
+ 343              	.LFE137:
+ 345              		.section	.text.measure_loop,"ax",%progbits
+ 346              		.align	1
+ 347              		.global	measure_loop
+ 348              		.syntax unified
+ 349              		.thumb
+ 350              		.thumb_func
+ 352              	measure_loop:
+ 353              	.LFB138:
+  44:Core/Src/command_handler/command_handler.c ****     // The GPS DMA buffer needs to be processed continuously in the background
+ 354              		.loc 1 44 25 is_stmt 1 view -0
+ 355              		.cfi_startproc
+ 356              		@ args = 0, pretend = 0, frame = 0
+ 357              		@ frame_needed = 0, uses_anonymous_args = 0
+ 358 0000 08B5     		push	{r3, lr}
+ 359              	.LCFI7:
+ 360              		.cfi_def_cfa_offset 8
+ 361              		.cfi_offset 3, -8
+ 362              		.cfi_offset 14, -4
+  47:Core/Src/command_handler/command_handler.c **** 
+ 363              		.loc 1 47 5 view .LVU70
+ 364 0002 FFF7FEFF 		bl	GPS_Process_Buffer
+ 365              	.LVL23:
+  50:Core/Src/command_handler/command_handler.c ****         handle_logging_state();
+ 366              		.loc 1 50 5 view .LVU71
+  50:Core/Src/command_handler/command_handler.c ****         handle_logging_state();
+ 367              		.loc 1 50 9 is_stmt 0 view .LVU72
+ 368 0006 044B     		ldr	r3, .L31
+ 369 0008 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  50:Core/Src/command_handler/command_handler.c ****         handle_logging_state();
+ 370              		.loc 1 50 8 view .LVU73
+ 371 000a 13B1     		cbz	r3, .L28
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 11
+
+
+  51:Core/Src/command_handler/command_handler.c ****     } else {
+ 372              		.loc 1 51 9 is_stmt 1 view .LVU74
+ 373 000c FFF7FEFF 		bl	handle_logging_state
+ 374              	.LVL24:
+ 375              	.L27:
+  55:Core/Src/command_handler/command_handler.c **** 
+ 376              		.loc 1 55 1 is_stmt 0 view .LVU75
+ 377 0010 08BD     		pop	{r3, pc}
+ 378              	.L28:
+  53:Core/Src/command_handler/command_handler.c ****     }
+ 379              		.loc 1 53 9 is_stmt 1 view .LVU76
+ 380 0012 FFF7FEFF 		bl	handle_idle_state
+ 381              	.LVL25:
+  55:Core/Src/command_handler/command_handler.c **** 
+ 382              		.loc 1 55 1 is_stmt 0 view .LVU77
+ 383 0016 FBE7     		b	.L27
+ 384              	.L32:
+ 385              		.align	2
+ 386              	.L31:
+ 387 0018 00000000 		.word	g_is_logging_active
+ 388              		.cfi_endproc
+ 389              	.LFE138:
+ 391              		.section	.rodata.Verify_LIS3DH_Sensor.str1.4,"aMS",%progbits,1
+ 392              		.align	2
+ 393              	.LC2:
+ 394 0000 56657269 		.ascii	"Verifying LIS3DH Sensor State...\015\012\000"
+ 394      6679696E 
+ 394      67204C49 
+ 394      53334448 
+ 394      2053656E 
+ 395 0023 00       		.align	2
+ 396              	.LC3:
+ 397 0024 52656164 		.ascii	"Read WHO_AM_I: 0x%02X (Expected: 0x%02X)\015\012\000"
+ 397      2057484F 
+ 397      5F414D5F 
+ 397      493A2030 
+ 397      78253032 
+ 398 004f 00       		.align	2
+ 399              	.LC4:
+ 400 0050 52656164 		.ascii	"Read CTRL_REG1: 0x%02X (Expected: 0x%02X)\015\012\000"
+ 400      20435452 
+ 400      4C5F5245 
+ 400      47313A20 
+ 400      30782530 
+ 401              		.align	2
+ 402              	.LC5:
+ 403 007c 53554343 		.ascii	"SUCCESS: LIS3DH sensor verification passed!\015\012"
+ 403      4553533A 
+ 403      204C4953 
+ 403      33444820 
+ 403      73656E73 
+ 404 00a9 00       		.ascii	"\000"
+ 405 00aa 0000     		.align	2
+ 406              	.LC6:
+ 407 00ac 4552524F 		.ascii	"ERROR: LIS3DH verification failed.\015\012\000"
+ 407      523A204C 
+ 407      49533344 
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 12
+
+
+ 407      48207665 
+ 407      72696669 
+ 408              		.section	.text.Verify_LIS3DH_Sensor,"ax",%progbits
+ 409              		.align	1
+ 410              		.global	Verify_LIS3DH_Sensor
+ 411              		.syntax unified
+ 412              		.thumb
+ 413              		.thumb_func
+ 415              	Verify_LIS3DH_Sensor:
+ 416              	.LFB139:
+  57:Core/Src/command_handler/command_handler.c ****     char diag_buffer[128];
+ 417              		.loc 1 57 33 is_stmt 1 view -0
+ 418              		.cfi_startproc
+ 419              		@ args = 0, pretend = 0, frame = 128
+ 420              		@ frame_needed = 0, uses_anonymous_args = 0
+ 421 0000 70B5     		push	{r4, r5, r6, lr}
+ 422              	.LCFI8:
+ 423              		.cfi_def_cfa_offset 16
+ 424              		.cfi_offset 4, -16
+ 425              		.cfi_offset 5, -12
+ 426              		.cfi_offset 6, -8
+ 427              		.cfi_offset 14, -4
+ 428 0002 A0B0     		sub	sp, sp, #128
+ 429              	.LCFI9:
+ 430              		.cfi_def_cfa_offset 144
+  58:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking("Verifying LIS3DH Sensor State...\r\n");
+ 431              		.loc 1 58 5 view .LVU79
+  59:Core/Src/command_handler/command_handler.c ****     HAL_Delay(10);
+ 432              		.loc 1 59 5 view .LVU80
+ 433 0004 1748     		ldr	r0, .L38
+ 434 0006 FFF7FEFF 		bl	WriteUART_Blocking
+ 435              	.LVL26:
+  60:Core/Src/command_handler/command_handler.c ****     u8 who_am_i = readACC(LIS3DH_REG_WHO_AM_I);
+ 436              		.loc 1 60 5 view .LVU81
+ 437 000a 0A20     		movs	r0, #10
+ 438 000c FFF7FEFF 		bl	HAL_Delay
+ 439              	.LVL27:
+  61:Core/Src/command_handler/command_handler.c ****     sprintf(diag_buffer, "Read WHO_AM_I: 0x%02X (Expected: 0x%02X)\r\n", who_am_i, LIS3DH_WHO_AM_I_
+ 440              		.loc 1 61 5 view .LVU82
+  61:Core/Src/command_handler/command_handler.c ****     sprintf(diag_buffer, "Read WHO_AM_I: 0x%02X (Expected: 0x%02X)\r\n", who_am_i, LIS3DH_WHO_AM_I_
+ 441              		.loc 1 61 19 is_stmt 0 view .LVU83
+ 442 0010 0F20     		movs	r0, #15
+ 443 0012 FFF7FEFF 		bl	readACC
+ 444              	.LVL28:
+ 445 0016 0446     		mov	r4, r0
+ 446              	.LVL29:
+  62:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking(diag_buffer);
+ 447              		.loc 1 62 5 is_stmt 1 view .LVU84
+ 448 0018 3323     		movs	r3, #51
+ 449 001a 0246     		mov	r2, r0
+ 450 001c 1249     		ldr	r1, .L38+4
+ 451 001e 6846     		mov	r0, sp
+ 452              	.LVL30:
+  62:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking(diag_buffer);
+ 453              		.loc 1 62 5 is_stmt 0 view .LVU85
+ 454 0020 FFF7FEFF 		bl	sprintf
+ 455              	.LVL31:
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 13
+
+
+  63:Core/Src/command_handler/command_handler.c ****     u8 ctrl_reg1 = readACC(LIS3DH_REG_CTRL_REG1);
+ 456              		.loc 1 63 5 is_stmt 1 view .LVU86
+ 457 0024 6846     		mov	r0, sp
+ 458 0026 FFF7FEFF 		bl	WriteUART_Blocking
+ 459              	.LVL32:
+  64:Core/Src/command_handler/command_handler.c ****     sprintf(diag_buffer, "Read CTRL_REG1: 0x%02X (Expected: 0x%02X)\r\n", ctrl_reg1, ACC_CTRL_REG1_
+ 460              		.loc 1 64 5 view .LVU87
+  64:Core/Src/command_handler/command_handler.c ****     sprintf(diag_buffer, "Read CTRL_REG1: 0x%02X (Expected: 0x%02X)\r\n", ctrl_reg1, ACC_CTRL_REG1_
+ 461              		.loc 1 64 20 is_stmt 0 view .LVU88
+ 462 002a 2020     		movs	r0, #32
+ 463 002c FFF7FEFF 		bl	readACC
+ 464              	.LVL33:
+ 465 0030 0646     		mov	r6, r0
+ 466              	.LVL34:
+  65:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking(diag_buffer);
+ 467              		.loc 1 65 5 is_stmt 1 view .LVU89
+ 468 0032 5723     		movs	r3, #87
+ 469 0034 0246     		mov	r2, r0
+ 470 0036 0D49     		ldr	r1, .L38+8
+ 471 0038 6846     		mov	r0, sp
+ 472              	.LVL35:
+  65:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking(diag_buffer);
+ 473              		.loc 1 65 5 is_stmt 0 view .LVU90
+ 474 003a FFF7FEFF 		bl	sprintf
+ 475              	.LVL36:
+  66:Core/Src/command_handler/command_handler.c ****     if (who_am_i == LIS3DH_WHO_AM_I_EXPECTED_VAL && ctrl_reg1 == ACC_CTRL_REG1_CONFIG_100HZ) {
+ 476              		.loc 1 66 5 is_stmt 1 view .LVU91
+ 477 003e 6846     		mov	r0, sp
+ 478 0040 FFF7FEFF 		bl	WriteUART_Blocking
+ 479              	.LVL37:
+  67:Core/Src/command_handler/command_handler.c ****         WriteUART_Blocking("SUCCESS: LIS3DH sensor verification passed!\r\n");
+ 480              		.loc 1 67 5 view .LVU92
+  67:Core/Src/command_handler/command_handler.c ****         WriteUART_Blocking("SUCCESS: LIS3DH sensor verification passed!\r\n");
+ 481              		.loc 1 67 8 is_stmt 0 view .LVU93
+ 482 0044 332C     		cmp	r4, #51
+ 483 0046 01D1     		bne	.L34
+  67:Core/Src/command_handler/command_handler.c ****         WriteUART_Blocking("SUCCESS: LIS3DH sensor verification passed!\r\n");
+ 484              		.loc 1 67 50 discriminator 1 view .LVU94
+ 485 0048 572E     		cmp	r6, #87
+ 486 004a 05D0     		beq	.L37
+ 487              	.L34:
+  71:Core/Src/command_handler/command_handler.c ****         return false;
+ 488              		.loc 1 71 9 is_stmt 1 view .LVU95
+ 489 004c 0848     		ldr	r0, .L38+12
+ 490 004e FFF7FEFF 		bl	WriteUART_Blocking
+ 491              	.LVL38:
+  72:Core/Src/command_handler/command_handler.c ****     }
+ 492              		.loc 1 72 9 view .LVU96
+  72:Core/Src/command_handler/command_handler.c ****     }
+ 493              		.loc 1 72 16 is_stmt 0 view .LVU97
+ 494 0052 0020     		movs	r0, #0
+ 495              	.L35:
+  74:Core/Src/command_handler/command_handler.c **** 
+ 496              		.loc 1 74 1 view .LVU98
+ 497 0054 20B0     		add	sp, sp, #128
+ 498              	.LCFI10:
+ 499              		.cfi_remember_state
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 14
+
+
+ 500              		.cfi_def_cfa_offset 16
+ 501              		@ sp needed
+ 502 0056 70BD     		pop	{r4, r5, r6, pc}
+ 503              	.L37:
+ 504              	.LCFI11:
+ 505              		.cfi_restore_state
+  68:Core/Src/command_handler/command_handler.c ****         return true;
+ 506              		.loc 1 68 9 is_stmt 1 view .LVU99
+ 507 0058 0648     		ldr	r0, .L38+16
+ 508 005a FFF7FEFF 		bl	WriteUART_Blocking
+ 509              	.LVL39:
+  69:Core/Src/command_handler/command_handler.c ****     } else {
+ 510              		.loc 1 69 9 view .LVU100
+  69:Core/Src/command_handler/command_handler.c ****     } else {
+ 511              		.loc 1 69 16 is_stmt 0 view .LVU101
+ 512 005e 0120     		movs	r0, #1
+ 513 0060 F8E7     		b	.L35
+ 514              	.L39:
+ 515 0062 00BF     		.align	2
+ 516              	.L38:
+ 517 0064 00000000 		.word	.LC2
+ 518 0068 24000000 		.word	.LC3
+ 519 006c 50000000 		.word	.LC4
+ 520 0070 AC000000 		.word	.LC6
+ 521 0074 7C000000 		.word	.LC5
+ 522              		.cfi_endproc
+ 523              	.LFE139:
+ 525              		.section	.rodata.Check_GPS_Status.str1.4,"aMS",%progbits,1
+ 526              		.align	2
+ 527              	.LC7:
+ 528 0000 57616974 		.ascii	"Waiting for GPS fix... (This can take several minut"
+ 528      696E6720 
+ 528      666F7220 
+ 528      47505320 
+ 528      6669782E 
+ 529 0033 6573290D 		.ascii	"es)\015\012\000"
+ 529      0A00
+ 530 0039 000000   		.align	2
+ 531              	.LC8:
+ 532 003c 53554343 		.ascii	"SUCCESS: GPS fix acquired.\015\012\000"
+ 532      4553533A 
+ 532      20475053 
+ 532      20666978 
+ 532      20616371 
+ 533 0059 000000   		.align	2
+ 534              	.LC9:
+ 535 005c 4552524F 		.ascii	"ERROR: GPS fix not detected. Continuing without GPS"
+ 535      523A2047 
+ 535      50532066 
+ 535      6978206E 
+ 535      6F742064 
+ 536 008f 2E0D0A00 		.ascii	".\015\012\000"
+ 537              		.section	.text.Check_GPS_Status,"ax",%progbits
+ 538              		.align	1
+ 539              		.global	Check_GPS_Status
+ 540              		.syntax unified
+ 541              		.thumb
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 15
+
+
+ 542              		.thumb_func
+ 544              	Check_GPS_Status:
+ 545              	.LFB140:
+  76:Core/Src/command_handler/command_handler.c ****     uint32_t start_time = HAL_GetTick();
+ 546              		.loc 1 76 29 is_stmt 1 view -0
+ 547              		.cfi_startproc
+ 548              		@ args = 0, pretend = 0, frame = 0
+ 549              		@ frame_needed = 0, uses_anonymous_args = 0
+ 550 0000 38B5     		push	{r3, r4, r5, lr}
+ 551              	.LCFI12:
+ 552              		.cfi_def_cfa_offset 16
+ 553              		.cfi_offset 3, -16
+ 554              		.cfi_offset 4, -12
+ 555              		.cfi_offset 5, -8
+ 556              		.cfi_offset 14, -4
+  77:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking("Waiting for GPS fix... (This can take several minutes)\r\n");
+ 557              		.loc 1 77 5 view .LVU103
+  77:Core/Src/command_handler/command_handler.c ****     WriteUART_Blocking("Waiting for GPS fix... (This can take several minutes)\r\n");
+ 558              		.loc 1 77 27 is_stmt 0 view .LVU104
+ 559 0002 FFF7FEFF 		bl	HAL_GetTick
+ 560              	.LVL40:
   78:Core/Src/command_handler/command_handler.c **** 
-  79:Core/Src/command_handler/command_handler.c **** void measure_loop(void) {
- 312              		.loc 1 79 25 is_stmt 1 view -0
- 313              		.cfi_startproc
- 314              		@ args = 0, pretend = 0, frame = 0
- 315              		@ frame_needed = 0, uses_anonymous_args = 0
- 316 0000 08B5     		push	{r3, lr}
- 317              	.LCFI6:
- 318              		.cfi_def_cfa_offset 8
- 319              		.cfi_offset 3, -8
- 320              		.cfi_offset 14, -4
-  80:Core/Src/command_handler/command_handler.c ****     if (g_is_logging_active) {
- 321              		.loc 1 80 5 view .LVU55
- 322              		.loc 1 80 9 is_stmt 0 view .LVU56
- 323 0002 084B     		ldr	r3, .L25
- 324 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 325              		.loc 1 80 8 view .LVU57
- 326 0006 03B9     		cbnz	r3, .L24
- 327              	.L21:
-  81:Core/Src/command_handler/command_handler.c ****         if (timer_handler(MEASUREMENT_INTERVAL_MS, &s_measurement_timer)) {
-  82:Core/Src/command_handler/command_handler.c ****             // In the final version, this will call a function that logs both accel and GPS
-  83:Core/Src/command_handler/command_handler.c ****             read_I2C_Blocking();
-  84:Core/Src/command_handler/command_handler.c ****             Log_Latest_GPS_Data();
-  85:Core/Src/command_handler/command_handler.c ****         }
-  86:Core/Src/command_handler/command_handler.c ****     }
-  87:Core/Src/command_handler/command_handler.c **** }
- 328              		.loc 1 87 1 view .LVU58
- 329 0008 08BD     		pop	{r3, pc}
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s 			page 9
+ 561              		.loc 1 78 5 is_stmt 1 view .LVU105
+ 562 0006 1548     		ldr	r0, .L48
+ 563 0008 FFF7FEFF 		bl	WriteUART_Blocking
+ 564              	.LVL41:
+  80:Core/Src/command_handler/command_handler.c **** 
+ 565              		.loc 1 80 5 view .LVU106
+  82:Core/Src/command_handler/command_handler.c ****         GPS_Process_Buffer();
+ 566              		.loc 1 82 5 view .LVU107
+  80:Core/Src/command_handler/command_handler.c **** 
+ 567              		.loc 1 80 13 is_stmt 0 view .LVU108
+ 568 000c 0024     		movs	r4, #0
+ 569              	.LVL42:
+ 570              	.L41:
+  82:Core/Src/command_handler/command_handler.c ****         GPS_Process_Buffer();
+ 571              		.loc 1 82 24 is_stmt 1 view .LVU109
+ 572 000e 312C     		cmp	r4, #49
+ 573 0010 1AD8     		bhi	.L46
+  83:Core/Src/command_handler/command_handler.c ****         if (GPS_Get_Latest_Data(NULL)) {
+ 574              		.loc 1 83 9 view .LVU110
+ 575 0012 FFF7FEFF 		bl	GPS_Process_Buffer
+ 576              	.LVL43:
+  84:Core/Src/command_handler/command_handler.c ****             WriteUART_Blocking("SUCCESS: GPS fix acquired.\r\n");
+ 577              		.loc 1 84 9 view .LVU111
+  84:Core/Src/command_handler/command_handler.c ****             WriteUART_Blocking("SUCCESS: GPS fix acquired.\r\n");
+ 578              		.loc 1 84 13 is_stmt 0 view .LVU112
+ 579 0016 0020     		movs	r0, #0
+ 580 0018 FFF7FEFF 		bl	GPS_Get_Latest_Data
+ 581              	.LVL44:
+  84:Core/Src/command_handler/command_handler.c ****             WriteUART_Blocking("SUCCESS: GPS fix acquired.\r\n");
+ 582              		.loc 1 84 12 discriminator 1 view .LVU113
+ 583 001c 0546     		mov	r5, r0
+ 584 001e 50B9     		cbnz	r0, .L47
+  89:Core/Src/command_handler/command_handler.c ****         HAL_Delay(100);
+ 585              		.loc 1 89 9 is_stmt 1 view .LVU114
+ 586 0020 0F4B     		ldr	r3, .L48+4
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 16
 
 
- 330              	.L24:
-  81:Core/Src/command_handler/command_handler.c ****         if (timer_handler(MEASUREMENT_INTERVAL_MS, &s_measurement_timer)) {
- 331              		.loc 1 81 9 is_stmt 1 view .LVU59
-  81:Core/Src/command_handler/command_handler.c ****         if (timer_handler(MEASUREMENT_INTERVAL_MS, &s_measurement_timer)) {
- 332              		.loc 1 81 13 is_stmt 0 view .LVU60
- 333 000a 0749     		ldr	r1, .L25+4
- 334 000c 4FF47A70 		mov	r0, #1000
- 335 0010 FFF7FEFF 		bl	timer_handler
- 336              	.LVL28:
-  81:Core/Src/command_handler/command_handler.c ****         if (timer_handler(MEASUREMENT_INTERVAL_MS, &s_measurement_timer)) {
- 337              		.loc 1 81 12 discriminator 1 view .LVU61
- 338 0014 0028     		cmp	r0, #0
- 339 0016 F7D0     		beq	.L21
- 340              	.LBB2:
-  83:Core/Src/command_handler/command_handler.c ****             Log_Latest_GPS_Data();
- 341              		.loc 1 83 13 is_stmt 1 view .LVU62
- 342 0018 FFF7FEFF 		bl	read_I2C_Blocking
- 343              	.LVL29:
-  84:Core/Src/command_handler/command_handler.c ****         }
- 344              		.loc 1 84 13 view .LVU63
- 345 001c FFF7FEFF 		bl	Log_Latest_GPS_Data
- 346              	.LVL30:
- 347              	.LBE2:
- 348              		.loc 1 87 1 is_stmt 0 view .LVU64
- 349 0020 F2E7     		b	.L21
- 350              	.L26:
- 351 0022 00BF     		.align	2
- 352              	.L25:
- 353 0024 00000000 		.word	g_is_logging_active
- 354 0028 00000000 		.word	s_measurement_timer
- 355              		.cfi_endproc
- 356              	.LFE140:
- 358              		.section	.bss.s_measurement_timer,"aw",%nobits
- 359              		.align	2
- 362              	s_measurement_timer:
- 363 0000 00000000 		.space	4
- 364              		.text
- 365              	.Letext0:
- 366              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
- 367              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
- 368              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
- 369              		.file 5 "Core/Src/library/aml_hal.h"
- 370              		.file 6 "Core/Src/gpio_handler/gpio_handler.h"
- 371              		.file 7 "Core/Src/gps_handler/gps_handler.h"
- 372              		.file 8 "Core/Src/timer/timer.h"
- 373              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
- 374              		.file 10 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdio.h"
- 375              		.file 11 "Core/Src/i2c_handler/i2c_handler.h"
- 376              		.file 12 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
- 377              		.file 13 "Core/Src/uart_handler/uart_handler.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s 			page 10
+ 587 0022 9988     		ldrh	r1, [r3, #4]
+ 588 0024 1868     		ldr	r0, [r3]
+ 589 0026 FFF7FEFF 		bl	HAL_GPIO_TogglePin
+ 590              	.LVL45:
+  90:Core/Src/command_handler/command_handler.c ****         retry_count++;
+ 591              		.loc 1 90 9 view .LVU115
+ 592 002a 6420     		movs	r0, #100
+ 593 002c FFF7FEFF 		bl	HAL_Delay
+ 594              	.LVL46:
+  91:Core/Src/command_handler/command_handler.c ****     }
+ 595              		.loc 1 91 9 view .LVU116
+  91:Core/Src/command_handler/command_handler.c ****     }
+ 596              		.loc 1 91 20 is_stmt 0 view .LVU117
+ 597 0030 0134     		adds	r4, r4, #1
+ 598              	.LVL47:
+  91:Core/Src/command_handler/command_handler.c ****     }
+ 599              		.loc 1 91 20 view .LVU118
+ 600 0032 E4B2     		uxtb	r4, r4
+ 601              	.LVL48:
+  91:Core/Src/command_handler/command_handler.c ****     }
+ 602              		.loc 1 91 20 view .LVU119
+ 603 0034 EBE7     		b	.L41
+ 604              	.LVL49:
+ 605              	.L47:
+  85:Core/Src/command_handler/command_handler.c ****             WriteDigitalOut(&g_builtinLed, 0);
+ 606              		.loc 1 85 13 is_stmt 1 view .LVU120
+ 607 0036 0B48     		ldr	r0, .L48+8
+ 608 0038 FFF7FEFF 		bl	WriteUART_Blocking
+ 609              	.LVL50:
+  86:Core/Src/command_handler/command_handler.c ****             return true;
+ 610              		.loc 1 86 13 view .LVU121
+ 611 003c 0021     		movs	r1, #0
+ 612 003e 0848     		ldr	r0, .L48+4
+ 613 0040 FFF7FEFF 		bl	WriteDigitalOut
+ 614              	.LVL51:
+  87:Core/Src/command_handler/command_handler.c ****         }
+ 615              		.loc 1 87 13 view .LVU122
+ 616              	.L43:
+  97:Core/Src/command_handler/command_handler.c **** 
+ 617              		.loc 1 97 1 is_stmt 0 view .LVU123
+ 618 0044 2846     		mov	r0, r5
+ 619 0046 38BD     		pop	{r3, r4, r5, pc}
+ 620              	.LVL52:
+ 621              	.L46:
+  94:Core/Src/command_handler/command_handler.c ****     WriteDigitalOut(&g_builtinLed, 0);
+ 622              		.loc 1 94 5 is_stmt 1 view .LVU124
+ 623 0048 0748     		ldr	r0, .L48+12
+ 624 004a FFF7FEFF 		bl	WriteUART_Blocking
+ 625              	.LVL53:
+  95:Core/Src/command_handler/command_handler.c ****     return false;
+ 626              		.loc 1 95 5 view .LVU125
+ 627 004e 0021     		movs	r1, #0
+ 628 0050 0348     		ldr	r0, .L48+4
+ 629 0052 FFF7FEFF 		bl	WriteDigitalOut
+ 630              	.LVL54:
+  96:Core/Src/command_handler/command_handler.c **** }
+ 631              		.loc 1 96 5 view .LVU126
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 17
+
+
+  96:Core/Src/command_handler/command_handler.c **** }
+ 632              		.loc 1 96 12 is_stmt 0 view .LVU127
+ 633 0056 0025     		movs	r5, #0
+ 634 0058 F4E7     		b	.L43
+ 635              	.L49:
+ 636 005a 00BF     		.align	2
+ 637              	.L48:
+ 638 005c 00000000 		.word	.LC7
+ 639 0060 00000000 		.word	g_builtinLed
+ 640 0064 3C000000 		.word	.LC8
+ 641 0068 5C000000 		.word	.LC9
+ 642              		.cfi_endproc
+ 643              	.LFE140:
+ 645              		.section	.bss.s_latest_sensor_data,"aw",%nobits
+ 646              		.align	2
+ 649              	s_latest_sensor_data:
+ 650 0000 00000000 		.space	36
+ 650      00000000 
+ 650      00000000 
+ 650      00000000 
+ 650      00000000 
+ 651              		.section	.bss.s_idle_blink_timer,"aw",%nobits
+ 652              		.align	2
+ 655              	s_idle_blink_timer:
+ 656 0000 00000000 		.space	4
+ 657              		.section	.bss.s_measurement_timer,"aw",%nobits
+ 658              		.align	2
+ 661              	s_measurement_timer:
+ 662 0000 00000000 		.space	4
+ 663              		.text
+ 664              	.Letext0:
+ 665              		.file 2 "/opt/arm-gnu-toolchain/arm-none-eabi/include/machine/_default_types.h"
+ 666              		.file 3 "/opt/arm-gnu-toolchain/arm-none-eabi/include/sys/_stdint.h"
+ 667              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
+ 668              		.file 5 "Core/Src/library/aml_hal.h"
+ 669              		.file 6 "Core/Src/gpio_handler/gpio_handler.h"
+ 670              		.file 7 "Core/Src/gps_handler/gps_handler.h"
+ 671              		.file 8 "Core/Src/command_handler/command_handler.h"
+ 672              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 673              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 674              		.file 11 "Core/Src/i2c_handler/i2c_handler.h"
+ 675              		.file 12 "/opt/arm-gnu-toolchain/arm-none-eabi/include/stdio.h"
+ 676              		.file 13 "Core/Src/uart_handler/uart_handler.h"
+ 677              		.file 14 "Core/Src/timer/timer.h"
+ 678              		.file 15 "/opt/arm-gnu-toolchain/arm-none-eabi/include/string.h"
+ 679              		.file 16 "<built-in>"
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s 			page 18
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 command_handler.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s:21     .text.CommandHandler_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s:27     .text.CommandHandler_Init:00000000 CommandHandler_Init
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s:50     .text.CommandHandler_Init:0000000c $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s:362    .bss.s_measurement_timer:00000000 s_measurement_timer
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s:55     .rodata.Verify_LIS3DH_Sensor.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s:72     .text.Verify_LIS3DH_Sensor:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s:78     .text.Verify_LIS3DH_Sensor:00000000 Verify_LIS3DH_Sensor
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s:179    .text.Verify_LIS3DH_Sensor:00000064 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s:188    .rodata.Check_GPS_Status.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s:199    .text.Check_GPS_Status:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s:205    .text.Check_GPS_Status:00000000 Check_GPS_Status
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s:295    .text.Check_GPS_Status:00000058 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s:304    .text.measure_loop:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s:310    .text.measure_loop:00000000 measure_loop
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s:353    .text.measure_loop:00000024 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccWmHsZC.s:359    .bss.s_measurement_timer:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:21     .rodata.get_all_sensor_data.str1.4:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:26     .text.get_all_sensor_data:00000000 $t
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:31     .text.get_all_sensor_data:00000000 get_all_sensor_data
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:84     .text.get_all_sensor_data:00000030 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:649    .bss.s_latest_sensor_data:00000000 s_latest_sensor_data
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:90     .rodata.log_all_sensor_data.str1.4:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:95     .text.log_all_sensor_data:00000000 $t
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:100    .text.log_all_sensor_data:00000000 log_all_sensor_data
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:184    .text.log_all_sensor_data:0000006c $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:191    .text.handle_logging_state:00000000 $t
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:196    .text.handle_logging_state:00000000 handle_logging_state
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:239    .text.handle_logging_state:00000028 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:661    .bss.s_measurement_timer:00000000 s_measurement_timer
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:246    .text.handle_idle_state:00000000 $t
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:251    .text.handle_idle_state:00000000 handle_idle_state
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:290    .text.handle_idle_state:00000024 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:655    .bss.s_idle_blink_timer:00000000 s_idle_blink_timer
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:297    .text.CommandHandler_Init:00000000 $t
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:303    .text.CommandHandler_Init:00000000 CommandHandler_Init
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:339    .text.CommandHandler_Init:00000020 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:346    .text.measure_loop:00000000 $t
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:352    .text.measure_loop:00000000 measure_loop
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:387    .text.measure_loop:00000018 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:392    .rodata.Verify_LIS3DH_Sensor.str1.4:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:409    .text.Verify_LIS3DH_Sensor:00000000 $t
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:415    .text.Verify_LIS3DH_Sensor:00000000 Verify_LIS3DH_Sensor
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:517    .text.Verify_LIS3DH_Sensor:00000064 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:526    .rodata.Check_GPS_Status.str1.4:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:538    .text.Check_GPS_Status:00000000 $t
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:544    .text.Check_GPS_Status:00000000 Check_GPS_Status
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:638    .text.Check_GPS_Status:0000005c $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:646    .bss.s_latest_sensor_data:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:652    .bss.s_idle_blink_timer:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc8KfItk.s:658    .bss.s_measurement_timer:00000000 $d
 
 UNDEFINED SYMBOLS
-HAL_GetTick
+GPS_Get_Latest_Data
+LIS3DH_Read_Accel_Data
 WriteUART_Blocking
+sprintf
+WriteDigitalOut
+timer_handler
+g_gps_debug_output_enabled
+g_builtinLed
+HAL_GPIO_TogglePin
+HAL_GetTick
+memset
+GPS_Process_Buffer
+g_is_logging_active
 HAL_Delay
 readACC
-sprintf
-HAL_GPIO_TogglePin
-GPS_Get_Latest_Data
-WriteDigitalOut
-g_builtinLed
-timer_handler
-read_I2C_Blocking
-Log_Latest_GPS_Data
-g_is_logging_active

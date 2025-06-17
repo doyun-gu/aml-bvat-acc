@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 1
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -50,52 +50,26 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 1
   35              		.thumb
   36              		.thumb_func
   38              	MX_I2C1_Init:
-  39              	.LFB134:
+  39              	.LFB137:
    1:Core/Src/i2c_handler/i2c_handler.c **** /**
    2:Core/Src/i2c_handler/i2c_handler.c ****   ******************************************************************************
    3:Core/Src/i2c_handler/i2c_handler.c ****   * @file    i2c_handler.c
    4:Core/Src/i2c_handler/i2c_handler.c ****   * @brief   This file provides code for I2C handling, specifically for an
-   5:Core/Src/i2c_handler/i2c_handler.c ****   * LIS3DH accelerometer.
+   5:Core/Src/i2c_handler/i2c_handler.c ****   *          LIS3DH accelerometer.
    6:Core/Src/i2c_handler/i2c_handler.c ****   ******************************************************************************
    7:Core/Src/i2c_handler/i2c_handler.c ****   */
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 2
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 2
 
 
    8:Core/Src/i2c_handler/i2c_handler.c **** 
-   9:Core/Src/i2c_handler/i2c_handler.c **** /* Includes ------------------------------------------------------------------*/
-  10:Core/Src/i2c_handler/i2c_handler.c **** #include "i2c_handler.h" // Primary include for this module's definitions and dependencies
-  11:Core/Src/i2c_handler/i2c_handler.c ****                          // This header should include:
-  12:Core/Src/i2c_handler/i2c_handler.c ****                          // <stdio.h>, <string.h>, <stdbool.h>
-  13:Core/Src/i2c_handler/i2c_handler.c ****                          // "stm32f4xx_hal.h", "aml_hal.h", "uart_handler.h"
+   9:Core/Src/i2c_handler/i2c_handler.c **** #include "i2c_handler.h"
+  10:Core/Src/i2c_handler/i2c_handler.c **** 
+  11:Core/Src/i2c_handler/i2c_handler.c **** I2C_HandleTypeDef hi2c1;
+  12:Core/Src/i2c_handler/i2c_handler.c **** volatile bool acc_enabled = false;
+  13:Core/Src/i2c_handler/i2c_handler.c **** u8 rawData[6];
   14:Core/Src/i2c_handler/i2c_handler.c **** 
-  15:Core/Src/i2c_handler/i2c_handler.c **** /* Private define ------------------------------------------------------------*/
-  16:Core/Src/i2c_handler/i2c_handler.c **** // No private defines needed here if all constants are in the header.
-  17:Core/Src/i2c_handler/i2c_handler.c **** 
-  18:Core/Src/i2c_handler/i2c_handler.c **** /* Private macro -------------------------------------------------------------*/
-  19:Core/Src/i2c_handler/i2c_handler.c **** // No private macros needed here.
-  20:Core/Src/i2c_handler/i2c_handler.c **** 
-  21:Core/Src/i2c_handler/i2c_handler.c **** /* Private variables ---------------------------------------------------------*/
-  22:Core/Src/i2c_handler/i2c_handler.c **** // These are the definitions for the variables declared 'extern' in i2c_handler.h
-  23:Core/Src/i2c_handler/i2c_handler.c **** I2C_HandleTypeDef hi2c1;
-  24:Core/Src/i2c_handler/i2c_handler.c **** volatile bool acc_enabled = false;
-  25:Core/Src/i2c_handler/i2c_handler.c **** u8 rawData[6]; // Buffer for accelerometer data
-  26:Core/Src/i2c_handler/i2c_handler.c **** 
-  27:Core/Src/i2c_handler/i2c_handler.c **** /* Private function prototypes -----------------------------------------------*/
-  28:Core/Src/i2c_handler/i2c_handler.c **** // Declare any static helper functions specific to this file here, if needed.
-  29:Core/Src/i2c_handler/i2c_handler.c **** 
-  30:Core/Src/i2c_handler/i2c_handler.c **** /* Exported functions --------------------------------------------------------*/
-  31:Core/Src/i2c_handler/i2c_handler.c **** 
-  32:Core/Src/i2c_handler/i2c_handler.c **** //------------------------------------------------------------------------------
-  33:Core/Src/i2c_handler/i2c_handler.c **** // Initialization Functions
-  34:Core/Src/i2c_handler/i2c_handler.c **** //------------------------------------------------------------------------------
-  35:Core/Src/i2c_handler/i2c_handler.c **** 
-  36:Core/Src/i2c_handler/i2c_handler.c **** /**
-  37:Core/Src/i2c_handler/i2c_handler.c ****   * @brief  Initializes the I2C1 peripheral parameters and NVIC for interrupts.
-  38:Core/Src/i2c_handler/i2c_handler.c ****   * @param  None
-  39:Core/Src/i2c_handler/i2c_handler.c ****   * @retval None
-  40:Core/Src/i2c_handler/i2c_handler.c ****   */
-  41:Core/Src/i2c_handler/i2c_handler.c **** void MX_I2C1_Init(void) {
-  40              		.loc 1 41 25 view -0
+  15:Core/Src/i2c_handler/i2c_handler.c **** void MX_I2C1_Init(void) {
+  40              		.loc 1 15 25 view -0
   41              		.cfi_startproc
   42              		@ args = 0, pretend = 0, frame = 0
   43              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -104,116 +78,113 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 1
   46              		.cfi_def_cfa_offset 8
   47              		.cfi_offset 3, -8
   48              		.cfi_offset 14, -4
-  42:Core/Src/i2c_handler/i2c_handler.c ****     // Using WriteUART_Blocking for critical init messages to avoid IT complexities
-  43:Core/Src/i2c_handler/i2c_handler.c ****     // Ensure WriteUART_Blocking is prototyped and defined in uart_handler.c/h
-  44:Core/Src/i2c_handler/i2c_handler.c ****     WriteUART_Blocking("Attempting HAL_I2C_Init...\r\n");
-  49              		.loc 1 44 5 view .LVU1
+  16:Core/Src/i2c_handler/i2c_handler.c ****     WriteUART_Blocking("Attempting HAL_I2C_Init...\r\n");
+  49              		.loc 1 16 5 view .LVU1
   50 0002 1748     		ldr	r0, .L5
   51 0004 FFF7FEFF 		bl	WriteUART_Blocking
   52              	.LVL0:
-  45:Core/Src/i2c_handler/i2c_handler.c **** 
-  46:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Instance = I2C1;
-  53              		.loc 1 46 5 view .LVU2
-  54              		.loc 1 46 20 is_stmt 0 view .LVU3
+  17:Core/Src/i2c_handler/i2c_handler.c **** 
+  18:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Instance = I2C1;
+  53              		.loc 1 18 5 view .LVU2
+  54              		.loc 1 18 20 is_stmt 0 view .LVU3
   55 0008 1648     		ldr	r0, .L5+4
   56 000a 174B     		ldr	r3, .L5+8
   57 000c 0360     		str	r3, [r0]
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 3
-
-
-  47:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Init.ClockSpeed = 100000; // 100 kHz
-  58              		.loc 1 47 5 is_stmt 1 view .LVU4
-  59              		.loc 1 47 27 is_stmt 0 view .LVU5
+  19:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Init.ClockSpeed = 100000;
+  58              		.loc 1 19 5 is_stmt 1 view .LVU4
+  59              		.loc 1 19 27 is_stmt 0 view .LVU5
   60 000e 174B     		ldr	r3, .L5+12
   61 0010 4360     		str	r3, [r0, #4]
-  48:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  62              		.loc 1 48 5 is_stmt 1 view .LVU6
-  63              		.loc 1 48 26 is_stmt 0 view .LVU7
+  20:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  62              		.loc 1 20 5 is_stmt 1 view .LVU6
+  63              		.loc 1 20 26 is_stmt 0 view .LVU7
   64 0012 0023     		movs	r3, #0
   65 0014 8360     		str	r3, [r0, #8]
-  49:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Init.OwnAddress1 = 0;
-  66              		.loc 1 49 5 is_stmt 1 view .LVU8
-  67              		.loc 1 49 28 is_stmt 0 view .LVU9
+  21:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Init.OwnAddress1 = 0;
+  66              		.loc 1 21 5 is_stmt 1 view .LVU8
+  67              		.loc 1 21 28 is_stmt 0 view .LVU9
   68 0016 C360     		str	r3, [r0, #12]
-  50:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  69              		.loc 1 50 5 is_stmt 1 view .LVU10
-  70              		.loc 1 50 31 is_stmt 0 view .LVU11
+  22:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  69              		.loc 1 22 5 is_stmt 1 view .LVU10
+  70              		.loc 1 22 31 is_stmt 0 view .LVU11
   71 0018 4FF48042 		mov	r2, #16384
   72 001c 0261     		str	r2, [r0, #16]
-  51:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-  73              		.loc 1 51 5 is_stmt 1 view .LVU12
-  74              		.loc 1 51 32 is_stmt 0 view .LVU13
+  23:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  73              		.loc 1 23 5 is_stmt 1 view .LVU12
+  74              		.loc 1 23 32 is_stmt 0 view .LVU13
   75 001e 4361     		str	r3, [r0, #20]
-  52:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Init.OwnAddress2 = 0;
-  76              		.loc 1 52 5 is_stmt 1 view .LVU14
-  77              		.loc 1 52 28 is_stmt 0 view .LVU15
+  24:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Init.OwnAddress2 = 0;
+  76              		.loc 1 24 5 is_stmt 1 view .LVU14
+  77              		.loc 1 24 28 is_stmt 0 view .LVU15
   78 0020 8361     		str	r3, [r0, #24]
-  53:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-  79              		.loc 1 53 5 is_stmt 1 view .LVU16
-  80              		.loc 1 53 32 is_stmt 0 view .LVU17
+  25:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 3
+
+
+  79              		.loc 1 25 5 is_stmt 1 view .LVU16
+  80              		.loc 1 25 32 is_stmt 0 view .LVU17
   81 0022 C361     		str	r3, [r0, #28]
-  54:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  82              		.loc 1 54 5 is_stmt 1 view .LVU18
-  83              		.loc 1 54 30 is_stmt 0 view .LVU19
+  26:Core/Src/i2c_handler/i2c_handler.c ****     hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  82              		.loc 1 26 5 is_stmt 1 view .LVU18
+  83              		.loc 1 26 30 is_stmt 0 view .LVU19
   84 0024 0362     		str	r3, [r0, #32]
-  55:Core/Src/i2c_handler/i2c_handler.c **** 
-  56:Core/Src/i2c_handler/i2c_handler.c ****     if (HAL_I2C_Init(&hi2c1) != HAL_OK) {
-  85              		.loc 1 56 5 is_stmt 1 view .LVU20
-  86              		.loc 1 56 9 is_stmt 0 view .LVU21
+  27:Core/Src/i2c_handler/i2c_handler.c **** 
+  28:Core/Src/i2c_handler/i2c_handler.c ****     if (HAL_I2C_Init(&hi2c1) != HAL_OK) {
+  85              		.loc 1 28 5 is_stmt 1 view .LVU20
+  86              		.loc 1 28 9 is_stmt 0 view .LVU21
   87 0026 FFF7FEFF 		bl	HAL_I2C_Init
   88              	.LVL1:
-  89              		.loc 1 56 8 discriminator 1 view .LVU22
+  89              		.loc 1 28 8 discriminator 1 view .LVU22
   90 002a 98B9     		cbnz	r0, .L4
   91              	.L2:
-  57:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking("HAL_I2C_Init FAILED! Entering Error_Handler.\r\n");
-  58:Core/Src/i2c_handler/i2c_handler.c ****         Error_Handler(); // Ensure Error_Handler() is defined (e.g., in aml_hal.c)
-  59:Core/Src/i2c_handler/i2c_handler.c ****     }
-  60:Core/Src/i2c_handler/i2c_handler.c **** 
-  61:Core/Src/i2c_handler/i2c_handler.c ****     WriteUART_Blocking("HAL_I2C_Init Successful.\r\n");
-  92              		.loc 1 61 5 is_stmt 1 view .LVU23
+  29:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking("HAL_I2C_Init FAILED! Entering Error_Handler.\r\n");
+  30:Core/Src/i2c_handler/i2c_handler.c ****         Error_Handler();
+  31:Core/Src/i2c_handler/i2c_handler.c ****     }
+  32:Core/Src/i2c_handler/i2c_handler.c **** 
+  33:Core/Src/i2c_handler/i2c_handler.c ****     WriteUART_Blocking("HAL_I2C_Init Successful.\r\n");
+  92              		.loc 1 33 5 is_stmt 1 view .LVU23
   93 002c 1048     		ldr	r0, .L5+16
   94 002e FFF7FEFF 		bl	WriteUART_Blocking
   95              	.LVL2:
-  62:Core/Src/i2c_handler/i2c_handler.c **** 
-  63:Core/Src/i2c_handler/i2c_handler.c ****     // NVIC configuration for I2C1 interrupts (Event and Error)
-  64:Core/Src/i2c_handler/i2c_handler.c ****     HAL_NVIC_SetPriority(I2C1_EV_IRQn, 0, 0);
-  96              		.loc 1 64 5 view .LVU24
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 4
-
-
+  34:Core/Src/i2c_handler/i2c_handler.c **** 
+  35:Core/Src/i2c_handler/i2c_handler.c ****     HAL_NVIC_SetPriority(I2C1_EV_IRQn, 0, 0);
+  96              		.loc 1 35 5 view .LVU24
   97 0032 0022     		movs	r2, #0
   98 0034 1146     		mov	r1, r2
   99 0036 1F20     		movs	r0, #31
  100 0038 FFF7FEFF 		bl	HAL_NVIC_SetPriority
  101              	.LVL3:
-  65:Core/Src/i2c_handler/i2c_handler.c ****     HAL_NVIC_EnableIRQ(I2C1_EV_IRQn);
- 102              		.loc 1 65 5 view .LVU25
+  36:Core/Src/i2c_handler/i2c_handler.c ****     HAL_NVIC_EnableIRQ(I2C1_EV_IRQn);
+ 102              		.loc 1 36 5 view .LVU25
  103 003c 1F20     		movs	r0, #31
  104 003e FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
  105              	.LVL4:
-  66:Core/Src/i2c_handler/i2c_handler.c ****     HAL_NVIC_SetPriority(I2C1_ER_IRQn, 0, 1);
- 106              		.loc 1 66 5 view .LVU26
+  37:Core/Src/i2c_handler/i2c_handler.c ****     HAL_NVIC_SetPriority(I2C1_ER_IRQn, 0, 1);
+ 106              		.loc 1 37 5 view .LVU26
  107 0042 0122     		movs	r2, #1
  108 0044 0021     		movs	r1, #0
  109 0046 2020     		movs	r0, #32
  110 0048 FFF7FEFF 		bl	HAL_NVIC_SetPriority
  111              	.LVL5:
-  67:Core/Src/i2c_handler/i2c_handler.c ****     HAL_NVIC_EnableIRQ(I2C1_ER_IRQn);
- 112              		.loc 1 67 5 view .LVU27
+  38:Core/Src/i2c_handler/i2c_handler.c ****     HAL_NVIC_EnableIRQ(I2C1_ER_IRQn);
+ 112              		.loc 1 38 5 view .LVU27
  113 004c 2020     		movs	r0, #32
  114 004e FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
  115              	.LVL6:
-  68:Core/Src/i2c_handler/i2c_handler.c **** }
- 116              		.loc 1 68 1 is_stmt 0 view .LVU28
+  39:Core/Src/i2c_handler/i2c_handler.c **** }
+ 116              		.loc 1 39 1 is_stmt 0 view .LVU28
  117 0052 08BD     		pop	{r3, pc}
  118              	.L4:
-  57:Core/Src/i2c_handler/i2c_handler.c ****         Error_Handler(); // Ensure Error_Handler() is defined (e.g., in aml_hal.c)
- 119              		.loc 1 57 9 is_stmt 1 view .LVU29
+  29:Core/Src/i2c_handler/i2c_handler.c ****         Error_Handler();
+ 119              		.loc 1 29 9 is_stmt 1 view .LVU29
  120 0054 0748     		ldr	r0, .L5+20
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 4
+
+
  121 0056 FFF7FEFF 		bl	WriteUART_Blocking
  122              	.LVL7:
-  58:Core/Src/i2c_handler/i2c_handler.c ****     }
- 123              		.loc 1 58 9 view .LVU30
+  30:Core/Src/i2c_handler/i2c_handler.c ****     }
+ 123              		.loc 1 30 9 view .LVU30
  124 005a FFF7FEFF 		bl	Error_Handler
  125              	.LVL8:
  126 005e E5E7     		b	.L2
@@ -227,7 +198,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 1
  134 0070 50000000 		.word	.LC2
  135 0074 20000000 		.word	.LC1
  136              		.cfi_endproc
- 137              	.LFE134:
+ 137              	.LFE137:
  139              		.section	.rodata.I2C_connectivity_check.str1.4,"aMS",%progbits,1
  140              		.align	2
  141              	.LC3:
@@ -238,1532 +209,830 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 1
  142      29206973 
  143 001e 0000     		.align	2
  144              	.LC4:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 5
-
-
- 145 0020 49324320 		.ascii	"I2C LIS3DH (0x18) error. Status: HAL_ERROR\015\012\000"
+ 145 0020 49324320 		.ascii	"I2C LIS3DH (0x18) not found. Status: %d\015\012\000"
  145      4C495333 
  145      44482028 
  145      30783138 
- 145      29206572 
- 146 004d 000000   		.align	2
- 147              	.LC5:
- 148 0050 49324320 		.ascii	"I2C LIS3DH (0x18) busy. Status: HAL_BUSY\015\012\000"
- 148      4C495333 
- 148      44482028 
- 148      30783138 
- 148      29206275 
- 149 007b 00       		.align	2
- 150              	.LC6:
- 151 007c 49324320 		.ascii	"I2C LIS3DH (0x18) timeout. Status: HAL_TIMEOUT\015\012"
- 151      4C495333 
- 151      44482028 
- 151      30783138 
- 151      29207469 
- 152 00ac 00       		.ascii	"\000"
- 153 00ad 000000   		.align	2
- 154              	.LC7:
- 155 00b0 49324320 		.ascii	"I2C LIS3DH (0x18) not found. Status: %d\015\012\000"
- 155      4C495333 
- 155      44482028 
- 155      30783138 
- 155      29206E6F 
- 156              		.section	.text.I2C_connectivity_check,"ax",%progbits
- 157              		.align	1
- 158              		.global	I2C_connectivity_check
- 159              		.syntax unified
- 160              		.thumb
- 161              		.thumb_func
- 163              	I2C_connectivity_check:
- 164              	.LFB136:
-  69:Core/Src/i2c_handler/i2c_handler.c **** 
-  70:Core/Src/i2c_handler/i2c_handler.c **** /**
-  71:Core/Src/i2c_handler/i2c_handler.c ****   * @brief  Performs I2C setup for the application AFTER I2C1 peripheral is initialized.
-  72:Core/Src/i2c_handler/i2c_handler.c ****   * Checks LIS3DH connectivity, and enables the accelerometer.
-  73:Core/Src/i2c_handler/i2c_handler.c ****   * @param  None
-  74:Core/Src/i2c_handler/i2c_handler.c ****   * @retval bool true if device setup was successful, false otherwise.
-  75:Core/Src/i2c_handler/i2c_handler.c ****   */
-  76:Core/Src/i2c_handler/i2c_handler.c **** bool BVAT_I2C_Init(void) {
-  77:Core/Src/i2c_handler/i2c_handler.c ****     bool device_is_ok;
-  78:Core/Src/i2c_handler/i2c_handler.c **** 
-  79:Core/Src/i2c_handler/i2c_handler.c ****     // MX_I2C1_Init() is called once in AML_Init()
-  80:Core/Src/i2c_handler/i2c_handler.c ****     WriteUART_Blocking("Performing I2C device checks (LIS3DH)...\r\n"); // Use blocking for reliabi
-  81:Core/Src/i2c_handler/i2c_handler.c **** 
-  82:Core/Src/i2c_handler/i2c_handler.c ****     device_is_ok = I2C_connectivity_check(); // Call to the function defined below
-  83:Core/Src/i2c_handler/i2c_handler.c **** 
-  84:Core/Src/i2c_handler/i2c_handler.c ****     if (device_is_ok) {
-  85:Core/Src/i2c_handler/i2c_handler.c ****         I2C_ACC_Enable(); // Call to the function defined below
-  86:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking("LIS3DH Accelerometer configuration command sent.\r\n");
-  87:Core/Src/i2c_handler/i2c_handler.c ****     } else {
-  88:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking("LIS3DH Accelerometer NOT configured due to I2C issue.\r\n");
-  89:Core/Src/i2c_handler/i2c_handler.c ****     }
-  90:Core/Src/i2c_handler/i2c_handler.c ****     return device_is_ok;
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 6
+ 145      29206E6F 
+ 146              		.section	.text.I2C_connectivity_check,"ax",%progbits
+ 147              		.align	1
+ 148              		.global	I2C_connectivity_check
+ 149              		.syntax unified
+ 150              		.thumb
+ 151              		.thumb_func
+ 153              	I2C_connectivity_check:
+ 154              	.LFB139:
+  40:Core/Src/i2c_handler/i2c_handler.c **** 
+  41:Core/Src/i2c_handler/i2c_handler.c **** bool BVAT_I2C_Init(void) {
+  42:Core/Src/i2c_handler/i2c_handler.c ****     bool device_is_ok;
+  43:Core/Src/i2c_handler/i2c_handler.c ****     WriteUART_Blocking("Performing I2C device checks (LIS3DH)...\r\n");
+  44:Core/Src/i2c_handler/i2c_handler.c ****     device_is_ok = I2C_connectivity_check();
+  45:Core/Src/i2c_handler/i2c_handler.c **** 
+  46:Core/Src/i2c_handler/i2c_handler.c ****     if (device_is_ok) {
+  47:Core/Src/i2c_handler/i2c_handler.c ****         I2C_ACC_Enable();
+  48:Core/Src/i2c_handler/i2c_handler.c ****         HAL_Delay(100);
+  49:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking("LIS3DH Accelerometer configuration command sent.\r\n");
+  50:Core/Src/i2c_handler/i2c_handler.c ****     } else {
+  51:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking("LIS3DH Accelerometer NOT configured due to I2C issue.\r\n");
+  52:Core/Src/i2c_handler/i2c_handler.c ****     }
+  53:Core/Src/i2c_handler/i2c_handler.c ****     return device_is_ok;
+  54:Core/Src/i2c_handler/i2c_handler.c **** }
+  55:Core/Src/i2c_handler/i2c_handler.c **** 
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 5
 
 
-  91:Core/Src/i2c_handler/i2c_handler.c **** }
-  92:Core/Src/i2c_handler/i2c_handler.c **** 
-  93:Core/Src/i2c_handler/i2c_handler.c **** //------------------------------------------------------------------------------
-  94:Core/Src/i2c_handler/i2c_handler.c **** // I2C Operational Functions (LIS3DH Specific) - DEFINITIONS
-  95:Core/Src/i2c_handler/i2c_handler.c **** //------------------------------------------------------------------------------
-  96:Core/Src/i2c_handler/i2c_handler.c **** 
-  97:Core/Src/i2c_handler/i2c_handler.c **** /**
-  98:Core/Src/i2c_handler/i2c_handler.c ****   * @brief  Checks the connectivity of the LIS3DH accelerometer.
-  99:Core/Src/i2c_handler/i2c_handler.c ****   * @note   Prints detailed status messages via UART.
- 100:Core/Src/i2c_handler/i2c_handler.c ****   * @param  None
- 101:Core/Src/i2c_handler/i2c_handler.c ****   * @retval bool true if the LIS3DH responds, false otherwise.
- 102:Core/Src/i2c_handler/i2c_handler.c ****   */
- 103:Core/Src/i2c_handler/i2c_handler.c **** bool I2C_connectivity_check(void) {
- 165              		.loc 1 103 35 view -0
- 166              		.cfi_startproc
- 167              		@ args = 0, pretend = 0, frame = 0
- 168              		@ frame_needed = 0, uses_anonymous_args = 0
- 169 0000 38B5     		push	{r3, r4, r5, lr}
- 170              	.LCFI1:
- 171              		.cfi_def_cfa_offset 16
- 172              		.cfi_offset 3, -16
- 173              		.cfi_offset 4, -12
- 174              		.cfi_offset 5, -8
- 175              		.cfi_offset 14, -4
- 104:Core/Src/i2c_handler/i2c_handler.c ****     HAL_StatusTypeDef status;
- 176              		.loc 1 104 5 view .LVU32
- 105:Core/Src/i2c_handler/i2c_handler.c ****     uint32_t trials = 3;
- 177              		.loc 1 105 5 view .LVU33
- 178              	.LVL9:
- 106:Core/Src/i2c_handler/i2c_handler.c ****     uint32_t timeout = 100; // ms
- 179              		.loc 1 106 5 view .LVU34
- 107:Core/Src/i2c_handler/i2c_handler.c **** 
- 108:Core/Src/i2c_handler/i2c_handler.c ****     static char msg_buffer[64]; // Static for IT-based WriteUART, or if WriteUART_Blocking uses it.
- 180              		.loc 1 108 5 view .LVU35
- 109:Core/Src/i2c_handler/i2c_handler.c **** 
- 110:Core/Src/i2c_handler/i2c_handler.c ****     // ACC_I2C_ADDR is defined in i2c_handler.h as (LIS3DH_7BIT_ADDR << 1)
- 111:Core/Src/i2c_handler/i2c_handler.c ****     status = HAL_I2C_IsDeviceReady(&hi2c1, ACC_I2C_ADDR, trials, timeout);
- 181              		.loc 1 111 5 view .LVU36
- 182              		.loc 1 111 14 is_stmt 0 view .LVU37
- 183 0002 6423     		movs	r3, #100
- 184 0004 0322     		movs	r2, #3
- 185 0006 3021     		movs	r1, #48
- 186 0008 1E48     		ldr	r0, .L16
- 187 000a FFF7FEFF 		bl	HAL_I2C_IsDeviceReady
- 188              	.LVL10:
- 112:Core/Src/i2c_handler/i2c_handler.c **** 
- 113:Core/Src/i2c_handler/i2c_handler.c ****     if (status == HAL_OK) {
- 189              		.loc 1 113 5 is_stmt 1 view .LVU38
- 190              		.loc 1 113 8 is_stmt 0 view .LVU39
- 191 000e A8B1     		cbz	r0, .L15
- 192 0010 0246     		mov	r2, r0
- 114:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking("I2C LIS3DH (0x18) is ready.\r\n");
- 115:Core/Src/i2c_handler/i2c_handler.c ****         return true;
- 116:Core/Src/i2c_handler/i2c_handler.c ****     } else {
- 117:Core/Src/i2c_handler/i2c_handler.c ****         switch (status) {
- 193              		.loc 1 117 9 is_stmt 1 view .LVU40
- 194 0012 0228     		cmp	r0, #2
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 7
+  56:Core/Src/i2c_handler/i2c_handler.c **** bool I2C_connectivity_check(void) {
+ 155              		.loc 1 56 35 view -0
+ 156              		.cfi_startproc
+ 157              		@ args = 0, pretend = 0, frame = 0
+ 158              		@ frame_needed = 0, uses_anonymous_args = 0
+ 159 0000 10B5     		push	{r4, lr}
+ 160              	.LCFI1:
+ 161              		.cfi_def_cfa_offset 8
+ 162              		.cfi_offset 4, -8
+ 163              		.cfi_offset 14, -4
+  57:Core/Src/i2c_handler/i2c_handler.c ****     HAL_StatusTypeDef status;
+ 164              		.loc 1 57 5 view .LVU32
+  58:Core/Src/i2c_handler/i2c_handler.c ****     uint32_t trials = 3;
+ 165              		.loc 1 58 5 view .LVU33
+ 166              	.LVL9:
+  59:Core/Src/i2c_handler/i2c_handler.c ****     uint32_t timeout = 100;
+ 167              		.loc 1 59 5 view .LVU34
+  60:Core/Src/i2c_handler/i2c_handler.c ****     static char msg_buffer[64];
+ 168              		.loc 1 60 5 view .LVU35
+  61:Core/Src/i2c_handler/i2c_handler.c **** 
+  62:Core/Src/i2c_handler/i2c_handler.c ****     status = HAL_I2C_IsDeviceReady(&hi2c1, ACC_I2C_ADDR, trials, timeout);
+ 169              		.loc 1 62 5 view .LVU36
+ 170              		.loc 1 62 14 is_stmt 0 view .LVU37
+ 171 0002 6423     		movs	r3, #100
+ 172 0004 0322     		movs	r2, #3
+ 173 0006 3021     		movs	r1, #48
+ 174 0008 0948     		ldr	r0, .L11
+ 175 000a FFF7FEFF 		bl	HAL_I2C_IsDeviceReady
+ 176              	.LVL10:
+  63:Core/Src/i2c_handler/i2c_handler.c **** 
+  64:Core/Src/i2c_handler/i2c_handler.c ****     if (status == HAL_OK) {
+ 177              		.loc 1 64 5 is_stmt 1 view .LVU38
+ 178              		.loc 1 64 8 is_stmt 0 view .LVU39
+ 179 000e 20B9     		cbnz	r0, .L8
+  65:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking("I2C LIS3DH (0x18) is ready.\r\n");
+ 180              		.loc 1 65 9 is_stmt 1 view .LVU40
+ 181 0010 0848     		ldr	r0, .L11+4
+ 182              	.LVL11:
+ 183              		.loc 1 65 9 is_stmt 0 view .LVU41
+ 184 0012 FFF7FEFF 		bl	WriteUART_Blocking
+ 185              	.LVL12:
+  66:Core/Src/i2c_handler/i2c_handler.c ****         return true;
+ 186              		.loc 1 66 9 is_stmt 1 view .LVU42
+ 187              		.loc 1 66 16 is_stmt 0 view .LVU43
+ 188 0016 0120     		movs	r0, #1
+ 189              	.L9:
+  67:Core/Src/i2c_handler/i2c_handler.c ****     } else {
+  68:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(msg_buffer, "I2C LIS3DH (0x18) not found. Status: %d\r\n", status);
+  69:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(msg_buffer);
+  70:Core/Src/i2c_handler/i2c_handler.c ****         return false;
+  71:Core/Src/i2c_handler/i2c_handler.c ****     }
+  72:Core/Src/i2c_handler/i2c_handler.c **** }
+ 190              		.loc 1 72 1 view .LVU44
+ 191 0018 10BD     		pop	{r4, pc}
+ 192              	.LVL13:
+ 193              	.L8:
+ 194              		.loc 1 72 1 view .LVU45
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 6
 
 
- 195 0014 17D0     		beq	.L10
- 196 0016 0328     		cmp	r0, #3
- 197 0018 23D0     		beq	.L11
- 198 001a 0128     		cmp	r0, #1
- 199 001c 2CD1     		bne	.L12
- 200              	.LBB2:
- 118:Core/Src/i2c_handler/i2c_handler.c ****             case HAL_ERROR:
- 119:Core/Src/i2c_handler/i2c_handler.c ****                 sprintf(msg_buffer, "I2C LIS3DH (0x18) error. Status: HAL_ERROR\r\n");
- 201              		.loc 1 119 17 view .LVU41
- 202 001e 1A4C     		ldr	r4, .L16+4
- 203 0020 1A4D     		ldr	r5, .L16+8
- 204 0022 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
- 205              	.LVL11:
- 206              		.loc 1 119 17 is_stmt 0 view .LVU42
- 207 0024 0FC4     		stmia	r4!, {r0, r1, r2, r3}
- 208 0026 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
- 209 0028 0FC4     		stmia	r4!, {r0, r1, r2, r3}
- 210 002a 95E80F00 		ldm	r5, {r0, r1, r2, r3}
- 211 002e 07C4     		stmia	r4!, {r0, r1, r2}
- 212 0030 2370     		strb	r3, [r4]
- 120:Core/Src/i2c_handler/i2c_handler.c ****                 break;
- 213              		.loc 1 120 17 is_stmt 1 view .LVU43
- 214              	.L13:
- 215              	.LBE2:
- 121:Core/Src/i2c_handler/i2c_handler.c ****             case HAL_BUSY:
- 122:Core/Src/i2c_handler/i2c_handler.c ****                 sprintf(msg_buffer, "I2C LIS3DH (0x18) busy. Status: HAL_BUSY\r\n");
- 123:Core/Src/i2c_handler/i2c_handler.c ****                 break;
- 124:Core/Src/i2c_handler/i2c_handler.c ****             case HAL_TIMEOUT:
- 125:Core/Src/i2c_handler/i2c_handler.c ****                 sprintf(msg_buffer, "I2C LIS3DH (0x18) timeout. Status: HAL_TIMEOUT\r\n");
- 126:Core/Src/i2c_handler/i2c_handler.c ****                 break;
- 127:Core/Src/i2c_handler/i2c_handler.c ****             default:
- 128:Core/Src/i2c_handler/i2c_handler.c ****                 sprintf(msg_buffer, "I2C LIS3DH (0x18) not found. Status: %d\r\n", status);
- 129:Core/Src/i2c_handler/i2c_handler.c ****                 break;
- 130:Core/Src/i2c_handler/i2c_handler.c ****         }
- 131:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(msg_buffer);
- 216              		.loc 1 131 9 view .LVU44
- 217 0032 1548     		ldr	r0, .L16+4
- 218 0034 FFF7FEFF 		bl	WriteUART_Blocking
- 219              	.LVL12:
- 132:Core/Src/i2c_handler/i2c_handler.c ****         return false;
- 220              		.loc 1 132 9 view .LVU45
- 221              		.loc 1 132 16 is_stmt 0 view .LVU46
- 222 0038 0020     		movs	r0, #0
- 223              	.L9:
- 133:Core/Src/i2c_handler/i2c_handler.c ****     }
- 134:Core/Src/i2c_handler/i2c_handler.c **** }
- 224              		.loc 1 134 1 view .LVU47
- 225 003a 38BD     		pop	{r3, r4, r5, pc}
- 226              	.LVL13:
- 227              	.L15:
- 114:Core/Src/i2c_handler/i2c_handler.c ****         return true;
- 228              		.loc 1 114 9 is_stmt 1 view .LVU48
- 229 003c 1448     		ldr	r0, .L16+12
- 230              	.LVL14:
- 114:Core/Src/i2c_handler/i2c_handler.c ****         return true;
- 231              		.loc 1 114 9 is_stmt 0 view .LVU49
- 232 003e FFF7FEFF 		bl	WriteUART_Blocking
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 8
+ 195 001a 0246     		mov	r2, r0
+  68:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(msg_buffer);
+ 196              		.loc 1 68 9 is_stmt 1 view .LVU46
+ 197 001c 064C     		ldr	r4, .L11+8
+ 198 001e 0749     		ldr	r1, .L11+12
+ 199 0020 2046     		mov	r0, r4
+ 200              	.LVL14:
+  68:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(msg_buffer);
+ 201              		.loc 1 68 9 is_stmt 0 view .LVU47
+ 202 0022 FFF7FEFF 		bl	sprintf
+ 203              	.LVL15:
+  69:Core/Src/i2c_handler/i2c_handler.c ****         return false;
+ 204              		.loc 1 69 9 is_stmt 1 view .LVU48
+ 205 0026 2046     		mov	r0, r4
+ 206 0028 FFF7FEFF 		bl	WriteUART_Blocking
+ 207              	.LVL16:
+  70:Core/Src/i2c_handler/i2c_handler.c ****     }
+ 208              		.loc 1 70 9 view .LVU49
+  70:Core/Src/i2c_handler/i2c_handler.c ****     }
+ 209              		.loc 1 70 16 is_stmt 0 view .LVU50
+ 210 002c 0020     		movs	r0, #0
+ 211 002e F3E7     		b	.L9
+ 212              	.L12:
+ 213              		.align	2
+ 214              	.L11:
+ 215 0030 00000000 		.word	hi2c1
+ 216 0034 00000000 		.word	.LC3
+ 217 0038 00000000 		.word	msg_buffer.2
+ 218 003c 20000000 		.word	.LC4
+ 219              		.cfi_endproc
+ 220              	.LFE139:
+ 222              		.section	.rodata.I2C_ACC_Enable.str1.4,"aMS",%progbits,1
+ 223              		.align	2
+ 224              	.LC5:
+ 225 0000 4C495333 		.ascii	"LIS3DH CTRL_REG1 Write OK (Blocking).\015\012\000"
+ 225      44482043 
+ 225      54524C5F 
+ 225      52454731 
+ 225      20577269 
+ 226              		.align	2
+ 227              	.LC6:
+ 228 0028 4C495333 		.ascii	"LIS3DH CTRL_REG1 Write FAILED. Status: %d\015\012\000"
+ 228      44482043 
+ 228      54524C5F 
+ 228      52454731 
+ 228      20577269 
+ 229              		.section	.text.I2C_ACC_Enable,"ax",%progbits
+ 230              		.align	1
+ 231              		.global	I2C_ACC_Enable
+ 232              		.syntax unified
+ 233              		.thumb
+ 234              		.thumb_func
+ 236              	I2C_ACC_Enable:
+ 237              	.LFB140:
+  73:Core/Src/i2c_handler/i2c_handler.c **** 
+  74:Core/Src/i2c_handler/i2c_handler.c **** void I2C_ACC_Enable(void) {
+ 238              		.loc 1 74 27 is_stmt 1 view -0
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 7
 
 
- 233              	.LVL15:
- 115:Core/Src/i2c_handler/i2c_handler.c ****     } else {
- 234              		.loc 1 115 9 is_stmt 1 view .LVU50
- 115:Core/Src/i2c_handler/i2c_handler.c ****     } else {
- 235              		.loc 1 115 16 is_stmt 0 view .LVU51
- 236 0042 0120     		movs	r0, #1
- 237 0044 F9E7     		b	.L9
- 238              	.LVL16:
- 239              	.L10:
- 240              	.LBB3:
- 122:Core/Src/i2c_handler/i2c_handler.c ****                 break;
- 241              		.loc 1 122 17 is_stmt 1 view .LVU52
- 242 0046 104C     		ldr	r4, .L16+4
- 243 0048 124D     		ldr	r5, .L16+16
- 244 004a 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
- 245              	.LVL17:
- 122:Core/Src/i2c_handler/i2c_handler.c ****                 break;
- 246              		.loc 1 122 17 is_stmt 0 view .LVU53
- 247 004c 0FC4     		stmia	r4!, {r0, r1, r2, r3}
- 248 004e 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
- 249 0050 0FC4     		stmia	r4!, {r0, r1, r2, r3}
- 250 0052 95E80700 		ldm	r5, {r0, r1, r2}
- 251 0056 03C4     		stmia	r4!, {r0, r1}
- 252 0058 24F8022B 		strh	r2, [r4], #2	@ movhi
- 253 005c 120C     		lsrs	r2, r2, #16
- 254 005e 2270     		strb	r2, [r4]
- 123:Core/Src/i2c_handler/i2c_handler.c ****             case HAL_TIMEOUT:
- 255              		.loc 1 123 17 is_stmt 1 view .LVU54
- 256 0060 E7E7     		b	.L13
- 257              	.LVL18:
- 258              	.L11:
- 125:Core/Src/i2c_handler/i2c_handler.c ****                 break;
- 259              		.loc 1 125 17 view .LVU55
- 260 0062 094C     		ldr	r4, .L16+4
- 261 0064 0C4D     		ldr	r5, .L16+20
- 262 0066 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
- 263              	.LVL19:
- 125:Core/Src/i2c_handler/i2c_handler.c ****                 break;
- 264              		.loc 1 125 17 is_stmt 0 view .LVU56
- 265 0068 0FC4     		stmia	r4!, {r0, r1, r2, r3}
- 266 006a 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
- 267 006c 0FC4     		stmia	r4!, {r0, r1, r2, r3}
- 268 006e 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
- 269 0070 0FC4     		stmia	r4!, {r0, r1, r2, r3}
- 270 0072 2B68     		ldr	r3, [r5]
- 271 0074 2370     		strb	r3, [r4]
- 126:Core/Src/i2c_handler/i2c_handler.c ****             default:
- 272              		.loc 1 126 17 is_stmt 1 view .LVU57
- 273 0076 DCE7     		b	.L13
- 274              	.LVL20:
- 275              	.L12:
- 128:Core/Src/i2c_handler/i2c_handler.c ****                 break;
- 276              		.loc 1 128 17 view .LVU58
- 277 0078 0849     		ldr	r1, .L16+24
- 278 007a 0348     		ldr	r0, .L16+4
- 279              	.LVL21:
- 128:Core/Src/i2c_handler/i2c_handler.c ****                 break;
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 9
-
-
- 280              		.loc 1 128 17 is_stmt 0 view .LVU59
- 281 007c FFF7FEFF 		bl	sprintf
- 282              	.LVL22:
- 129:Core/Src/i2c_handler/i2c_handler.c ****         }
- 283              		.loc 1 129 17 is_stmt 1 view .LVU60
- 284 0080 D7E7     		b	.L13
- 285              	.L17:
- 286 0082 00BF     		.align	2
- 287              	.L16:
- 288 0084 00000000 		.word	hi2c1
- 289 0088 00000000 		.word	msg_buffer.5
- 290 008c 20000000 		.word	.LC4
- 291 0090 00000000 		.word	.LC3
- 292 0094 50000000 		.word	.LC5
- 293 0098 7C000000 		.word	.LC6
- 294 009c B0000000 		.word	.LC7
- 295              	.LBE3:
- 296              		.cfi_endproc
- 297              	.LFE136:
- 299              		.section	.rodata.I2C_ACC_Enable.str1.4,"aMS",%progbits,1
- 300              		.align	2
- 301              	.LC8:
- 302 0000 4C495333 		.ascii	"LIS3DH CTRL_REG1 Write OK (Blocking).\015\012\000"
- 302      44482043 
- 302      54524C5F 
- 302      52454731 
- 302      20577269 
- 303              		.align	2
- 304              	.LC9:
- 305 0028 4C495333 		.ascii	"LIS3DH CTRL_REG1 Write FAILED (Blocking). Status: %"
- 305      44482043 
- 305      54524C5F 
- 305      52454731 
- 305      20577269 
- 306 005b 640D0A00 		.ascii	"d\015\012\000"
- 307              		.section	.text.I2C_ACC_Enable,"ax",%progbits
- 308              		.align	1
- 309              		.global	I2C_ACC_Enable
- 310              		.syntax unified
- 311              		.thumb
- 312              		.thumb_func
- 314              	I2C_ACC_Enable:
- 315              	.LFB137:
- 135:Core/Src/i2c_handler/i2c_handler.c **** 
- 136:Core/Src/i2c_handler/i2c_handler.c **** /**
- 137:Core/Src/i2c_handler/i2c_handler.c ****  * @brief  Enables the LIS3DH accelerometer by writing to its CTRL_REG1.
- 138:Core/Src/i2c_handler/i2c_handler.c ****  * @note   Uses interrupt-driven I2C write.
- 139:Core/Src/i2c_handler/i2c_handler.c ****  * ACC_CTRL_REG1_CONFIG_100HZ and LIS3DH_REG_CTRL_REG1 are defined in i2c_handler.h.
- 140:Core/Src/i2c_handler/i2c_handler.c ****  * @param  None
- 141:Core/Src/i2c_handler/i2c_handler.c ****  * @retval None
- 142:Core/Src/i2c_handler/i2c_handler.c ****  */
- 143:Core/Src/i2c_handler/i2c_handler.c **** // In i2c_handler.c
- 144:Core/Src/i2c_handler/i2c_handler.c **** void I2C_ACC_Enable(void) {
- 316              		.loc 1 144 27 view -0
- 317              		.cfi_startproc
- 318              		@ args = 0, pretend = 0, frame = 8
- 319              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 10
-
-
- 320 0000 10B5     		push	{r4, lr}
- 321              	.LCFI2:
- 322              		.cfi_def_cfa_offset 8
- 323              		.cfi_offset 4, -8
- 324              		.cfi_offset 14, -4
- 325 0002 86B0     		sub	sp, sp, #24
- 326              	.LCFI3:
- 327              		.cfi_def_cfa_offset 32
- 145:Core/Src/i2c_handler/i2c_handler.c ****     u8 ctrl1_config_value = ACC_CTRL_REG1_CONFIG_100HZ; // Should be 0x57
- 328              		.loc 1 145 5 view .LVU62
- 329              		.loc 1 145 8 is_stmt 0 view .LVU63
- 330 0004 5723     		movs	r3, #87
- 331 0006 8DF81730 		strb	r3, [sp, #23]
- 146:Core/Src/i2c_handler/i2c_handler.c ****     HAL_StatusTypeDef status;
- 332              		.loc 1 146 5 is_stmt 1 view .LVU64
- 147:Core/Src/i2c_handler/i2c_handler.c **** 
- 148:Core/Src/i2c_handler/i2c_handler.c ****     status = HAL_I2C_Mem_Write(&hi2c1,
- 333              		.loc 1 148 5 view .LVU65
- 334              		.loc 1 148 14 is_stmt 0 view .LVU66
- 335 000a 6423     		movs	r3, #100
- 336 000c 0293     		str	r3, [sp, #8]
- 337 000e 0123     		movs	r3, #1
- 338 0010 0193     		str	r3, [sp, #4]
- 339 0012 0DF11702 		add	r2, sp, #23
- 340 0016 0092     		str	r2, [sp]
- 341 0018 2022     		movs	r2, #32
- 342 001a 3021     		movs	r1, #48
- 343 001c 0C48     		ldr	r0, .L22
- 344 001e FFF7FEFF 		bl	HAL_I2C_Mem_Write
- 345              	.LVL23:
- 149:Core/Src/i2c_handler/i2c_handler.c ****                                ACC_I2C_ADDR,
- 150:Core/Src/i2c_handler/i2c_handler.c ****                                LIS3DH_REG_CTRL_REG1, // Target register (0x20)
- 151:Core/Src/i2c_handler/i2c_handler.c ****                                I2C_MEMADD_SIZE_8BIT,
- 152:Core/Src/i2c_handler/i2c_handler.c ****                                &ctrl1_config_value,  // Data to write (0x57)
- 153:Core/Src/i2c_handler/i2c_handler.c ****                                1,                    // Size of data (1 byte)
- 154:Core/Src/i2c_handler/i2c_handler.c ****                                100);                 // Timeout in ms (e.g., 100ms)
- 155:Core/Src/i2c_handler/i2c_handler.c **** 
- 156:Core/Src/i2c_handler/i2c_handler.c ****     if (status == HAL_OK) {
- 346              		.loc 1 156 5 is_stmt 1 view .LVU67
- 347              		.loc 1 156 8 is_stmt 0 view .LVU68
- 348 0022 38B9     		cbnz	r0, .L19
- 157:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking("LIS3DH CTRL_REG1 Write OK (Blocking).\r\n"); // Use blocking UART for t
- 349              		.loc 1 157 9 is_stmt 1 view .LVU69
- 350 0024 0B48     		ldr	r0, .L22+4
- 351              	.LVL24:
- 352              		.loc 1 157 9 is_stmt 0 view .LVU70
- 353 0026 FFF7FEFF 		bl	WriteUART_Blocking
- 354              	.LVL25:
- 158:Core/Src/i2c_handler/i2c_handler.c ****         acc_enabled = true; // Set your global flag
- 355              		.loc 1 158 9 is_stmt 1 view .LVU71
- 356              		.loc 1 158 21 is_stmt 0 view .LVU72
- 357 002a 0B4B     		ldr	r3, .L22+8
- 358 002c 0122     		movs	r2, #1
- 359 002e 1A70     		strb	r2, [r3]
- 360              	.L18:
- 159:Core/Src/i2c_handler/i2c_handler.c ****         
- 160:Core/Src/i2c_handler/i2c_handler.c ****     } else {
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 11
-
-
- 161:Core/Src/i2c_handler/i2c_handler.c ****         static char err_buf[64]; // static if WriteUART_Blocking might use IT internally
- 162:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(err_buf, "LIS3DH CTRL_REG1 Write FAILED (Blocking). Status: %d\r\n", status);
- 163:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_buf);
- 164:Core/Src/i2c_handler/i2c_handler.c ****         acc_enabled = false;
- 165:Core/Src/i2c_handler/i2c_handler.c ****     }
- 166:Core/Src/i2c_handler/i2c_handler.c **** }
- 361              		.loc 1 166 1 view .LVU73
- 362 0030 06B0     		add	sp, sp, #24
- 363              	.LCFI4:
- 364              		.cfi_remember_state
- 365              		.cfi_def_cfa_offset 8
- 366              		@ sp needed
- 367 0032 10BD     		pop	{r4, pc}
- 368              	.LVL26:
- 369              	.L19:
- 370              	.LCFI5:
- 371              		.cfi_restore_state
- 372              		.loc 1 166 1 view .LVU74
- 373 0034 0246     		mov	r2, r0
- 374              	.LBB4:
- 161:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(err_buf, "LIS3DH CTRL_REG1 Write FAILED (Blocking). Status: %d\r\n", status);
- 375              		.loc 1 161 9 is_stmt 1 view .LVU75
- 162:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_buf);
- 376              		.loc 1 162 9 view .LVU76
- 377 0036 094C     		ldr	r4, .L22+12
- 378 0038 0949     		ldr	r1, .L22+16
- 379 003a 2046     		mov	r0, r4
- 380              	.LVL27:
- 162:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_buf);
- 381              		.loc 1 162 9 is_stmt 0 view .LVU77
- 382 003c FFF7FEFF 		bl	sprintf
- 383              	.LVL28:
- 163:Core/Src/i2c_handler/i2c_handler.c ****         acc_enabled = false;
- 384              		.loc 1 163 9 is_stmt 1 view .LVU78
- 385 0040 2046     		mov	r0, r4
- 386 0042 FFF7FEFF 		bl	WriteUART_Blocking
- 387              	.LVL29:
- 164:Core/Src/i2c_handler/i2c_handler.c ****     }
- 388              		.loc 1 164 9 view .LVU79
- 164:Core/Src/i2c_handler/i2c_handler.c ****     }
- 389              		.loc 1 164 21 is_stmt 0 view .LVU80
- 390 0046 044B     		ldr	r3, .L22+8
- 391 0048 0022     		movs	r2, #0
- 392 004a 1A70     		strb	r2, [r3]
- 393              	.LBE4:
- 394              		.loc 1 166 1 view .LVU81
- 395 004c F0E7     		b	.L18
- 396              	.L23:
- 397 004e 00BF     		.align	2
- 398              	.L22:
- 399 0050 00000000 		.word	hi2c1
- 400 0054 00000000 		.word	.LC8
- 401 0058 00000000 		.word	acc_enabled
- 402 005c 00000000 		.word	err_buf.4
- 403 0060 28000000 		.word	.LC9
- 404              		.cfi_endproc
- 405              	.LFE137:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 12
-
-
- 407              		.section	.rodata.BVAT_I2C_Init.str1.4,"aMS",%progbits,1
- 408              		.align	2
- 409              	.LC10:
- 410 0000 50657266 		.ascii	"Performing I2C device checks (LIS3DH)...\015\012\000"
- 410      6F726D69 
- 410      6E672049 
- 410      32432064 
- 410      65766963 
- 411 002b 00       		.align	2
- 412              	.LC11:
- 413 002c 4C495333 		.ascii	"LIS3DH Accelerometer configuration command sent.\015"
- 413      44482041 
- 413      6363656C 
- 413      65726F6D 
- 413      65746572 
- 414 005d 0A00     		.ascii	"\012\000"
- 415 005f 00       		.align	2
- 416              	.LC12:
- 417 0060 4C495333 		.ascii	"LIS3DH Accelerometer NOT configured due to I2C issu"
- 417      44482041 
- 417      6363656C 
- 417      65726F6D 
- 417      65746572 
- 418 0093 652E0D0A 		.ascii	"e.\015\012\000"
- 418      00
- 419              		.section	.text.BVAT_I2C_Init,"ax",%progbits
- 420              		.align	1
- 421              		.global	BVAT_I2C_Init
- 422              		.syntax unified
- 423              		.thumb
- 424              		.thumb_func
- 426              	BVAT_I2C_Init:
- 427              	.LFB135:
-  76:Core/Src/i2c_handler/i2c_handler.c ****     bool device_is_ok;
- 428              		.loc 1 76 26 is_stmt 1 view -0
- 429              		.cfi_startproc
- 430              		@ args = 0, pretend = 0, frame = 0
- 431              		@ frame_needed = 0, uses_anonymous_args = 0
- 432 0000 10B5     		push	{r4, lr}
- 433              	.LCFI6:
- 434              		.cfi_def_cfa_offset 8
- 435              		.cfi_offset 4, -8
- 436              		.cfi_offset 14, -4
+ 239              		.cfi_startproc
+ 240              		@ args = 0, pretend = 0, frame = 8
+ 241              		@ frame_needed = 0, uses_anonymous_args = 0
+ 242 0000 10B5     		push	{r4, lr}
+ 243              	.LCFI2:
+ 244              		.cfi_def_cfa_offset 8
+ 245              		.cfi_offset 4, -8
+ 246              		.cfi_offset 14, -4
+ 247 0002 86B0     		sub	sp, sp, #24
+ 248              	.LCFI3:
+ 249              		.cfi_def_cfa_offset 32
+  75:Core/Src/i2c_handler/i2c_handler.c ****     u8 ctrl1_config_value = ACC_CTRL_REG1_CONFIG_100HZ;
+ 250              		.loc 1 75 5 view .LVU52
+ 251              		.loc 1 75 8 is_stmt 0 view .LVU53
+ 252 0004 5723     		movs	r3, #87
+ 253 0006 8DF81730 		strb	r3, [sp, #23]
+  76:Core/Src/i2c_handler/i2c_handler.c ****     HAL_StatusTypeDef status;
+ 254              		.loc 1 76 5 is_stmt 1 view .LVU54
   77:Core/Src/i2c_handler/i2c_handler.c **** 
- 437              		.loc 1 77 5 view .LVU83
-  80:Core/Src/i2c_handler/i2c_handler.c **** 
- 438              		.loc 1 80 5 view .LVU84
- 439 0002 0948     		ldr	r0, .L28
- 440 0004 FFF7FEFF 		bl	WriteUART_Blocking
- 441              	.LVL30:
-  82:Core/Src/i2c_handler/i2c_handler.c **** 
- 442              		.loc 1 82 5 view .LVU85
-  82:Core/Src/i2c_handler/i2c_handler.c **** 
- 443              		.loc 1 82 20 is_stmt 0 view .LVU86
- 444 0008 FFF7FEFF 		bl	I2C_connectivity_check
- 445              	.LVL31:
-  84:Core/Src/i2c_handler/i2c_handler.c ****         I2C_ACC_Enable(); // Call to the function defined below
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 13
+  78:Core/Src/i2c_handler/i2c_handler.c ****     status = HAL_I2C_Mem_Write(&hi2c1,
+ 255              		.loc 1 78 5 view .LVU55
+ 256              		.loc 1 78 14 is_stmt 0 view .LVU56
+ 257 000a 6423     		movs	r3, #100
+ 258 000c 0293     		str	r3, [sp, #8]
+ 259 000e 0123     		movs	r3, #1
+ 260 0010 0193     		str	r3, [sp, #4]
+ 261 0012 0DF11702 		add	r2, sp, #23
+ 262 0016 0092     		str	r2, [sp]
+ 263 0018 2022     		movs	r2, #32
+ 264 001a 3021     		movs	r1, #48
+ 265 001c 0C48     		ldr	r0, .L17
+ 266 001e FFF7FEFF 		bl	HAL_I2C_Mem_Write
+ 267              	.LVL17:
+  79:Core/Src/i2c_handler/i2c_handler.c ****                                ACC_I2C_ADDR,
+  80:Core/Src/i2c_handler/i2c_handler.c ****                                LIS3DH_REG_CTRL_REG1,
+  81:Core/Src/i2c_handler/i2c_handler.c ****                                I2C_MEMADD_SIZE_8BIT,
+  82:Core/Src/i2c_handler/i2c_handler.c ****                                &ctrl1_config_value,
+  83:Core/Src/i2c_handler/i2c_handler.c ****                                1,
+  84:Core/Src/i2c_handler/i2c_handler.c ****                                100);
+  85:Core/Src/i2c_handler/i2c_handler.c **** 
+  86:Core/Src/i2c_handler/i2c_handler.c ****     if (status == HAL_OK) {
+ 268              		.loc 1 86 5 is_stmt 1 view .LVU57
+ 269              		.loc 1 86 8 is_stmt 0 view .LVU58
+ 270 0022 38B9     		cbnz	r0, .L14
+  87:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking("LIS3DH CTRL_REG1 Write OK (Blocking).\r\n");
+ 271              		.loc 1 87 9 is_stmt 1 view .LVU59
+ 272 0024 0B48     		ldr	r0, .L17+4
+ 273              	.LVL18:
+ 274              		.loc 1 87 9 is_stmt 0 view .LVU60
+ 275 0026 FFF7FEFF 		bl	WriteUART_Blocking
+ 276              	.LVL19:
+  88:Core/Src/i2c_handler/i2c_handler.c ****         acc_enabled = true;
+ 277              		.loc 1 88 9 is_stmt 1 view .LVU61
+ 278              		.loc 1 88 21 is_stmt 0 view .LVU62
+ 279 002a 0B4B     		ldr	r3, .L17+8
+ 280 002c 0122     		movs	r2, #1
+ 281 002e 1A70     		strb	r2, [r3]
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 8
 
 
- 446              		.loc 1 84 5 is_stmt 1 view .LVU87
-  84:Core/Src/i2c_handler/i2c_handler.c ****         I2C_ACC_Enable(); // Call to the function defined below
- 447              		.loc 1 84 8 is_stmt 0 view .LVU88
- 448 000c 0446     		mov	r4, r0
- 449 000e 30B1     		cbz	r0, .L25
-  85:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking("LIS3DH Accelerometer configuration command sent.\r\n");
- 450              		.loc 1 85 9 is_stmt 1 view .LVU89
- 451 0010 FFF7FEFF 		bl	I2C_ACC_Enable
- 452              	.LVL32:
-  86:Core/Src/i2c_handler/i2c_handler.c ****     } else {
- 453              		.loc 1 86 9 view .LVU90
- 454 0014 0548     		ldr	r0, .L28+4
- 455 0016 FFF7FEFF 		bl	WriteUART_Blocking
- 456              	.LVL33:
- 457              	.L26:
-  90:Core/Src/i2c_handler/i2c_handler.c **** }
- 458              		.loc 1 90 5 view .LVU91
-  91:Core/Src/i2c_handler/i2c_handler.c **** 
- 459              		.loc 1 91 1 is_stmt 0 view .LVU92
- 460 001a 2046     		mov	r0, r4
- 461 001c 10BD     		pop	{r4, pc}
- 462              	.LVL34:
- 463              	.L25:
-  88:Core/Src/i2c_handler/i2c_handler.c ****     }
- 464              		.loc 1 88 9 is_stmt 1 view .LVU93
- 465 001e 0448     		ldr	r0, .L28+8
- 466              	.LVL35:
-  88:Core/Src/i2c_handler/i2c_handler.c ****     }
- 467              		.loc 1 88 9 is_stmt 0 view .LVU94
- 468 0020 FFF7FEFF 		bl	WriteUART_Blocking
- 469              	.LVL36:
- 470 0024 F9E7     		b	.L26
- 471              	.L29:
- 472 0026 00BF     		.align	2
- 473              	.L28:
- 474 0028 00000000 		.word	.LC10
- 475 002c 2C000000 		.word	.LC11
- 476 0030 60000000 		.word	.LC12
- 477              		.cfi_endproc
- 478              	.LFE135:
- 480              		.section	.text.I2C_Read_ACC,"ax",%progbits
- 481              		.align	1
- 482              		.global	I2C_Read_ACC
- 483              		.syntax unified
- 484              		.thumb
- 485              		.thumb_func
- 487              	I2C_Read_ACC:
- 488              	.LFB138:
- 167:Core/Src/i2c_handler/i2c_handler.c **** 
- 168:Core/Src/i2c_handler/i2c_handler.c **** /**
- 169:Core/Src/i2c_handler/i2c_handler.c ****  * @brief  Initiates an interrupt-driven read of 6 bytes (X,Y,Z data) from LIS3DH.
- 170:Core/Src/i2c_handler/i2c_handler.c ****  * @note   Data is read into the global 'rawData' buffer. Completion is signaled
- 171:Core/Src/i2c_handler/i2c_handler.c ****  * via HAL_I2C_MemRxCpltCallback. LIS3DH_DATA_START_MULTI_READ is defined
- 172:Core/Src/i2c_handler/i2c_handler.c ****  * in i2c_handler.h.
- 173:Core/Src/i2c_handler/i2c_handler.c ****  * @param  None
- 174:Core/Src/i2c_handler/i2c_handler.c ****  * @retval None
- 175:Core/Src/i2c_handler/i2c_handler.c ****  */
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 14
+ 282              	.L13:
+  89:Core/Src/i2c_handler/i2c_handler.c ****     } else {
+  90:Core/Src/i2c_handler/i2c_handler.c ****         static char err_buf[64];
+  91:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(err_buf, "LIS3DH CTRL_REG1 Write FAILED. Status: %d\r\n", status);
+  92:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_buf);
+  93:Core/Src/i2c_handler/i2c_handler.c ****         acc_enabled = false;
+  94:Core/Src/i2c_handler/i2c_handler.c ****     }
+  95:Core/Src/i2c_handler/i2c_handler.c **** }
+ 283              		.loc 1 95 1 view .LVU63
+ 284 0030 06B0     		add	sp, sp, #24
+ 285              	.LCFI4:
+ 286              		.cfi_remember_state
+ 287              		.cfi_def_cfa_offset 8
+ 288              		@ sp needed
+ 289 0032 10BD     		pop	{r4, pc}
+ 290              	.LVL20:
+ 291              	.L14:
+ 292              	.LCFI5:
+ 293              		.cfi_restore_state
+ 294              		.loc 1 95 1 view .LVU64
+ 295 0034 0246     		mov	r2, r0
+ 296              	.LBB2:
+  90:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(err_buf, "LIS3DH CTRL_REG1 Write FAILED. Status: %d\r\n", status);
+ 297              		.loc 1 90 9 is_stmt 1 view .LVU65
+  91:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_buf);
+ 298              		.loc 1 91 9 view .LVU66
+ 299 0036 094C     		ldr	r4, .L17+12
+ 300 0038 0949     		ldr	r1, .L17+16
+ 301 003a 2046     		mov	r0, r4
+ 302              	.LVL21:
+  91:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_buf);
+ 303              		.loc 1 91 9 is_stmt 0 view .LVU67
+ 304 003c FFF7FEFF 		bl	sprintf
+ 305              	.LVL22:
+  92:Core/Src/i2c_handler/i2c_handler.c ****         acc_enabled = false;
+ 306              		.loc 1 92 9 is_stmt 1 view .LVU68
+ 307 0040 2046     		mov	r0, r4
+ 308 0042 FFF7FEFF 		bl	WriteUART_Blocking
+ 309              	.LVL23:
+  93:Core/Src/i2c_handler/i2c_handler.c ****     }
+ 310              		.loc 1 93 9 view .LVU69
+  93:Core/Src/i2c_handler/i2c_handler.c ****     }
+ 311              		.loc 1 93 21 is_stmt 0 view .LVU70
+ 312 0046 044B     		ldr	r3, .L17+8
+ 313 0048 0022     		movs	r2, #0
+ 314 004a 1A70     		strb	r2, [r3]
+ 315              	.LBE2:
+ 316              		.loc 1 95 1 view .LVU71
+ 317 004c F0E7     		b	.L13
+ 318              	.L18:
+ 319 004e 00BF     		.align	2
+ 320              	.L17:
+ 321 0050 00000000 		.word	hi2c1
+ 322 0054 00000000 		.word	.LC5
+ 323 0058 00000000 		.word	acc_enabled
+ 324 005c 00000000 		.word	err_buf.1
+ 325 0060 28000000 		.word	.LC6
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 9
 
 
- 176:Core/Src/i2c_handler/i2c_handler.c **** void I2C_Read_ACC(void) {
- 489              		.loc 1 176 25 is_stmt 1 view -0
- 490              		.cfi_startproc
- 491              		@ args = 0, pretend = 0, frame = 0
- 492              		@ frame_needed = 0, uses_anonymous_args = 0
- 493 0000 00B5     		push	{lr}
- 494              	.LCFI7:
- 495              		.cfi_def_cfa_offset 4
- 496              		.cfi_offset 14, -4
- 497 0002 83B0     		sub	sp, sp, #12
- 498              	.LCFI8:
- 499              		.cfi_def_cfa_offset 16
- 177:Core/Src/i2c_handler/i2c_handler.c ****     HAL_I2C_Mem_Read_IT(&hi2c1,
- 500              		.loc 1 177 5 view .LVU96
- 501 0004 0623     		movs	r3, #6
- 502 0006 0193     		str	r3, [sp, #4]
- 503 0008 054B     		ldr	r3, .L32
- 504 000a 0093     		str	r3, [sp]
- 505 000c 0123     		movs	r3, #1
- 506 000e A822     		movs	r2, #168
- 507 0010 3021     		movs	r1, #48
- 508 0012 0448     		ldr	r0, .L32+4
- 509 0014 FFF7FEFF 		bl	HAL_I2C_Mem_Read_IT
- 510              	.LVL37:
- 178:Core/Src/i2c_handler/i2c_handler.c ****                         ACC_I2C_ADDR,
- 179:Core/Src/i2c_handler/i2c_handler.c ****                         LIS3DH_DATA_START_MULTI_READ,
- 180:Core/Src/i2c_handler/i2c_handler.c ****                         I2C_MEMADD_SIZE_8BIT,
- 181:Core/Src/i2c_handler/i2c_handler.c ****                         rawData,  // Global buffer
- 182:Core/Src/i2c_handler/i2c_handler.c ****                         6);       // Read 6 bytes
- 183:Core/Src/i2c_handler/i2c_handler.c **** }
- 511              		.loc 1 183 1 is_stmt 0 view .LVU97
- 512 0018 03B0     		add	sp, sp, #12
- 513              	.LCFI9:
- 514              		.cfi_def_cfa_offset 4
- 515              		@ sp needed
- 516 001a 5DF804FB 		ldr	pc, [sp], #4
- 517              	.L33:
- 518 001e 00BF     		.align	2
- 519              	.L32:
- 520 0020 00000000 		.word	rawData
- 521 0024 00000000 		.word	hi2c1
- 522              		.cfi_endproc
- 523              	.LFE138:
- 525              		.section	.rodata.readACC.str1.4,"aMS",%progbits,1
- 526              		.align	2
- 527              	.LC13:
- 528 0000 4572726F 		.ascii	"Error reading I2C reg 0x%02X. Status: %d\015\012\000"
- 528      72207265 
- 528      6164696E 
- 528      67204932 
- 528      43207265 
- 529              		.section	.text.readACC,"ax",%progbits
- 530              		.align	1
- 531              		.global	readACC
- 532              		.syntax unified
- 533              		.thumb
- 534              		.thumb_func
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 15
+ 326              		.cfi_endproc
+ 327              	.LFE140:
+ 329              		.section	.rodata.BVAT_I2C_Init.str1.4,"aMS",%progbits,1
+ 330              		.align	2
+ 331              	.LC7:
+ 332 0000 50657266 		.ascii	"Performing I2C device checks (LIS3DH)...\015\012\000"
+ 332      6F726D69 
+ 332      6E672049 
+ 332      32432064 
+ 332      65766963 
+ 333 002b 00       		.align	2
+ 334              	.LC8:
+ 335 002c 4C495333 		.ascii	"LIS3DH Accelerometer configuration command sent.\015"
+ 335      44482041 
+ 335      6363656C 
+ 335      65726F6D 
+ 335      65746572 
+ 336 005d 0A00     		.ascii	"\012\000"
+ 337 005f 00       		.align	2
+ 338              	.LC9:
+ 339 0060 4C495333 		.ascii	"LIS3DH Accelerometer NOT configured due to I2C issu"
+ 339      44482041 
+ 339      6363656C 
+ 339      65726F6D 
+ 339      65746572 
+ 340 0093 652E0D0A 		.ascii	"e.\015\012\000"
+ 340      00
+ 341              		.section	.text.BVAT_I2C_Init,"ax",%progbits
+ 342              		.align	1
+ 343              		.global	BVAT_I2C_Init
+ 344              		.syntax unified
+ 345              		.thumb
+ 346              		.thumb_func
+ 348              	BVAT_I2C_Init:
+ 349              	.LFB138:
+  41:Core/Src/i2c_handler/i2c_handler.c ****     bool device_is_ok;
+ 350              		.loc 1 41 26 is_stmt 1 view -0
+ 351              		.cfi_startproc
+ 352              		@ args = 0, pretend = 0, frame = 0
+ 353              		@ frame_needed = 0, uses_anonymous_args = 0
+ 354 0000 10B5     		push	{r4, lr}
+ 355              	.LCFI6:
+ 356              		.cfi_def_cfa_offset 8
+ 357              		.cfi_offset 4, -8
+ 358              		.cfi_offset 14, -4
+  42:Core/Src/i2c_handler/i2c_handler.c ****     WriteUART_Blocking("Performing I2C device checks (LIS3DH)...\r\n");
+ 359              		.loc 1 42 5 view .LVU73
+  43:Core/Src/i2c_handler/i2c_handler.c ****     device_is_ok = I2C_connectivity_check();
+ 360              		.loc 1 43 5 view .LVU74
+ 361 0002 0A48     		ldr	r0, .L23
+ 362 0004 FFF7FEFF 		bl	WriteUART_Blocking
+ 363              	.LVL24:
+  44:Core/Src/i2c_handler/i2c_handler.c **** 
+ 364              		.loc 1 44 5 view .LVU75
+  44:Core/Src/i2c_handler/i2c_handler.c **** 
+ 365              		.loc 1 44 20 is_stmt 0 view .LVU76
+ 366 0008 FFF7FEFF 		bl	I2C_connectivity_check
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 10
 
 
- 536              	readACC:
- 537              	.LVL38:
- 538              	.LFB139:
- 184:Core/Src/i2c_handler/i2c_handler.c **** 
- 185:Core/Src/i2c_handler/i2c_handler.c **** /**
- 186:Core/Src/i2c_handler/i2c_handler.c ****  * @brief  Reads a single byte from a specified register of the LIS3DH in blocking mode.
- 187:Core/Src/i2c_handler/i2c_handler.c ****  * @param  reg: The 8-bit LIS3DH register address to read from.
- 188:Core/Src/i2c_handler/i2c_handler.c ****  * @retval u8: The value read from the register.
- 189:Core/Src/i2c_handler/i2c_handler.c ****  */
- 190:Core/Src/i2c_handler/i2c_handler.c **** u8 readACC(u8 reg) {
- 539              		.loc 1 190 20 is_stmt 1 view -0
- 540              		.cfi_startproc
- 541              		@ args = 0, pretend = 0, frame = 8
- 542              		@ frame_needed = 0, uses_anonymous_args = 0
- 543              		.loc 1 190 20 is_stmt 0 view .LVU99
- 544 0000 30B5     		push	{r4, r5, lr}
- 545              	.LCFI10:
- 546              		.cfi_def_cfa_offset 12
- 547              		.cfi_offset 4, -12
- 548              		.cfi_offset 5, -8
- 549              		.cfi_offset 14, -4
- 550 0002 87B0     		sub	sp, sp, #28
- 551              	.LCFI11:
- 552              		.cfi_def_cfa_offset 40
- 553 0004 0446     		mov	r4, r0
- 191:Core/Src/i2c_handler/i2c_handler.c ****     u8 value = 0;
- 554              		.loc 1 191 5 is_stmt 1 view .LVU100
- 555              		.loc 1 191 8 is_stmt 0 view .LVU101
- 556 0006 0023     		movs	r3, #0
- 557 0008 8DF81730 		strb	r3, [sp, #23]
- 192:Core/Src/i2c_handler/i2c_handler.c ****     HAL_StatusTypeDef status = HAL_I2C_Mem_Read(&hi2c1,
- 558              		.loc 1 192 5 is_stmt 1 view .LVU102
- 559              		.loc 1 192 32 is_stmt 0 view .LVU103
- 560 000c 4FF0FF33 		mov	r3, #-1
- 561 0010 0293     		str	r3, [sp, #8]
- 562 0012 0123     		movs	r3, #1
- 563 0014 0193     		str	r3, [sp, #4]
- 564 0016 0DF11702 		add	r2, sp, #23
- 565 001a 0092     		str	r2, [sp]
- 566 001c 0246     		mov	r2, r0
- 567 001e 3021     		movs	r1, #48
- 568 0020 0948     		ldr	r0, .L38
- 569              	.LVL39:
- 570              		.loc 1 192 32 view .LVU104
- 571 0022 FFF7FEFF 		bl	HAL_I2C_Mem_Read
- 572              	.LVL40:
- 193:Core/Src/i2c_handler/i2c_handler.c ****                                                ACC_I2C_ADDR,
- 194:Core/Src/i2c_handler/i2c_handler.c ****                                                reg,
- 195:Core/Src/i2c_handler/i2c_handler.c ****                                                I2C_MEMADD_SIZE_8BIT,
- 196:Core/Src/i2c_handler/i2c_handler.c ****                                                &value,
- 197:Core/Src/i2c_handler/i2c_handler.c ****                                                1,
- 198:Core/Src/i2c_handler/i2c_handler.c ****                                                HAL_MAX_DELAY);
- 199:Core/Src/i2c_handler/i2c_handler.c ****     if (status != HAL_OK) {
- 573              		.loc 1 199 5 is_stmt 1 view .LVU105
- 574              		.loc 1 199 8 is_stmt 0 view .LVU106
- 575 0026 18B9     		cbnz	r0, .L37
- 576              	.LVL41:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 16
+ 367              	.LVL25:
+  46:Core/Src/i2c_handler/i2c_handler.c ****         I2C_ACC_Enable();
+ 368              		.loc 1 46 5 is_stmt 1 view .LVU77
+  46:Core/Src/i2c_handler/i2c_handler.c ****         I2C_ACC_Enable();
+ 369              		.loc 1 46 8 is_stmt 0 view .LVU78
+ 370 000c 0446     		mov	r4, r0
+ 371 000e 48B1     		cbz	r0, .L20
+  47:Core/Src/i2c_handler/i2c_handler.c ****         HAL_Delay(100);
+ 372              		.loc 1 47 9 is_stmt 1 view .LVU79
+ 373 0010 FFF7FEFF 		bl	I2C_ACC_Enable
+ 374              	.LVL26:
+  48:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking("LIS3DH Accelerometer configuration command sent.\r\n");
+ 375              		.loc 1 48 9 view .LVU80
+ 376 0014 6420     		movs	r0, #100
+ 377 0016 FFF7FEFF 		bl	HAL_Delay
+ 378              	.LVL27:
+  49:Core/Src/i2c_handler/i2c_handler.c ****     } else {
+ 379              		.loc 1 49 9 view .LVU81
+ 380 001a 0548     		ldr	r0, .L23+4
+ 381 001c FFF7FEFF 		bl	WriteUART_Blocking
+ 382              	.LVL28:
+ 383              	.L21:
+  53:Core/Src/i2c_handler/i2c_handler.c **** }
+ 384              		.loc 1 53 5 view .LVU82
+  54:Core/Src/i2c_handler/i2c_handler.c **** 
+ 385              		.loc 1 54 1 is_stmt 0 view .LVU83
+ 386 0020 2046     		mov	r0, r4
+ 387 0022 10BD     		pop	{r4, pc}
+ 388              	.LVL29:
+ 389              	.L20:
+  51:Core/Src/i2c_handler/i2c_handler.c ****     }
+ 390              		.loc 1 51 9 is_stmt 1 view .LVU84
+ 391 0024 0348     		ldr	r0, .L23+8
+ 392              	.LVL30:
+  51:Core/Src/i2c_handler/i2c_handler.c ****     }
+ 393              		.loc 1 51 9 is_stmt 0 view .LVU85
+ 394 0026 FFF7FEFF 		bl	WriteUART_Blocking
+ 395              	.LVL31:
+ 396 002a F9E7     		b	.L21
+ 397              	.L24:
+ 398              		.align	2
+ 399              	.L23:
+ 400 002c 00000000 		.word	.LC7
+ 401 0030 2C000000 		.word	.LC8
+ 402 0034 60000000 		.word	.LC9
+ 403              		.cfi_endproc
+ 404              	.LFE138:
+ 406              		.section	.rodata.readACC.str1.4,"aMS",%progbits,1
+ 407              		.align	2
+ 408              	.LC10:
+ 409 0000 4572726F 		.ascii	"Error reading I2C reg 0x%02X. Status: %d\015\012\000"
+ 409      72207265 
+ 409      6164696E 
+ 409      67204932 
+ 409      43207265 
+ 410              		.section	.text.readACC,"ax",%progbits
+ 411              		.align	1
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 11
 
 
- 577              	.L35:
- 200:Core/Src/i2c_handler/i2c_handler.c ****         static char err_buf[64]; // Static for safety if WriteUART_Blocking is IT-based
- 201:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(err_buf, "Error reading I2C reg 0x%02X. Status: %d\r\n", reg, status);
- 202:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_buf);
- 203:Core/Src/i2c_handler/i2c_handler.c ****     }
- 204:Core/Src/i2c_handler/i2c_handler.c ****     return value;
- 578              		.loc 1 204 5 is_stmt 1 view .LVU107
- 205:Core/Src/i2c_handler/i2c_handler.c **** }
- 579              		.loc 1 205 1 is_stmt 0 view .LVU108
- 580 0028 9DF81700 		ldrb	r0, [sp, #23]	@ zero_extendqisi2
- 581 002c 07B0     		add	sp, sp, #28
- 582              	.LCFI12:
- 583              		.cfi_remember_state
- 584              		.cfi_def_cfa_offset 12
- 585              		@ sp needed
- 586 002e 30BD     		pop	{r4, r5, pc}
- 587              	.LVL42:
- 588              	.L37:
- 589              	.LCFI13:
- 590              		.cfi_restore_state
- 591              		.loc 1 205 1 view .LVU109
- 592 0030 0346     		mov	r3, r0
- 593              	.LBB5:
- 200:Core/Src/i2c_handler/i2c_handler.c ****         static char err_buf[64]; // Static for safety if WriteUART_Blocking is IT-based
- 594              		.loc 1 200 9 is_stmt 1 view .LVU110
- 201:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_buf);
- 595              		.loc 1 201 9 view .LVU111
- 596 0032 064D     		ldr	r5, .L38+4
- 597 0034 2246     		mov	r2, r4
- 598 0036 0649     		ldr	r1, .L38+8
- 599 0038 2846     		mov	r0, r5
- 600              	.LVL43:
- 201:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_buf);
- 601              		.loc 1 201 9 is_stmt 0 view .LVU112
- 602 003a FFF7FEFF 		bl	sprintf
- 603              	.LVL44:
- 202:Core/Src/i2c_handler/i2c_handler.c ****     }
- 604              		.loc 1 202 9 is_stmt 1 view .LVU113
- 605 003e 2846     		mov	r0, r5
- 606 0040 FFF7FEFF 		bl	WriteUART_Blocking
- 607              	.LVL45:
- 608 0044 F0E7     		b	.L35
- 609              	.L39:
- 610 0046 00BF     		.align	2
- 611              	.L38:
- 612 0048 00000000 		.word	hi2c1
- 613 004c 00000000 		.word	err_buf.3
- 614 0050 00000000 		.word	.LC13
- 615              	.LBE5:
- 616              		.cfi_endproc
- 617              	.LFE139:
- 619              		.section	.rodata.read_I2C_Blocking.str1.4,"aMS",%progbits,1
- 620              		.align	2
- 621              	.LC14:
- 622 0000 49324320 		.ascii	"I2C Block Read OK: XL=%02X XH=%02X YL=%02X YH=%02X "
- 622      426C6F63 
- 622      6B205265 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 17
+ 412              		.global	readACC
+ 413              		.syntax unified
+ 414              		.thumb
+ 415              		.thumb_func
+ 417              	readACC:
+ 418              	.LVL32:
+ 419              	.LFB141:
+  96:Core/Src/i2c_handler/i2c_handler.c **** 
+  97:Core/Src/i2c_handler/i2c_handler.c **** u8 readACC(u8 reg) {
+ 420              		.loc 1 97 20 is_stmt 1 view -0
+ 421              		.cfi_startproc
+ 422              		@ args = 0, pretend = 0, frame = 8
+ 423              		@ frame_needed = 0, uses_anonymous_args = 0
+ 424              		.loc 1 97 20 is_stmt 0 view .LVU87
+ 425 0000 30B5     		push	{r4, r5, lr}
+ 426              	.LCFI7:
+ 427              		.cfi_def_cfa_offset 12
+ 428              		.cfi_offset 4, -12
+ 429              		.cfi_offset 5, -8
+ 430              		.cfi_offset 14, -4
+ 431 0002 87B0     		sub	sp, sp, #28
+ 432              	.LCFI8:
+ 433              		.cfi_def_cfa_offset 40
+ 434 0004 0446     		mov	r4, r0
+  98:Core/Src/i2c_handler/i2c_handler.c ****     u8 value = 0;
+ 435              		.loc 1 98 5 is_stmt 1 view .LVU88
+ 436              		.loc 1 98 8 is_stmt 0 view .LVU89
+ 437 0006 0023     		movs	r3, #0
+ 438 0008 8DF81730 		strb	r3, [sp, #23]
+  99:Core/Src/i2c_handler/i2c_handler.c ****     HAL_StatusTypeDef status = HAL_I2C_Mem_Read(&hi2c1,
+ 439              		.loc 1 99 5 is_stmt 1 view .LVU90
+ 440              		.loc 1 99 32 is_stmt 0 view .LVU91
+ 441 000c 4FF0FF33 		mov	r3, #-1
+ 442 0010 0293     		str	r3, [sp, #8]
+ 443 0012 0123     		movs	r3, #1
+ 444 0014 0193     		str	r3, [sp, #4]
+ 445 0016 0DF11702 		add	r2, sp, #23
+ 446 001a 0092     		str	r2, [sp]
+ 447 001c 0246     		mov	r2, r0
+ 448 001e 3021     		movs	r1, #48
+ 449 0020 0948     		ldr	r0, .L29
+ 450              	.LVL33:
+ 451              		.loc 1 99 32 view .LVU92
+ 452 0022 FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 453              	.LVL34:
+ 100:Core/Src/i2c_handler/i2c_handler.c ****                                                ACC_I2C_ADDR,
+ 101:Core/Src/i2c_handler/i2c_handler.c ****                                                reg,
+ 102:Core/Src/i2c_handler/i2c_handler.c ****                                                I2C_MEMADD_SIZE_8BIT,
+ 103:Core/Src/i2c_handler/i2c_handler.c ****                                                &value,
+ 104:Core/Src/i2c_handler/i2c_handler.c ****                                                1,
+ 105:Core/Src/i2c_handler/i2c_handler.c ****                                                HAL_MAX_DELAY);
+ 106:Core/Src/i2c_handler/i2c_handler.c ****     if (status != HAL_OK) {
+ 454              		.loc 1 106 5 is_stmt 1 view .LVU93
+ 455              		.loc 1 106 8 is_stmt 0 view .LVU94
+ 456 0026 18B9     		cbnz	r0, .L28
+ 457              	.LVL35:
+ 458              	.L26:
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 12
 
 
- 622      6164204F 
- 622      4B3A2058 
- 623 0033 5A4C3D25 		.ascii	"ZL=%02X ZH=%02X\015\012\000"
- 623      30325820 
- 623      5A483D25 
- 623      3032580D 
- 623      0A00
- 624 0045 000000   		.align	2
- 625              	.LC15:
- 626 0048 49324320 		.ascii	"I2C Block Read Failed. Status: %d\015\012\000"
- 626      426C6F63 
- 626      6B205265 
- 626      61642046 
- 626      61696C65 
- 627              		.section	.text.read_I2C_Blocking,"ax",%progbits
- 628              		.align	1
- 629              		.global	read_I2C_Blocking
- 630              		.syntax unified
- 631              		.thumb
- 632              		.thumb_func
- 634              	read_I2C_Blocking:
- 635              	.LFB140:
- 206:Core/Src/i2c_handler/i2c_handler.c **** 
- 207:Core/Src/i2c_handler/i2c_handler.c **** /**
- 208:Core/Src/i2c_handler/i2c_handler.c ****  * @brief  Test function to read LIS3DH accelerometer data in blocking mode and print via UART.
- 209:Core/Src/i2c_handler/i2c_handler.c ****  * @note   LIS3DH_DATA_START_MULTI_READ is defined in i2c_handler.h.
- 210:Core/Src/i2c_handler/i2c_handler.c ****  * @param  None
- 211:Core/Src/i2c_handler/i2c_handler.c ****  * @retval None
- 212:Core/Src/i2c_handler/i2c_handler.c ****  */
- 213:Core/Src/i2c_handler/i2c_handler.c **** void read_I2C_Blocking (void) { // Definition matches prototype now
- 636              		.loc 1 213 31 view -0
- 637              		.cfi_startproc
- 638              		@ args = 0, pretend = 0, frame = 8
- 639              		@ frame_needed = 0, uses_anonymous_args = 0
- 640 0000 10B5     		push	{r4, lr}
- 641              	.LCFI14:
- 642              		.cfi_def_cfa_offset 8
- 643              		.cfi_offset 4, -8
- 644              		.cfi_offset 14, -4
- 645 0002 86B0     		sub	sp, sp, #24
- 646              	.LCFI15:
- 647              		.cfi_def_cfa_offset 32
- 214:Core/Src/i2c_handler/i2c_handler.c ****     u8 data[6];
- 648              		.loc 1 214 5 view .LVU115
- 215:Core/Src/i2c_handler/i2c_handler.c ****     HAL_StatusTypeDef status;
- 649              		.loc 1 215 5 view .LVU116
- 216:Core/Src/i2c_handler/i2c_handler.c ****     static char temp_buffer[128]; // Static for safety with IT-based WriteUART, ensure size
- 650              		.loc 1 216 5 view .LVU117
- 217:Core/Src/i2c_handler/i2c_handler.c **** 
- 218:Core/Src/i2c_handler/i2c_handler.c ****     status = HAL_I2C_Mem_Read(&hi2c1,
- 651              		.loc 1 218 5 view .LVU118
- 652              		.loc 1 218 14 is_stmt 0 view .LVU119
- 653 0004 4FF47A73 		mov	r3, #1000
- 654 0008 0293     		str	r3, [sp, #8]
- 655 000a 0623     		movs	r3, #6
- 656 000c 0193     		str	r3, [sp, #4]
- 657 000e 04AB     		add	r3, sp, #16
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 18
+ 107:Core/Src/i2c_handler/i2c_handler.c ****         static char err_buf[64];
+ 108:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(err_buf, "Error reading I2C reg 0x%02X. Status: %d\r\n", reg, status);
+ 109:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_buf);
+ 110:Core/Src/i2c_handler/i2c_handler.c ****     }
+ 111:Core/Src/i2c_handler/i2c_handler.c ****     return value;
+ 459              		.loc 1 111 5 is_stmt 1 view .LVU95
+ 112:Core/Src/i2c_handler/i2c_handler.c **** }
+ 460              		.loc 1 112 1 is_stmt 0 view .LVU96
+ 461 0028 9DF81700 		ldrb	r0, [sp, #23]	@ zero_extendqisi2
+ 462 002c 07B0     		add	sp, sp, #28
+ 463              	.LCFI9:
+ 464              		.cfi_remember_state
+ 465              		.cfi_def_cfa_offset 12
+ 466              		@ sp needed
+ 467 002e 30BD     		pop	{r4, r5, pc}
+ 468              	.LVL36:
+ 469              	.L28:
+ 470              	.LCFI10:
+ 471              		.cfi_restore_state
+ 472              		.loc 1 112 1 view .LVU97
+ 473 0030 0346     		mov	r3, r0
+ 474              	.LBB3:
+ 107:Core/Src/i2c_handler/i2c_handler.c ****         static char err_buf[64];
+ 475              		.loc 1 107 9 is_stmt 1 view .LVU98
+ 108:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_buf);
+ 476              		.loc 1 108 9 view .LVU99
+ 477 0032 064D     		ldr	r5, .L29+4
+ 478 0034 2246     		mov	r2, r4
+ 479 0036 0649     		ldr	r1, .L29+8
+ 480 0038 2846     		mov	r0, r5
+ 481              	.LVL37:
+ 108:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_buf);
+ 482              		.loc 1 108 9 is_stmt 0 view .LVU100
+ 483 003a FFF7FEFF 		bl	sprintf
+ 484              	.LVL38:
+ 109:Core/Src/i2c_handler/i2c_handler.c ****     }
+ 485              		.loc 1 109 9 is_stmt 1 view .LVU101
+ 486 003e 2846     		mov	r0, r5
+ 487 0040 FFF7FEFF 		bl	WriteUART_Blocking
+ 488              	.LVL39:
+ 489 0044 F0E7     		b	.L26
+ 490              	.L30:
+ 491 0046 00BF     		.align	2
+ 492              	.L29:
+ 493 0048 00000000 		.word	hi2c1
+ 494 004c 00000000 		.word	err_buf.0
+ 495 0050 00000000 		.word	.LC10
+ 496              	.LBE3:
+ 497              		.cfi_endproc
+ 498              	.LFE141:
+ 500              		.section	.rodata.LIS3DH_Read_Accel_Data.str1.4,"aMS",%progbits,1
+ 501              		.align	2
+ 502              	.LC11:
+ 503 0000 4C495333 		.ascii	"LIS3DH I2C Read FAILED. Status: %d\015\012\000"
+ 503      44482049 
+ 503      32432052 
+ 503      65616420 
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 13
 
 
- 658 0010 0093     		str	r3, [sp]
- 659 0012 0123     		movs	r3, #1
- 660 0014 A822     		movs	r2, #168
- 661 0016 3021     		movs	r1, #48
- 662 0018 1348     		ldr	r0, .L44
- 663 001a FFF7FEFF 		bl	HAL_I2C_Mem_Read
- 664              	.LVL46:
- 219:Core/Src/i2c_handler/i2c_handler.c ****                               ACC_I2C_ADDR,
- 220:Core/Src/i2c_handler/i2c_handler.c ****                               LIS3DH_DATA_START_MULTI_READ,
- 221:Core/Src/i2c_handler/i2c_handler.c ****                               I2C_MEMADD_SIZE_8BIT,
- 222:Core/Src/i2c_handler/i2c_handler.c ****                               data,
- 223:Core/Src/i2c_handler/i2c_handler.c ****                               sizeof(data),
- 224:Core/Src/i2c_handler/i2c_handler.c ****                               1000);
- 225:Core/Src/i2c_handler/i2c_handler.c ****     
- 226:Core/Src/i2c_handler/i2c_handler.c ****     if (status == HAL_OK) {
- 665              		.loc 1 226 5 is_stmt 1 view .LVU120
- 666              		.loc 1 226 8 is_stmt 0 view .LVU121
- 667 001e C8B9     		cbnz	r0, .L41
- 668              	.LBB6:
- 227:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(temp_buffer, "I2C Block Read OK: XL=%02X XH=%02X YL=%02X YH=%02X ZL=%02X ZH=%02X\r\
- 669              		.loc 1 227 9 is_stmt 1 view .LVU122
- 228:Core/Src/i2c_handler/i2c_handler.c ****                 data[0], data[1], data[2], data[3], data[4], data[5]);
- 670              		.loc 1 228 39 is_stmt 0 view .LVU123
- 671 0020 9DF81230 		ldrb	r3, [sp, #18]	@ zero_extendqisi2
- 672              		.loc 1 228 48 view .LVU124
- 673 0024 9DF81320 		ldrb	r2, [sp, #19]	@ zero_extendqisi2
- 674              		.loc 1 228 57 view .LVU125
- 675 0028 9DF81410 		ldrb	r1, [sp, #20]	@ zero_extendqisi2
- 676              		.loc 1 228 66 view .LVU126
- 677 002c 9DF81500 		ldrb	r0, [sp, #21]	@ zero_extendqisi2
- 678              	.LVL47:
- 227:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(temp_buffer, "I2C Block Read OK: XL=%02X XH=%02X YL=%02X YH=%02X ZL=%02X ZH=%02X\r\
- 679              		.loc 1 227 9 view .LVU127
- 680 0030 0E4C     		ldr	r4, .L44+4
- 681 0032 0390     		str	r0, [sp, #12]
- 682 0034 0291     		str	r1, [sp, #8]
- 683 0036 0192     		str	r2, [sp, #4]
- 684 0038 0093     		str	r3, [sp]
- 685 003a 9DF81130 		ldrb	r3, [sp, #17]	@ zero_extendqisi2
- 686 003e 9DF81020 		ldrb	r2, [sp, #16]	@ zero_extendqisi2
- 687 0042 0B49     		ldr	r1, .L44+8
- 688 0044 2046     		mov	r0, r4
- 689 0046 FFF7FEFF 		bl	sprintf
- 690              	.LVL48:
- 229:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(temp_buffer);
- 691              		.loc 1 229 9 is_stmt 1 view .LVU128
- 692 004a 2046     		mov	r0, r4
- 693 004c FFF7FEFF 		bl	WriteUART_Blocking
- 694              	.LVL49:
- 695              	.L40:
- 696              	.LBE6:
- 230:Core/Src/i2c_handler/i2c_handler.c ****     } else {
- 231:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(temp_buffer, "I2C Block Read Failed. Status: %d\r\n", status);
- 232:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(temp_buffer);
- 233:Core/Src/i2c_handler/i2c_handler.c ****     }
- 234:Core/Src/i2c_handler/i2c_handler.c **** }
- 697              		.loc 1 234 1 is_stmt 0 view .LVU129
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 19
+ 503      4641494C 
+ 504              		.section	.text.LIS3DH_Read_Accel_Data,"ax",%progbits
+ 505              		.align	1
+ 506              		.global	LIS3DH_Read_Accel_Data
+ 507              		.syntax unified
+ 508              		.thumb
+ 509              		.thumb_func
+ 511              	LIS3DH_Read_Accel_Data:
+ 512              	.LVL40:
+ 513              	.LFB142:
+ 113:Core/Src/i2c_handler/i2c_handler.c **** 
+ 114:Core/Src/i2c_handler/i2c_handler.c **** bool LIS3DH_Read_Accel_Data(float* x_g, float* y_g, float* z_g) {
+ 514              		.loc 1 114 65 view -0
+ 515              		.cfi_startproc
+ 516              		@ args = 0, pretend = 0, frame = 72
+ 517              		@ frame_needed = 0, uses_anonymous_args = 0
+ 518              		.loc 1 114 65 is_stmt 0 view .LVU103
+ 519 0000 70B5     		push	{r4, r5, r6, lr}
+ 520              	.LCFI11:
+ 521              		.cfi_def_cfa_offset 16
+ 522              		.cfi_offset 4, -16
+ 523              		.cfi_offset 5, -12
+ 524              		.cfi_offset 6, -8
+ 525              		.cfi_offset 14, -4
+ 526 0002 96B0     		sub	sp, sp, #88
+ 527              	.LCFI12:
+ 528              		.cfi_def_cfa_offset 104
+ 529 0004 0646     		mov	r6, r0
+ 530 0006 0D46     		mov	r5, r1
+ 531 0008 1446     		mov	r4, r2
+ 115:Core/Src/i2c_handler/i2c_handler.c ****     u8 data[6];
+ 532              		.loc 1 115 5 is_stmt 1 view .LVU104
+ 116:Core/Src/i2c_handler/i2c_handler.c ****     HAL_StatusTypeDef status;
+ 533              		.loc 1 116 5 view .LVU105
+ 117:Core/Src/i2c_handler/i2c_handler.c **** 
+ 118:Core/Src/i2c_handler/i2c_handler.c ****     status = HAL_I2C_Mem_Read(&hi2c1,
+ 534              		.loc 1 118 5 view .LVU106
+ 535              		.loc 1 118 14 is_stmt 0 view .LVU107
+ 536 000a 4FF47A73 		mov	r3, #1000
+ 537 000e 0293     		str	r3, [sp, #8]
+ 538 0010 0623     		movs	r3, #6
+ 539 0012 0193     		str	r3, [sp, #4]
+ 540 0014 14AB     		add	r3, sp, #80
+ 541 0016 0093     		str	r3, [sp]
+ 542 0018 0123     		movs	r3, #1
+ 543 001a A822     		movs	r2, #168
+ 544              	.LVL41:
+ 545              		.loc 1 118 14 view .LVU108
+ 546 001c 3021     		movs	r1, #48
+ 547              	.LVL42:
+ 548              		.loc 1 118 14 view .LVU109
+ 549 001e 2348     		ldr	r0, .L36
+ 550              	.LVL43:
+ 551              		.loc 1 118 14 view .LVU110
+ 552 0020 FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 553              	.LVL44:
+ 119:Core/Src/i2c_handler/i2c_handler.c ****                               ACC_I2C_ADDR,
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 14
 
 
- 698 0050 06B0     		add	sp, sp, #24
- 699              	.LCFI16:
- 700              		.cfi_remember_state
- 701              		.cfi_def_cfa_offset 8
- 702              		@ sp needed
- 703 0052 10BD     		pop	{r4, pc}
- 704              	.LVL50:
- 705              	.L41:
- 706              	.LCFI17:
- 707              		.cfi_restore_state
- 708              		.loc 1 234 1 view .LVU130
- 709 0054 0246     		mov	r2, r0
- 710              	.LBB7:
- 231:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(temp_buffer);
- 711              		.loc 1 231 9 is_stmt 1 view .LVU131
- 712 0056 054C     		ldr	r4, .L44+4
- 713 0058 0649     		ldr	r1, .L44+12
- 714 005a 2046     		mov	r0, r4
- 715              	.LVL51:
- 231:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(temp_buffer);
- 716              		.loc 1 231 9 is_stmt 0 view .LVU132
- 717 005c FFF7FEFF 		bl	sprintf
- 718              	.LVL52:
- 232:Core/Src/i2c_handler/i2c_handler.c ****     }
- 719              		.loc 1 232 9 is_stmt 1 view .LVU133
- 720 0060 2046     		mov	r0, r4
- 721 0062 FFF7FEFF 		bl	WriteUART_Blocking
- 722              	.LVL53:
- 723              	.LBE7:
- 724              		.loc 1 234 1 is_stmt 0 view .LVU134
- 725 0066 F3E7     		b	.L40
- 726              	.L45:
- 727              		.align	2
- 728              	.L44:
- 729 0068 00000000 		.word	hi2c1
- 730 006c 00000000 		.word	temp_buffer.2
- 731 0070 00000000 		.word	.LC14
- 732 0074 48000000 		.word	.LC15
- 733              		.cfi_endproc
- 734              	.LFE140:
- 736              		.section	.rodata.HAL_I2C_MemTxCpltCallback.str1.4,"aMS",%progbits,1
- 737              		.align	2
- 738              	.LC16:
- 739 0000 4C495333 		.ascii	"LIS3DH CTRL_REG1 Write Complete (IT).\015\012\000"
- 739      44482043 
- 739      54524C5F 
- 739      52454731 
- 739      20577269 
- 740              		.section	.text.HAL_I2C_MemTxCpltCallback,"ax",%progbits
- 741              		.align	1
- 742              		.global	HAL_I2C_MemTxCpltCallback
- 743              		.syntax unified
- 744              		.thumb
- 745              		.thumb_func
- 747              	HAL_I2C_MemTxCpltCallback:
- 748              	.LVL54:
- 749              	.LFB141:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 20
+ 120:Core/Src/i2c_handler/i2c_handler.c ****                               LIS3DH_DATA_START_MULTI_READ,
+ 121:Core/Src/i2c_handler/i2c_handler.c ****                               I2C_MEMADD_SIZE_8BIT,
+ 122:Core/Src/i2c_handler/i2c_handler.c ****                               data,
+ 123:Core/Src/i2c_handler/i2c_handler.c ****                               6,
+ 124:Core/Src/i2c_handler/i2c_handler.c ****                               1000);
+ 125:Core/Src/i2c_handler/i2c_handler.c **** 
+ 126:Core/Src/i2c_handler/i2c_handler.c ****     if (status != HAL_OK) {
+ 554              		.loc 1 126 5 is_stmt 1 view .LVU111
+ 555              		.loc 1 126 8 is_stmt 0 view .LVU112
+ 556 0024 B8BB     		cbnz	r0, .L35
+ 127:Core/Src/i2c_handler/i2c_handler.c ****         char err_msg[64];
+ 128:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(err_msg, "LIS3DH I2C Read FAILED. Status: %d\r\n", status);
+ 129:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_msg);
+ 130:Core/Src/i2c_handler/i2c_handler.c ****         return false;
+ 131:Core/Src/i2c_handler/i2c_handler.c ****     }
+ 132:Core/Src/i2c_handler/i2c_handler.c **** 
+ 133:Core/Src/i2c_handler/i2c_handler.c ****     int16_t raw_x = (int16_t)((data[1] << 8) | data[0]) >> 4;
+ 557              		.loc 1 133 5 is_stmt 1 view .LVU113
+ 558              		.loc 1 133 36 is_stmt 0 view .LVU114
+ 559 0026 9DF85120 		ldrb	r2, [sp, #81]	@ zero_extendqisi2
+ 560              		.loc 1 133 52 view .LVU115
+ 561 002a 9DF85030 		ldrb	r3, [sp, #80]	@ zero_extendqisi2
+ 562              		.loc 1 133 21 view .LVU116
+ 563 002e 43EA0223 		orr	r3, r3, r2, lsl #8
+ 564              		.loc 1 133 13 view .LVU117
+ 565 0032 43F30B13 		sbfx	r3, r3, #4, #12
+ 566 0036 1BB2     		sxth	r3, r3
+ 567 0038 07EE103A 		vmov	s14, r3	@ int
+ 568              	.LVL45:
+ 134:Core/Src/i2c_handler/i2c_handler.c ****     int16_t raw_y = (int16_t)((data[3] << 8) | data[2]) >> 4;
+ 569              		.loc 1 134 5 is_stmt 1 view .LVU118
+ 570              		.loc 1 134 36 is_stmt 0 view .LVU119
+ 571 003c 9DF85320 		ldrb	r2, [sp, #83]	@ zero_extendqisi2
+ 572              		.loc 1 134 52 view .LVU120
+ 573 0040 9DF85230 		ldrb	r3, [sp, #82]	@ zero_extendqisi2
+ 574              		.loc 1 134 21 view .LVU121
+ 575 0044 43EA0223 		orr	r3, r3, r2, lsl #8
+ 576              		.loc 1 134 13 view .LVU122
+ 577 0048 43F30B13 		sbfx	r3, r3, #4, #12
+ 578 004c 1BB2     		sxth	r3, r3
+ 579 004e 07EE903A 		vmov	s15, r3	@ int
+ 580              	.LVL46:
+ 135:Core/Src/i2c_handler/i2c_handler.c ****     int16_t raw_z = (int16_t)((data[5] << 8) | data[4]) >> 4;
+ 581              		.loc 1 135 5 is_stmt 1 view .LVU123
+ 582              		.loc 1 135 36 is_stmt 0 view .LVU124
+ 583 0052 9DF85520 		ldrb	r2, [sp, #85]	@ zero_extendqisi2
+ 584              		.loc 1 135 52 view .LVU125
+ 585 0056 9DF85430 		ldrb	r3, [sp, #84]	@ zero_extendqisi2
+ 586              		.loc 1 135 21 view .LVU126
+ 587 005a 43EA0223 		orr	r3, r3, r2, lsl #8
+ 588              		.loc 1 135 13 view .LVU127
+ 589 005e 43F30B13 		sbfx	r3, r3, #4, #12
+ 590 0062 1BB2     		sxth	r3, r3
+ 591              	.LVL47:
+ 136:Core/Src/i2c_handler/i2c_handler.c **** 
+ 137:Core/Src/i2c_handler/i2c_handler.c ****     *x_g = (float)raw_x / 1000.0f;
+ 592              		.loc 1 137 5 is_stmt 1 view .LVU128
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 15
 
 
- 235:Core/Src/i2c_handler/i2c_handler.c **** 
- 236:Core/Src/i2c_handler/i2c_handler.c **** /* HAL I2C Callbacks ---------------------------------------------------------*/
- 237:Core/Src/i2c_handler/i2c_handler.c **** 
- 238:Core/Src/i2c_handler/i2c_handler.c **** /**
- 239:Core/Src/i2c_handler/i2c_handler.c ****   * @brief  Memory Tx Transfer completed callback.
- 240:Core/Src/i2c_handler/i2c_handler.c ****   * @param  hi2c: I2C handle pointer.
- 241:Core/Src/i2c_handler/i2c_handler.c ****   * @retval None
- 242:Core/Src/i2c_handler/i2c_handler.c ****   */
- 243:Core/Src/i2c_handler/i2c_handler.c **** void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *hi2c) {
- 750              		.loc 1 243 57 is_stmt 1 view -0
- 751              		.cfi_startproc
- 752              		@ args = 0, pretend = 0, frame = 0
- 753              		@ frame_needed = 0, uses_anonymous_args = 0
- 754              		.loc 1 243 57 is_stmt 0 view .LVU136
- 755 0000 08B5     		push	{r3, lr}
- 756              	.LCFI18:
- 757              		.cfi_def_cfa_offset 8
- 758              		.cfi_offset 3, -8
- 759              		.cfi_offset 14, -4
- 244:Core/Src/i2c_handler/i2c_handler.c ****     if (hi2c->Instance == I2C1) {
- 760              		.loc 1 244 5 is_stmt 1 view .LVU137
- 761              		.loc 1 244 13 is_stmt 0 view .LVU138
- 762 0002 0268     		ldr	r2, [r0]
- 763              		.loc 1 244 8 view .LVU139
- 764 0004 054B     		ldr	r3, .L50
- 765 0006 9A42     		cmp	r2, r3
- 766 0008 00D0     		beq	.L49
- 767              	.LVL55:
- 768              	.L46:
- 245:Core/Src/i2c_handler/i2c_handler.c ****         acc_enabled = true;
- 246:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking("LIS3DH CTRL_REG1 Write Complete (IT).\r\n"); // Use blocking for callba
- 247:Core/Src/i2c_handler/i2c_handler.c ****     }
- 248:Core/Src/i2c_handler/i2c_handler.c **** }
- 769              		.loc 1 248 1 view .LVU140
- 770 000a 08BD     		pop	{r3, pc}
- 771              	.LVL56:
- 772              	.L49:
- 245:Core/Src/i2c_handler/i2c_handler.c ****         acc_enabled = true;
- 773              		.loc 1 245 9 is_stmt 1 view .LVU141
- 245:Core/Src/i2c_handler/i2c_handler.c ****         acc_enabled = true;
- 774              		.loc 1 245 21 is_stmt 0 view .LVU142
- 775 000c 044B     		ldr	r3, .L50+4
- 776 000e 0122     		movs	r2, #1
- 777 0010 1A70     		strb	r2, [r3]
- 246:Core/Src/i2c_handler/i2c_handler.c ****     }
- 778              		.loc 1 246 9 is_stmt 1 view .LVU143
- 779 0012 0448     		ldr	r0, .L50+8
- 780              	.LVL57:
- 246:Core/Src/i2c_handler/i2c_handler.c ****     }
- 781              		.loc 1 246 9 is_stmt 0 view .LVU144
- 782 0014 FFF7FEFF 		bl	WriteUART_Blocking
- 783              	.LVL58:
- 784              		.loc 1 248 1 view .LVU145
- 785 0018 F7E7     		b	.L46
- 786              	.L51:
- 787 001a 00BF     		.align	2
- 788              	.L50:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 21
+ 593              		.loc 1 137 12 is_stmt 0 view .LVU129
+ 594 0064 B8EEC77A 		vcvt.f32.s32	s14, s14
+ 595              	.LVL48:
+ 596              		.loc 1 137 25 view .LVU130
+ 597 0068 DFED116A 		vldr.32	s13, .L36+4
+ 598 006c 87EE266A 		vdiv.f32	s12, s14, s13
+ 599              		.loc 1 137 10 view .LVU131
+ 600 0070 86ED006A 		vstr.32	s12, [r6]
+ 601              	.LVL49:
+ 138:Core/Src/i2c_handler/i2c_handler.c ****     *y_g = (float)raw_y / 1000.0f;
+ 602              		.loc 1 138 5 is_stmt 1 view .LVU132
+ 603              		.loc 1 138 12 is_stmt 0 view .LVU133
+ 604 0074 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 605              	.LVL50:
+ 606              		.loc 1 138 25 view .LVU134
+ 607 0078 87EEA67A 		vdiv.f32	s14, s15, s13
+ 608              		.loc 1 138 10 view .LVU135
+ 609 007c 85ED007A 		vstr.32	s14, [r5]
+ 139:Core/Src/i2c_handler/i2c_handler.c ****     *z_g = (float)raw_z / 1000.0f;
+ 610              		.loc 1 139 5 is_stmt 1 view .LVU136
+ 611              		.loc 1 139 12 is_stmt 0 view .LVU137
+ 612 0080 07EE903A 		vmov	s15, r3	@ int
+ 613 0084 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 614              		.loc 1 139 25 view .LVU138
+ 615 0088 87EEA67A 		vdiv.f32	s14, s15, s13
+ 616              		.loc 1 139 10 view .LVU139
+ 617 008c 84ED007A 		vstr.32	s14, [r4]
+ 140:Core/Src/i2c_handler/i2c_handler.c **** 
+ 141:Core/Src/i2c_handler/i2c_handler.c ****     // static char float_buf[128];
+ 142:Core/Src/i2c_handler/i2c_handler.c ****     // sprintf(float_buf, "DEBUG RAW: AccelX=%.3f Y=%.3f Z=%.3f\r\n", *x_g, *y_g, *z_g);
+ 143:Core/Src/i2c_handler/i2c_handler.c ****     // WriteUART_Blocking(float_buf);
+ 144:Core/Src/i2c_handler/i2c_handler.c **** 
+ 145:Core/Src/i2c_handler/i2c_handler.c ****     return true;
+ 618              		.loc 1 145 5 is_stmt 1 view .LVU140
+ 619              		.loc 1 145 12 is_stmt 0 view .LVU141
+ 620 0090 0120     		movs	r0, #1
+ 621              	.LVL51:
+ 622              	.L33:
+ 146:Core/Src/i2c_handler/i2c_handler.c **** }
+ 623              		.loc 1 146 1 view .LVU142
+ 624 0092 16B0     		add	sp, sp, #88
+ 625              	.LCFI13:
+ 626              		.cfi_remember_state
+ 627              		.cfi_def_cfa_offset 16
+ 628              		@ sp needed
+ 629 0094 70BD     		pop	{r4, r5, r6, pc}
+ 630              	.LVL52:
+ 631              	.L35:
+ 632              	.LCFI14:
+ 633              		.cfi_restore_state
+ 634              		.loc 1 146 1 view .LVU143
+ 635 0096 0246     		mov	r2, r0
+ 636              	.LBB4:
+ 127:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(err_msg, "LIS3DH I2C Read FAILED. Status: %d\r\n", status);
+ 637              		.loc 1 127 9 is_stmt 1 view .LVU144
+ 128:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_msg);
+ 638              		.loc 1 128 9 view .LVU145
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 16
 
 
- 789 001c 00540040 		.word	1073763328
- 790 0020 00000000 		.word	acc_enabled
- 791 0024 00000000 		.word	.LC16
- 792              		.cfi_endproc
- 793              	.LFE141:
- 795              		.section	.rodata.HAL_I2C_MemRxCpltCallback.str1.4,"aMS",%progbits,1
- 796              		.align	2
- 797              	.LC17:
- 798 0000 49324320 		.ascii	"I2C IT Read OK: XL=%02X XH=%02X YL=%02X YH=%02X ZL="
- 798      49542052 
- 798      65616420 
- 798      4F4B3A20 
- 798      584C3D25 
- 799 0033 25303258 		.ascii	"%02X ZH=%02X\015\012\000"
- 799      205A483D 
- 799      25303258 
- 799      0D0A00
- 800              		.section	.text.HAL_I2C_MemRxCpltCallback,"ax",%progbits
- 801              		.align	1
- 802              		.global	HAL_I2C_MemRxCpltCallback
- 803              		.syntax unified
- 804              		.thumb
- 805              		.thumb_func
- 807              	HAL_I2C_MemRxCpltCallback:
- 808              	.LVL59:
- 809              	.LFB142:
- 249:Core/Src/i2c_handler/i2c_handler.c **** 
- 250:Core/Src/i2c_handler/i2c_handler.c **** /**
- 251:Core/Src/i2c_handler/i2c_handler.c ****   * @brief  Memory Rx Transfer completed callback.
- 252:Core/Src/i2c_handler/i2c_handler.c ****   * @param  hi2c: I2C handle pointer.
- 253:Core/Src/i2c_handler/i2c_handler.c ****   * @retval None
- 254:Core/Src/i2c_handler/i2c_handler.c ****   */
- 255:Core/Src/i2c_handler/i2c_handler.c **** void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c)
- 256:Core/Src/i2c_handler/i2c_handler.c **** {
- 810              		.loc 1 256 1 is_stmt 1 view -0
- 811              		.cfi_startproc
- 812              		@ args = 0, pretend = 0, frame = 0
- 813              		@ frame_needed = 0, uses_anonymous_args = 0
- 257:Core/Src/i2c_handler/i2c_handler.c ****     if (hi2c->Instance == I2C1) {
- 814              		.loc 1 257 5 view .LVU147
- 815              		.loc 1 257 13 is_stmt 0 view .LVU148
- 816 0000 0268     		ldr	r2, [r0]
- 817              		.loc 1 257 8 view .LVU149
- 818 0002 0D4B     		ldr	r3, .L59
- 819 0004 9A42     		cmp	r2, r3
- 820 0006 00D0     		beq	.L58
- 821 0008 7047     		bx	lr
- 822              	.L58:
- 256:Core/Src/i2c_handler/i2c_handler.c ****     if (hi2c->Instance == I2C1) {
- 823              		.loc 1 256 1 view .LVU150
- 824 000a 30B5     		push	{r4, r5, lr}
- 825              	.LCFI19:
- 826              		.cfi_def_cfa_offset 12
- 827              		.cfi_offset 4, -12
- 828              		.cfi_offset 5, -8
- 829              		.cfi_offset 14, -4
- 830 000c 85B0     		sub	sp, sp, #20
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 22
+ 639 0098 04AC     		add	r4, sp, #16
+ 640              	.LVL53:
+ 128:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_msg);
+ 641              		.loc 1 128 9 is_stmt 0 view .LVU146
+ 642 009a 0649     		ldr	r1, .L36+8
+ 643 009c 2046     		mov	r0, r4
+ 644              	.LVL54:
+ 128:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_msg);
+ 645              		.loc 1 128 9 view .LVU147
+ 646 009e FFF7FEFF 		bl	sprintf
+ 647              	.LVL55:
+ 129:Core/Src/i2c_handler/i2c_handler.c ****         return false;
+ 648              		.loc 1 129 9 is_stmt 1 view .LVU148
+ 649 00a2 2046     		mov	r0, r4
+ 650 00a4 FFF7FEFF 		bl	WriteUART_Blocking
+ 651              	.LVL56:
+ 130:Core/Src/i2c_handler/i2c_handler.c ****     }
+ 652              		.loc 1 130 9 view .LVU149
+ 130:Core/Src/i2c_handler/i2c_handler.c ****     }
+ 653              		.loc 1 130 16 is_stmt 0 view .LVU150
+ 654 00a8 0020     		movs	r0, #0
+ 655 00aa F2E7     		b	.L33
+ 656              	.L37:
+ 657              		.align	2
+ 658              	.L36:
+ 659 00ac 00000000 		.word	hi2c1
+ 660 00b0 00007A44 		.word	1148846080
+ 661 00b4 00000000 		.word	.LC11
+ 662              	.LBE4:
+ 663              		.cfi_endproc
+ 664              	.LFE142:
+ 666              		.section	.bss.err_buf.0,"aw",%nobits
+ 667              		.align	2
+ 670              	err_buf.0:
+ 671 0000 00000000 		.space	64
+ 671      00000000 
+ 671      00000000 
+ 671      00000000 
+ 671      00000000 
+ 672              		.section	.bss.err_buf.1,"aw",%nobits
+ 673              		.align	2
+ 676              	err_buf.1:
+ 677 0000 00000000 		.space	64
+ 677      00000000 
+ 677      00000000 
+ 677      00000000 
+ 677      00000000 
+ 678              		.section	.bss.msg_buffer.2,"aw",%nobits
+ 679              		.align	2
+ 682              	msg_buffer.2:
+ 683 0000 00000000 		.space	64
+ 683      00000000 
+ 683      00000000 
+ 683      00000000 
+ 683      00000000 
+ 684              		.global	rawData
+ 685              		.section	.bss.rawData,"aw",%nobits
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 17
 
 
- 831              	.LCFI20:
- 832              		.cfi_def_cfa_offset 32
- 833              	.LBB8:
- 258:Core/Src/i2c_handler/i2c_handler.c ****         static char temp_buffer[128];
- 834              		.loc 1 258 9 is_stmt 1 view .LVU151
- 259:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(temp_buffer, "I2C IT Read OK: XL=%02X XH=%02X YL=%02X YH=%02X ZL=%02X ZH=%02X\r\n",
- 835              		.loc 1 259 9 view .LVU152
- 260:Core/Src/i2c_handler/i2c_handler.c ****                 rawData[0], rawData[1], rawData[2], rawData[3], rawData[4], rawData[5]);
- 836              		.loc 1 260 24 is_stmt 0 view .LVU153
- 837 000e 0B4A     		ldr	r2, .L59+4
- 838              		.loc 1 260 48 view .LVU154
- 839 0010 9378     		ldrb	r3, [r2, #2]	@ zero_extendqisi2
- 840              		.loc 1 260 60 view .LVU155
- 841 0012 D178     		ldrb	r1, [r2, #3]	@ zero_extendqisi2
- 842              		.loc 1 260 72 view .LVU156
- 843 0014 1079     		ldrb	r0, [r2, #4]	@ zero_extendqisi2
- 844              	.LVL60:
- 845              		.loc 1 260 84 view .LVU157
- 846 0016 5579     		ldrb	r5, [r2, #5]	@ zero_extendqisi2
- 259:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(temp_buffer, "I2C IT Read OK: XL=%02X XH=%02X YL=%02X YH=%02X ZL=%02X ZH=%02X\r\n",
- 847              		.loc 1 259 9 view .LVU158
- 848 0018 094C     		ldr	r4, .L59+8
- 849 001a 0395     		str	r5, [sp, #12]
- 850 001c 0290     		str	r0, [sp, #8]
- 851 001e 0191     		str	r1, [sp, #4]
- 852 0020 0093     		str	r3, [sp]
- 853 0022 5378     		ldrb	r3, [r2, #1]	@ zero_extendqisi2
- 854 0024 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 855 0026 0749     		ldr	r1, .L59+12
- 856 0028 2046     		mov	r0, r4
- 857 002a FFF7FEFF 		bl	sprintf
- 858              	.LVL61:
- 261:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(temp_buffer); // Use blocking for callback debug
- 859              		.loc 1 261 9 is_stmt 1 view .LVU159
- 860 002e 2046     		mov	r0, r4
- 861 0030 FFF7FEFF 		bl	WriteUART_Blocking
- 862              	.LVL62:
- 863              	.LBE8:
- 262:Core/Src/i2c_handler/i2c_handler.c ****     }
- 263:Core/Src/i2c_handler/i2c_handler.c **** }
- 864              		.loc 1 263 1 is_stmt 0 view .LVU160
- 865 0034 05B0     		add	sp, sp, #20
- 866              	.LCFI21:
- 867              		.cfi_def_cfa_offset 12
- 868              		@ sp needed
- 869 0036 30BD     		pop	{r4, r5, pc}
- 870              	.L60:
- 871              		.align	2
- 872              	.L59:
- 873 0038 00540040 		.word	1073763328
- 874 003c 00000000 		.word	rawData
- 875 0040 00000000 		.word	temp_buffer.1
- 876 0044 00000000 		.word	.LC17
- 877              		.cfi_endproc
- 878              	.LFE142:
- 880              		.section	.rodata.HAL_I2C_ErrorCallback.str1.4,"aMS",%progbits,1
- 881              		.align	2
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 23
-
-
- 882              	.LC18:
- 883 0000 49324320 		.ascii	"I2C Error Occurred. Code: 0x%08lX\015\012\000"
- 883      4572726F 
- 883      72204F63 
- 883      63757272 
- 883      65642E20 
- 884              		.section	.text.HAL_I2C_ErrorCallback,"ax",%progbits
- 885              		.align	1
- 886              		.global	HAL_I2C_ErrorCallback
- 887              		.syntax unified
- 888              		.thumb
- 889              		.thumb_func
- 891              	HAL_I2C_ErrorCallback:
- 892              	.LVL63:
- 893              	.LFB143:
- 264:Core/Src/i2c_handler/i2c_handler.c **** 
- 265:Core/Src/i2c_handler/i2c_handler.c **** /**
- 266:Core/Src/i2c_handler/i2c_handler.c ****   * @brief  I2C error callback.
- 267:Core/Src/i2c_handler/i2c_handler.c ****   * @param  hi2c: I2C handle pointer.
- 268:Core/Src/i2c_handler/i2c_handler.c ****   * @retval None
- 269:Core/Src/i2c_handler/i2c_handler.c ****   */
- 270:Core/Src/i2c_handler/i2c_handler.c **** void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c)
- 271:Core/Src/i2c_handler/i2c_handler.c **** {
- 894              		.loc 1 271 1 is_stmt 1 view -0
- 895              		.cfi_startproc
- 896              		@ args = 0, pretend = 0, frame = 0
- 897              		@ frame_needed = 0, uses_anonymous_args = 0
- 272:Core/Src/i2c_handler/i2c_handler.c ****     if (hi2c->Instance == I2C1) {
- 898              		.loc 1 272 5 view .LVU162
- 899              		.loc 1 272 13 is_stmt 0 view .LVU163
- 900 0000 0268     		ldr	r2, [r0]
- 901              		.loc 1 272 8 view .LVU164
- 902 0002 074B     		ldr	r3, .L68
- 903 0004 9A42     		cmp	r2, r3
- 904 0006 00D0     		beq	.L67
- 905 0008 7047     		bx	lr
- 906              	.L67:
- 271:Core/Src/i2c_handler/i2c_handler.c ****     if (hi2c->Instance == I2C1) {
- 907              		.loc 1 271 1 view .LVU165
- 908 000a 10B5     		push	{r4, lr}
- 909              	.LCFI22:
- 910              		.cfi_def_cfa_offset 8
- 911              		.cfi_offset 4, -8
- 912              		.cfi_offset 14, -4
- 913              	.LBB9:
- 273:Core/Src/i2c_handler/i2c_handler.c ****         static char err_buf[64];
- 914              		.loc 1 273 9 is_stmt 1 view .LVU166
- 274:Core/Src/i2c_handler/i2c_handler.c ****         sprintf(err_buf, "I2C Error Occurred. Code: 0x%08lX\r\n", hi2c->ErrorCode);
- 915              		.loc 1 274 9 view .LVU167
- 916              		.loc 1 274 71 is_stmt 0 view .LVU168
- 917 000c 026C     		ldr	r2, [r0, #64]
- 918              		.loc 1 274 9 view .LVU169
- 919 000e 054C     		ldr	r4, .L68+4
- 920 0010 0549     		ldr	r1, .L68+8
- 921 0012 2046     		mov	r0, r4
- 922              	.LVL64:
- 923              		.loc 1 274 9 view .LVU170
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 24
-
-
- 924 0014 FFF7FEFF 		bl	sprintf
- 925              	.LVL65:
- 275:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking(err_buf); // Use blocking for callback debug
- 926              		.loc 1 275 9 is_stmt 1 view .LVU171
- 927 0018 2046     		mov	r0, r4
- 928 001a FFF7FEFF 		bl	WriteUART_Blocking
- 929              	.LVL66:
- 930              	.LBE9:
- 276:Core/Src/i2c_handler/i2c_handler.c ****     }
- 277:Core/Src/i2c_handler/i2c_handler.c **** }
- 931              		.loc 1 277 1 is_stmt 0 view .LVU172
- 932 001e 10BD     		pop	{r4, pc}
- 933              	.L69:
- 934              		.align	2
- 935              	.L68:
- 936 0020 00540040 		.word	1073763328
- 937 0024 00000000 		.word	err_buf.0
- 938 0028 00000000 		.word	.LC18
- 939              		.cfi_endproc
- 940              	.LFE143:
- 942              		.section	.rodata.LIS3DH_Read_Accel_Data.str1.4,"aMS",%progbits,1
- 943              		.align	2
- 944              	.LC19:
- 945 0000 49324320 		.ascii	"I2C Accelerometer Read Failed.\015\012\000"
- 945      41636365 
- 945      6C65726F 
- 945      6D657465 
- 945      72205265 
- 946              		.section	.text.LIS3DH_Read_Accel_Data,"ax",%progbits
- 947              		.align	1
- 948              		.global	LIS3DH_Read_Accel_Data
- 949              		.syntax unified
- 950              		.thumb
- 951              		.thumb_func
- 953              	LIS3DH_Read_Accel_Data:
- 954              	.LVL67:
- 955              	.LFB144:
- 278:Core/Src/i2c_handler/i2c_handler.c **** 
- 279:Core/Src/i2c_handler/i2c_handler.c **** /**
- 280:Core/Src/i2c_handler/i2c_handler.c ****  * @brief Reads the raw accelerometer data and converts it to 'g's.
- 281:Core/Src/i2c_handler/i2c_handler.c ****  * @param x_g: Pointer to a float where the X-axis acceleration in 'g' will be stored.
- 282:Core/Src/i2c_handler/i2c_handler.c ****  * @param y_g: Pointer to a float where the Y-axis acceleration in 'g' will be stored.
- 283:Core/Src/i2c_handler/i2c_handler.c ****  * @param z_g: Pointer to a float where the Z-axis acceleration in 'g' will be stored.
- 284:Core/Src/i2c_handler/i2c_handler.c ****  * @retval bool: true on successful read, false on failure.
- 285:Core/Src/i2c_handler/i2c_handler.c ****  */
- 286:Core/Src/i2c_handler/i2c_handler.c **** bool LIS3DH_Read_Accel_Data(float* x_g, float* y_g, float* z_g)
- 287:Core/Src/i2c_handler/i2c_handler.c **** {
- 956              		.loc 1 287 1 is_stmt 1 view -0
- 957              		.cfi_startproc
- 958              		@ args = 0, pretend = 0, frame = 8
- 959              		@ frame_needed = 0, uses_anonymous_args = 0
- 960              		.loc 1 287 1 is_stmt 0 view .LVU174
- 961 0000 70B5     		push	{r4, r5, r6, lr}
- 962              	.LCFI23:
- 963              		.cfi_def_cfa_offset 16
- 964              		.cfi_offset 4, -16
- 965              		.cfi_offset 5, -12
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 25
-
-
- 966              		.cfi_offset 6, -8
- 967              		.cfi_offset 14, -4
- 968 0002 86B0     		sub	sp, sp, #24
- 969              	.LCFI24:
- 970              		.cfi_def_cfa_offset 40
- 971 0004 0646     		mov	r6, r0
- 972 0006 0D46     		mov	r5, r1
- 973 0008 1446     		mov	r4, r2
- 288:Core/Src/i2c_handler/i2c_handler.c ****     u8 data[6];
- 974              		.loc 1 288 5 is_stmt 1 view .LVU175
- 289:Core/Src/i2c_handler/i2c_handler.c ****     HAL_StatusTypeDef status;
- 975              		.loc 1 289 5 view .LVU176
- 290:Core/Src/i2c_handler/i2c_handler.c **** 
- 291:Core/Src/i2c_handler/i2c_handler.c ****     // Read the 6 bytes of accelerometer data
- 292:Core/Src/i2c_handler/i2c_handler.c ****     status = HAL_I2C_Mem_Read(&hi2c1,
- 976              		.loc 1 292 5 view .LVU177
- 977              		.loc 1 292 14 is_stmt 0 view .LVU178
- 978 000a 4FF47A73 		mov	r3, #1000
- 979 000e 0293     		str	r3, [sp, #8]
- 980 0010 0623     		movs	r3, #6
- 981 0012 0193     		str	r3, [sp, #4]
- 982 0014 04AB     		add	r3, sp, #16
- 983 0016 0093     		str	r3, [sp]
- 984 0018 0123     		movs	r3, #1
- 985 001a A822     		movs	r2, #168
- 986              	.LVL68:
- 987              		.loc 1 292 14 view .LVU179
- 988 001c 3021     		movs	r1, #48
- 989              	.LVL69:
- 990              		.loc 1 292 14 view .LVU180
- 991 001e 2048     		ldr	r0, .L75
- 992              	.LVL70:
- 993              		.loc 1 292 14 view .LVU181
- 994 0020 FFF7FEFF 		bl	HAL_I2C_Mem_Read
- 995              	.LVL71:
- 293:Core/Src/i2c_handler/i2c_handler.c ****                               ACC_I2C_ADDR,
- 294:Core/Src/i2c_handler/i2c_handler.c ****                               LIS3DH_DATA_START_MULTI_READ,
- 295:Core/Src/i2c_handler/i2c_handler.c ****                               I2C_MEMADD_SIZE_8BIT,
- 296:Core/Src/i2c_handler/i2c_handler.c ****                               data,
- 297:Core/Src/i2c_handler/i2c_handler.c ****                               6,
- 298:Core/Src/i2c_handler/i2c_handler.c ****                               1000);
- 299:Core/Src/i2c_handler/i2c_handler.c **** 
- 300:Core/Src/i2c_handler/i2c_handler.c ****     if (status != HAL_OK) {
- 996              		.loc 1 300 5 is_stmt 1 view .LVU182
- 997              		.loc 1 300 8 is_stmt 0 view .LVU183
- 998 0024 B8BB     		cbnz	r0, .L74
- 301:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking("I2C Accelerometer Read Failed.\r\n");
- 302:Core/Src/i2c_handler/i2c_handler.c ****         return false;
- 303:Core/Src/i2c_handler/i2c_handler.c ****     }
- 304:Core/Src/i2c_handler/i2c_handler.c **** 
- 305:Core/Src/i2c_handler/i2c_handler.c ****     // Combine LSB and MSB, right-shift for 12-bit resolution, and scale
- 306:Core/Src/i2c_handler/i2c_handler.c ****     int16_t raw_x = (int16_t)((data[1] << 8) | data[0]) >> 4;
- 999              		.loc 1 306 5 is_stmt 1 view .LVU184
- 1000              		.loc 1 306 36 is_stmt 0 view .LVU185
- 1001 0026 9DF81120 		ldrb	r2, [sp, #17]	@ zero_extendqisi2
- 1002              		.loc 1 306 52 view .LVU186
- 1003 002a 9DF81030 		ldrb	r3, [sp, #16]	@ zero_extendqisi2
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 26
-
-
- 1004              		.loc 1 306 21 view .LVU187
- 1005 002e 43EA0223 		orr	r3, r3, r2, lsl #8
- 1006              		.loc 1 306 13 view .LVU188
- 1007 0032 43F30B13 		sbfx	r3, r3, #4, #12
- 1008 0036 1BB2     		sxth	r3, r3
- 1009 0038 07EE103A 		vmov	s14, r3	@ int
- 1010              	.LVL72:
- 307:Core/Src/i2c_handler/i2c_handler.c ****     int16_t raw_y = (int16_t)((data[3] << 8) | data[2]) >> 4;
- 1011              		.loc 1 307 5 is_stmt 1 view .LVU189
- 1012              		.loc 1 307 36 is_stmt 0 view .LVU190
- 1013 003c 9DF81320 		ldrb	r2, [sp, #19]	@ zero_extendqisi2
- 1014              		.loc 1 307 52 view .LVU191
- 1015 0040 9DF81230 		ldrb	r3, [sp, #18]	@ zero_extendqisi2
- 1016              		.loc 1 307 21 view .LVU192
- 1017 0044 43EA0223 		orr	r3, r3, r2, lsl #8
- 1018              		.loc 1 307 13 view .LVU193
- 1019 0048 43F30B13 		sbfx	r3, r3, #4, #12
- 1020 004c 1BB2     		sxth	r3, r3
- 1021 004e 07EE903A 		vmov	s15, r3	@ int
- 1022              	.LVL73:
- 308:Core/Src/i2c_handler/i2c_handler.c ****     int16_t raw_z = (int16_t)((data[5] << 8) | data[4]) >> 4;
- 1023              		.loc 1 308 5 is_stmt 1 view .LVU194
- 1024              		.loc 1 308 36 is_stmt 0 view .LVU195
- 1025 0052 9DF81520 		ldrb	r2, [sp, #21]	@ zero_extendqisi2
- 1026              		.loc 1 308 52 view .LVU196
- 1027 0056 9DF81430 		ldrb	r3, [sp, #20]	@ zero_extendqisi2
- 1028              		.loc 1 308 21 view .LVU197
- 1029 005a 43EA0223 		orr	r3, r3, r2, lsl #8
- 1030              		.loc 1 308 13 view .LVU198
- 1031 005e 43F30B13 		sbfx	r3, r3, #4, #12
- 1032 0062 1BB2     		sxth	r3, r3
- 1033              	.LVL74:
- 309:Core/Src/i2c_handler/i2c_handler.c **** 
- 310:Core/Src/i2c_handler/i2c_handler.c ****     // Convert raw values to 'g'.
- 311:Core/Src/i2c_handler/i2c_handler.c ****     // Sensitivity for LIS3DH in HR mode at +/-2g is 1 mg/LSB. 1000 mg = 1 g.
- 312:Core/Src/i2c_handler/i2c_handler.c ****     *x_g = (float)raw_x / 1000.0f;
- 1034              		.loc 1 312 5 is_stmt 1 view .LVU199
- 1035              		.loc 1 312 12 is_stmt 0 view .LVU200
- 1036 0064 B8EEC77A 		vcvt.f32.s32	s14, s14
- 1037              	.LVL75:
- 1038              		.loc 1 312 25 view .LVU201
- 1039 0068 DFED0E6A 		vldr.32	s13, .L75+4
- 1040 006c 87EE266A 		vdiv.f32	s12, s14, s13
- 1041              		.loc 1 312 10 view .LVU202
- 1042 0070 86ED006A 		vstr.32	s12, [r6]
- 1043              	.LVL76:
- 313:Core/Src/i2c_handler/i2c_handler.c ****     *y_g = (float)raw_y / 1000.0f;
- 1044              		.loc 1 313 5 is_stmt 1 view .LVU203
- 1045              		.loc 1 313 12 is_stmt 0 view .LVU204
- 1046 0074 F8EEE77A 		vcvt.f32.s32	s15, s15
- 1047              	.LVL77:
- 1048              		.loc 1 313 25 view .LVU205
- 1049 0078 87EEA67A 		vdiv.f32	s14, s15, s13
- 1050              		.loc 1 313 10 view .LVU206
- 1051 007c 85ED007A 		vstr.32	s14, [r5]
- 314:Core/Src/i2c_handler/i2c_handler.c ****     *z_g = (float)raw_z / 1000.0f;
- 1052              		.loc 1 314 5 is_stmt 1 view .LVU207
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 27
-
-
- 1053              		.loc 1 314 12 is_stmt 0 view .LVU208
- 1054 0080 07EE903A 		vmov	s15, r3	@ int
- 1055 0084 F8EEE77A 		vcvt.f32.s32	s15, s15
- 1056              		.loc 1 314 25 view .LVU209
- 1057 0088 87EEA67A 		vdiv.f32	s14, s15, s13
- 1058              		.loc 1 314 10 view .LVU210
- 1059 008c 84ED007A 		vstr.32	s14, [r4]
- 315:Core/Src/i2c_handler/i2c_handler.c **** 
- 316:Core/Src/i2c_handler/i2c_handler.c ****     return true;
- 1060              		.loc 1 316 5 is_stmt 1 view .LVU211
- 1061              		.loc 1 316 12 is_stmt 0 view .LVU212
- 1062 0090 0120     		movs	r0, #1
- 1063              	.LVL78:
- 1064              	.L72:
- 317:Core/Src/i2c_handler/i2c_handler.c **** }...
- 1065              		.loc 1 317 1 view .LVU213
- 1066 0092 06B0     		add	sp, sp, #24
- 1067              	.LCFI25:
- 1068              		.cfi_remember_state
- 1069              		.cfi_def_cfa_offset 16
- 1070              		@ sp needed
- 1071 0094 70BD     		pop	{r4, r5, r6, pc}
- 1072              	.LVL79:
- 1073              	.L74:
- 1074              	.LCFI26:
- 1075              		.cfi_restore_state
- 301:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking("I2C Accelerometer Read Failed.\r\n");
- 1076              		.loc 1 301 9 is_stmt 1 view .LVU214
- 1077 0096 0448     		ldr	r0, .L75+8
- 1078              	.LVL80:
- 301:Core/Src/i2c_handler/i2c_handler.c ****         WriteUART_Blocking("I2C Accelerometer Read Failed.\r\n");
- 1079              		.loc 1 301 9 is_stmt 0 view .LVU215
- 1080 0098 FFF7FEFF 		bl	WriteUART_Blocking
- 1081              	.LVL81:
- 302:Core/Src/i2c_handler/i2c_handler.c ****         return false;
- 1082              		.loc 1 302 9 is_stmt 1 view .LVU216
- 302:Core/Src/i2c_handler/i2c_handler.c ****         return false;
- 1083              		.loc 1 302 16 is_stmt 0 view .LVU217
- 1084 009c 0020     		movs	r0, #0
- 1085 009e F8E7     		b	.L72
- 1086              	.L76:
- 1087              		.align	2
- 1088              	.L75:
- 1089 00a0 00000000 		.word	hi2c1
- 1090 00a4 00007A44 		.word	1148846080
- 1091 00a8 00000000 		.word	.LC19
- 1092              		.cfi_endproc
- 1093              	.LFE144:
- 1095              		.section	.bss.err_buf.0,"aw",%nobits
- 1096              		.align	2
- 1099              	err_buf.0:
- 1100 0000 00000000 		.space	64
- 1100      00000000 
- 1100      00000000 
- 1100      00000000 
- 1100      00000000 
- 1101              		.section	.bss.temp_buffer.1,"aw",%nobits
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 28
-
-
- 1102              		.align	2
- 1105              	temp_buffer.1:
- 1106 0000 00000000 		.space	128
- 1106      00000000 
- 1106      00000000 
- 1106      00000000 
- 1106      00000000 
- 1107              		.section	.bss.temp_buffer.2,"aw",%nobits
- 1108              		.align	2
- 1111              	temp_buffer.2:
- 1112 0000 00000000 		.space	128
- 1112      00000000 
- 1112      00000000 
- 1112      00000000 
- 1112      00000000 
- 1113              		.section	.bss.err_buf.3,"aw",%nobits
- 1114              		.align	2
- 1117              	err_buf.3:
- 1118 0000 00000000 		.space	64
- 1118      00000000 
- 1118      00000000 
- 1118      00000000 
- 1118      00000000 
- 1119              		.section	.bss.err_buf.4,"aw",%nobits
- 1120              		.align	2
- 1123              	err_buf.4:
- 1124 0000 00000000 		.space	64
- 1124      00000000 
- 1124      00000000 
- 1124      00000000 
- 1124      00000000 
- 1125              		.section	.bss.msg_buffer.5,"aw",%nobits
- 1126              		.align	2
- 1129              	msg_buffer.5:
- 1130 0000 00000000 		.space	64
- 1130      00000000 
- 1130      00000000 
- 1130      00000000 
- 1130      00000000 
- 1131              		.global	rawData
- 1132              		.section	.bss.rawData,"aw",%nobits
- 1133              		.align	2
- 1136              	rawData:
- 1137 0000 00000000 		.space	6
- 1137      0000
- 1138              		.global	acc_enabled
- 1139              		.section	.bss.acc_enabled,"aw",%nobits
- 1142              	acc_enabled:
- 1143 0000 00       		.space	1
- 1144              		.global	hi2c1
- 1145              		.section	.bss.hi2c1,"aw",%nobits
- 1146              		.align	2
- 1149              	hi2c1:
- 1150 0000 00000000 		.space	84
- 1150      00000000 
- 1150      00000000 
- 1150      00000000 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 29
-
-
- 1150      00000000 
- 1151              		.text
- 1152              	.Letext0:
- 1153              		.file 2 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
- 1154              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
- 1155              		.file 4 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
- 1156              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
- 1157              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
- 1158              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h"
- 1159              		.file 8 "Core/Src/i2c_handler/i2c_handler.h"
- 1160              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h"
- 1161              		.file 10 "Core/Src/uart_handler/uart_handler.h"
- 1162              		.file 11 "<built-in>"
- 1163              		.file 12 "Core/Src/library/aml_hal.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 30
+ 686              		.align	2
+ 689              	rawData:
+ 690 0000 00000000 		.space	6
+ 690      0000
+ 691              		.global	acc_enabled
+ 692              		.section	.bss.acc_enabled,"aw",%nobits
+ 695              	acc_enabled:
+ 696 0000 00       		.space	1
+ 697              		.global	hi2c1
+ 698              		.section	.bss.hi2c1,"aw",%nobits
+ 699              		.align	2
+ 702              	hi2c1:
+ 703 0000 00000000 		.space	84
+ 703      00000000 
+ 703      00000000 
+ 703      00000000 
+ 703      00000000 
+ 704              		.text
+ 705              	.Letext0:
+ 706              		.file 2 "/opt/arm-gnu-toolchain/arm-none-eabi/include/machine/_default_types.h"
+ 707              		.file 3 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
+ 708              		.file 4 "/opt/arm-gnu-toolchain/arm-none-eabi/include/sys/_stdint.h"
+ 709              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 710              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 711              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h"
+ 712              		.file 8 "Core/Src/i2c_handler/i2c_handler.h"
+ 713              		.file 9 "/opt/arm-gnu-toolchain/arm-none-eabi/include/stdio.h"
+ 714              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 715              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h"
+ 716              		.file 12 "Core/Src/uart_handler/uart_handler.h"
+ 717              		.file 13 "Core/Src/library/aml_hal.h"
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s 			page 18
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 i2c_handler.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:21     .rodata.MX_I2C1_Init.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:32     .text.MX_I2C1_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:38     .text.MX_I2C1_Init:00000000 MX_I2C1_Init
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:130    .text.MX_I2C1_Init:00000060 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1149   .bss.hi2c1:00000000 hi2c1
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:140    .rodata.I2C_connectivity_check.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:157    .text.I2C_connectivity_check:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:163    .text.I2C_connectivity_check:00000000 I2C_connectivity_check
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:288    .text.I2C_connectivity_check:00000084 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1129   .bss.msg_buffer.5:00000000 msg_buffer.5
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:300    .rodata.I2C_ACC_Enable.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:308    .text.I2C_ACC_Enable:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:314    .text.I2C_ACC_Enable:00000000 I2C_ACC_Enable
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:399    .text.I2C_ACC_Enable:00000050 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1142   .bss.acc_enabled:00000000 acc_enabled
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1123   .bss.err_buf.4:00000000 err_buf.4
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:408    .rodata.BVAT_I2C_Init.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:420    .text.BVAT_I2C_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:426    .text.BVAT_I2C_Init:00000000 BVAT_I2C_Init
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:474    .text.BVAT_I2C_Init:00000028 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:481    .text.I2C_Read_ACC:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:487    .text.I2C_Read_ACC:00000000 I2C_Read_ACC
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:520    .text.I2C_Read_ACC:00000020 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1136   .bss.rawData:00000000 rawData
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:526    .rodata.readACC.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:530    .text.readACC:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:536    .text.readACC:00000000 readACC
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:612    .text.readACC:00000048 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1117   .bss.err_buf.3:00000000 err_buf.3
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:620    .rodata.read_I2C_Blocking.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:628    .text.read_I2C_Blocking:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:634    .text.read_I2C_Blocking:00000000 read_I2C_Blocking
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:729    .text.read_I2C_Blocking:00000068 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1111   .bss.temp_buffer.2:00000000 temp_buffer.2
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:737    .rodata.HAL_I2C_MemTxCpltCallback.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:741    .text.HAL_I2C_MemTxCpltCallback:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:747    .text.HAL_I2C_MemTxCpltCallback:00000000 HAL_I2C_MemTxCpltCallback
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:789    .text.HAL_I2C_MemTxCpltCallback:0000001c $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:796    .rodata.HAL_I2C_MemRxCpltCallback.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:801    .text.HAL_I2C_MemRxCpltCallback:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:807    .text.HAL_I2C_MemRxCpltCallback:00000000 HAL_I2C_MemRxCpltCallback
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:873    .text.HAL_I2C_MemRxCpltCallback:00000038 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1105   .bss.temp_buffer.1:00000000 temp_buffer.1
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:881    .rodata.HAL_I2C_ErrorCallback.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:885    .text.HAL_I2C_ErrorCallback:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:891    .text.HAL_I2C_ErrorCallback:00000000 HAL_I2C_ErrorCallback
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:936    .text.HAL_I2C_ErrorCallback:00000020 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1099   .bss.err_buf.0:00000000 err_buf.0
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:943    .rodata.LIS3DH_Read_Accel_Data.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:947    .text.LIS3DH_Read_Accel_Data:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:953    .text.LIS3DH_Read_Accel_Data:00000000 LIS3DH_Read_Accel_Data
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1089   .text.LIS3DH_Read_Accel_Data:000000a0 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1096   .bss.err_buf.0:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1102   .bss.temp_buffer.1:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1108   .bss.temp_buffer.2:00000000 $d
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s 			page 31
-
-
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1114   .bss.err_buf.3:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1120   .bss.err_buf.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1126   .bss.msg_buffer.5:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1133   .bss.rawData:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1143   .bss.acc_enabled:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//ccLQlxMC.s:1146   .bss.hi2c1:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:21     .rodata.MX_I2C1_Init.str1.4:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:32     .text.MX_I2C1_Init:00000000 $t
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:38     .text.MX_I2C1_Init:00000000 MX_I2C1_Init
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:130    .text.MX_I2C1_Init:00000060 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:702    .bss.hi2c1:00000000 hi2c1
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:140    .rodata.I2C_connectivity_check.str1.4:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:147    .text.I2C_connectivity_check:00000000 $t
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:153    .text.I2C_connectivity_check:00000000 I2C_connectivity_check
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:215    .text.I2C_connectivity_check:00000030 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:682    .bss.msg_buffer.2:00000000 msg_buffer.2
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:223    .rodata.I2C_ACC_Enable.str1.4:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:230    .text.I2C_ACC_Enable:00000000 $t
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:236    .text.I2C_ACC_Enable:00000000 I2C_ACC_Enable
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:321    .text.I2C_ACC_Enable:00000050 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:695    .bss.acc_enabled:00000000 acc_enabled
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:676    .bss.err_buf.1:00000000 err_buf.1
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:330    .rodata.BVAT_I2C_Init.str1.4:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:342    .text.BVAT_I2C_Init:00000000 $t
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:348    .text.BVAT_I2C_Init:00000000 BVAT_I2C_Init
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:400    .text.BVAT_I2C_Init:0000002c $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:407    .rodata.readACC.str1.4:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:411    .text.readACC:00000000 $t
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:417    .text.readACC:00000000 readACC
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:493    .text.readACC:00000048 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:670    .bss.err_buf.0:00000000 err_buf.0
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:501    .rodata.LIS3DH_Read_Accel_Data.str1.4:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:505    .text.LIS3DH_Read_Accel_Data:00000000 $t
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:511    .text.LIS3DH_Read_Accel_Data:00000000 LIS3DH_Read_Accel_Data
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:659    .text.LIS3DH_Read_Accel_Data:000000ac $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:667    .bss.err_buf.0:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:673    .bss.err_buf.1:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:679    .bss.msg_buffer.2:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:689    .bss.rawData:00000000 rawData
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:686    .bss.rawData:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:696    .bss.acc_enabled:00000000 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//cc9lNoQM.s:699    .bss.hi2c1:00000000 $d
 
 UNDEFINED SYMBOLS
 WriteUART_Blocking
@@ -1774,5 +1043,5 @@ Error_Handler
 HAL_I2C_IsDeviceReady
 sprintf
 HAL_I2C_Mem_Write
-HAL_I2C_Mem_Read_IT
+HAL_Delay
 HAL_I2C_Mem_Read

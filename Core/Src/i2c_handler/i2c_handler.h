@@ -3,6 +3,7 @@
 //==============================================================================
 // Includes
 //==============================================================================
+#include <stdio.h>
 #include <stdbool.h>
 #include "stm32f4xx_hal.h"
 #include "aml_hal.h"
@@ -32,6 +33,7 @@ extern u8 rawData[6];
 //==============================================================================
 void MX_I2C1_Init(void);
 bool BVAT_I2C_Init(void);
+void Scan_I2C_Bus(void); // Function to scan the I2C bus for devices
 bool I2C_connectivity_check(void);
 void I2C_ACC_Enable(void);
 void I2C_Read_ACC(void);
@@ -44,5 +46,8 @@ bool LIS3DH_Read_Accel_Data(float* x_g, float* y_g, float* z_g); // <<< --- FIX:
 void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *hi2c);
 void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c);
 void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c);
+
+bool Verify_LIS3DH_Sensor(void); // Function to verify LIS3DH sensor
+
 
 // #endif /* I2C_HANDLER_H */

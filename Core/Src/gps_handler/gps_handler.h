@@ -30,10 +30,13 @@ typedef struct {
 // Function Prototypes
 //==============================================================================
 void GPS_Init(void);
-void GPS_Process_Buffer(void); // This is now called by interrupt callbacks
+void GPS_Process_Buffer(void);                         // This is now called by interrupt callbacks
 bool GPS_Get_Latest_Data(GPS_Data_t *gps_data_out);
-void Log_Latest_GPS_Data(void); // <<<--- NEW PROTOTYPE ADDED HERE
+// void Log_Latest_GPS_Data(void);                     // <<<--- NEW PROTOTYPE ADDED HERE
+GPS_Data_t GPS_Get_Parsed_Data(void);                  // Returns a copy of the latest parsed GPS data
 
+static void GPS_Parse_RMC_Sentence(char* rmc_sentence);
+static float nmea_to_decimal_degrees(const char* nmea_coord, char direction);
 // HAL UART Rx Callbacks (Implemented in gps_handler.c)
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart);

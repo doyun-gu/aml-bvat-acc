@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -27,7 +27,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
   24              		.thumb
   25              		.thumb_func
   27              	AML_Init:
-  28              	.LFB134:
+  28              	.LFB137:
    1:Core/Src/library/aml_hal.c **** /**
    2:Core/Src/library/aml_hal.c ****   ******************************************************************************
    3:Core/Src/library/aml_hal.c ****   * @file    aml_hal.c
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
   28:Core/Src/library/aml_hal.c **** // If SystemClock_Config is defined in main.c and not prototyped in main.h,
   29:Core/Src/library/aml_hal.c **** // you might need a prototype here, but it's better if main.h provides it.
   30:Core/Src/library/aml_hal.c **** // static void SystemClock_Config(void); // Example if it were static to this scope
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 2
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 2
 
 
   31:Core/Src/library/aml_hal.c **** 
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
   53              		.loc 1 60 5 view .LVU6
   54 0016 FFF7FEFF 		bl	MX_TIM2_Init
   55              	.LVL5:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 3
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 3
 
 
   61:Core/Src/library/aml_hal.c ****     // Add other MX_..._Init() calls as your project requires
@@ -126,7 +126,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
   56              		.loc 1 62 1 is_stmt 0 view .LVU7
   57 001a 08BD     		pop	{r3, pc}
   58              		.cfi_endproc
-  59              	.LFE134:
+  59              	.LFE137:
   61              		.section	.text.Error_Handler,"ax",%progbits
   62              		.align	1
   63              		.global	Error_Handler
@@ -134,7 +134,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
   65              		.thumb
   66              		.thumb_func
   68              	Error_Handler:
-  69              	.LFB135:
+  69              	.LFB138:
   63:Core/Src/library/aml_hal.c **** 
   64:Core/Src/library/aml_hal.c **** /**
   65:Core/Src/library/aml_hal.c ****   * @brief  This function is executed in case of error occurrence.
@@ -178,7 +178,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
   81:Core/Src/library/aml_hal.c **** 
   82:Core/Src/library/aml_hal.c ****   // Disable all interrupts to prevent further issues
   83:Core/Src/library/aml_hal.c ****   __disable_irq();
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 4
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 4
 
 
   92              		.loc 1 83 3 view .LVU13
@@ -238,7 +238,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
   51:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
   52:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __NO_RETURN
   53:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __NO_RETURN                            __attribute__((__noreturn__))
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 5
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 5
 
 
   54:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
@@ -298,7 +298,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  108:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_READ(addr)          (((const struct T_UINT32_READ *)(const void *)(add
  109:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
  110:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __ALIGNED
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 6
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 6
 
 
  111:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __ALIGNED(x)                           __attribute__((aligned(x)))
@@ -358,7 +358,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  165:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  166:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __PROGRAM_START           __cmsis_start
  167:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 7
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 7
 
 
  168:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -418,7 +418,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  222:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
  223:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  224:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 8
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 8
 
 
  225:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   No Operation
@@ -478,7 +478,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  279:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  280:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __DMB(void)
  281:Drivers/CMSIS/Include/cmsis_gcc.h **** {
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 9
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 9
 
 
  282:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("dmb 0xF":::"memory");
@@ -538,7 +538,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  336:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  337:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  338:Drivers/CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 10
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 10
 
 
  339:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
@@ -598,7 +598,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  393:Drivers/CMSIS/Include/cmsis_gcc.h ****   return result;
  394:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  395:Drivers/CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 11
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 11
 
 
  396:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -658,7 +658,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  450:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a exclusive LDR instruction for 16 bit values.
  451:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to data
  452:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return        value of type uint16_t at (*ptr)
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 12
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 12
 
 
  453:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
@@ -718,7 +718,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  507:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          0  Function succeeded
  508:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          1  Function failed
  509:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 13
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 13
 
 
  510:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __STREXH(uint16_t value, volatile uint16_t *addr)
@@ -778,7 +778,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  564:Drivers/CMSIS/Include/cmsis_gcc.h ****   int32_t __RES, __ARG1 = (ARG1); \
  565:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("ssat %0, %1, %2" : "=r" (__RES) :  "I" (ARG2), "r" (__ARG1) : "cc" ); \
  566:Drivers/CMSIS/Include/cmsis_gcc.h ****   __RES; \
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 14
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 14
 
 
  567:Drivers/CMSIS/Include/cmsis_gcc.h ****  })
@@ -838,7 +838,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  621:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  622:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  623:Drivers/CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 15
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 15
 
 
  624:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
@@ -898,7 +898,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  678:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  679:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __STRHT(uint16_t value, volatile uint16_t *ptr)
  680:Drivers/CMSIS/Include/cmsis_gcc.h **** {
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 16
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 16
 
 
  681:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("strht %1, %0" : "=Q" (*ptr) : "r" ((uint32_t)value) );
@@ -958,7 +958,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  735:Drivers/CMSIS/Include/cmsis_gcc.h ****   {
  736:Drivers/CMSIS/Include/cmsis_gcc.h ****     const uint32_t max = ((1U << sat) - 1U);
  737:Drivers/CMSIS/Include/cmsis_gcc.h ****     if (val > (int32_t)max)
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 17
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 17
 
 
  738:Drivers/CMSIS/Include/cmsis_gcc.h ****     {
@@ -1018,7 +1018,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  792:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __LDA(volatile uint32_t *ptr)
  793:Drivers/CMSIS/Include/cmsis_gcc.h **** {
  794:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 18
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 18
 
 
  795:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -1078,7 +1078,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  849:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  850:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  851:Drivers/CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 19
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 19
 
 
  852:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
@@ -1138,7 +1138,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  906:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  907:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __STLEXH(uint16_t value, volatile uint16_t *ptr)
  908:Drivers/CMSIS/Include/cmsis_gcc.h **** {
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 20
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 20
 
 
  909:Drivers/CMSIS/Include/cmsis_gcc.h ****    uint32_t result;
@@ -1198,7 +1198,7 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  961:Drivers/CMSIS/Include/cmsis_gcc.h **** {
  962:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("cpsid i" : : : "memory");
   98              		.loc 2 962 3 view .LVU15
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 21
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 21
 
 
   99              		.syntax unified
@@ -1227,11 +1227,11 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  114              	.L7:
  115 0014 00000000 		.word	g_builtinLed
  116              		.cfi_endproc
- 117              	.LFE135:
+ 117              	.LFE138:
  119              		.text
  120              	.Letext0:
- 121              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
- 122              		.file 4 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 121              		.file 3 "/opt/arm-gnu-toolchain/arm-none-eabi/include/machine/_default_types.h"
+ 122              		.file 4 "/opt/arm-gnu-toolchain/arm-none-eabi/include/sys/_stdint.h"
  123              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
  124              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
  125              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
@@ -1241,16 +1241,16 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 1
  129              		.file 11 "Core/Src/i2c_handler/i2c_handler.h"
  130              		.file 12 "Core/Src/uart_handler/uart_handler.h"
  131              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s 			page 22
+ARM GAS  /var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s 			page 22
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 aml_hal.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s:21     .text.AML_Init:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s:27     .text.AML_Init:00000000 AML_Init
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s:62     .text.Error_Handler:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s:68     .text.Error_Handler:00000000 Error_Handler
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cclM33qE.s:115    .text.Error_Handler:00000014 $d
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s:21     .text.AML_Init:00000000 $t
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s:27     .text.AML_Init:00000000 AML_Init
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s:62     .text.Error_Handler:00000000 $t
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s:68     .text.Error_Handler:00000000 Error_Handler
+/var/folders/t0/g2s8z9xd75s2k51g_zcxx3qc0000gn/T//ccccPvZU.s:115    .text.Error_Handler:00000014 $d
 
 UNDEFINED SYMBOLS
 HAL_Init

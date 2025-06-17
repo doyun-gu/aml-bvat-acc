@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s 			page 1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc6xQ5xr.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -37,33 +37,60 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s 			page 1
   26      6C6F2066 
   27 0056 0000     		.align	2
   28              	.LC2:
-  29 0058 53797374 		.ascii	"System ready. Press USER button to start/stop loggi"
-  29      656D2072 
-  29      65616479 
-  29      2E205072 
-  29      65737320 
-  30 008b 6E672E0D 		.ascii	"ng.\015\012\000"
-  30      0A00
-  31 0091 000000   		.align	2
-  32              	.LC3:
-  33 0094 53797374 		.ascii	"System setup complete, but I2C SENSOR ISSUE DETECTE"
-  33      656D2073 
-  33      65747570 
-  33      20636F6D 
-  33      706C6574 
-  34 00c7 442E0D0A 		.ascii	"D.\015\012\000"
-  34      00
-  35              		.section	.text.main,"ax",%progbits
-  36              		.align	1
-  37              		.global	main
-  38              		.syntax unified
-  39              		.thumb
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s 			page 2
+  29 0058 2D2D2D20 		.ascii	"--- Checking I2C Accelerometer ---\015\012\000"
+  29      43686563 
+  29      6B696E67 
+  29      20493243 
+  29      20416363 
+  30 007d 000000   		.align	2
+  31              	.LC3:
+  32 0080 0D0A2D2D 		.ascii	"\015\012--- Checking GPS Module ---\015\012\000"
+  32      2D204368 
+  32      65636B69 
+  32      6E672047 
+  32      5053204D 
+  33              		.align	2
+  34              	.LC4:
+  35 00a0 53797374 		.ascii	"System ready. Press USER button to start/stop loggi"
+  35      656D2072 
+  35      65616479 
+  35      2E205072 
+  35      65737320 
+  36 00d3 6E672E0D 		.ascii	"ng.\015\012\000"
+  36      0A00
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc6xQ5xr.s 			page 2
 
 
-  40              		.thumb_func
-  42              	main:
-  43              	.LFB137:
+  37 00d9 000000   		.align	2
+  38              	.LC5:
+  39 00dc 53797374 		.ascii	"System setup complete, but SENSOR ISSUE DETECTED.\015"
+  39      656D2073 
+  39      65747570 
+  39      20636F6D 
+  39      706C6574 
+  40 010e 0A00     		.ascii	"\012\000"
+  41              		.align	2
+  42              	.LC6:
+  43 0110 2D204163 		.ascii	"- Accelerometer (I2C) FAILED\015\012\000"
+  43      63656C65 
+  43      726F6D65 
+  43      74657220 
+  43      28493243 
+  44 012f 00       		.align	2
+  45              	.LC7:
+  46 0130 2D204750 		.ascii	"- GPS FAILED (No fix or timeout)\015\012\000"
+  46      53204641 
+  46      494C4544 
+  46      20284E6F 
+  46      20666978 
+  47              		.section	.text.main,"ax",%progbits
+  48              		.align	1
+  49              		.global	main
+  50              		.syntax unified
+  51              		.thumb
+  52              		.thumb_func
+  54              	main:
+  55              	.LFB134:
    1:Core/Src/main.c **** /**
    2:Core/Src/main.c ****   ******************************************************************************
    3:Core/Src/main.c ****   * @file           : main.c
@@ -78,211 +105,347 @@ ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s 			page 1
   12:Core/Src/main.c **** #include "uart_handler.h"
   13:Core/Src/main.c **** #include "command_handler.h"
   14:Core/Src/main.c **** #include "i2c_handler.h"
-  15:Core/Src/main.c **** 
-  16:Core/Src/main.c **** /* Private variables ---------------------------------------------------------*/
-  17:Core/Src/main.c **** // Global state variables like g_builtinLed, g_is_logging_active, etc. are
-  18:Core/Src/main.c **** // defined in their respective handler files and declared 'extern' in their headers.
-  19:Core/Src/main.c **** 
-  20:Core/Src/main.c **** /**
-  21:Core/Src/main.c ****   * @brief  The application entry point.
-  22:Core/Src/main.c ****   * @retval int
-  23:Core/Src/main.c ****   */
-  24:Core/Src/main.c **** int main(void)
-  25:Core/Src/main.c **** {
-  44              		.loc 1 25 1 view -0
-  45              		.cfi_startproc
-  46              		@ args = 0, pretend = 0, frame = 0
-  47              		@ frame_needed = 0, uses_anonymous_args = 0
-  48 0000 10B5     		push	{r4, lr}
-  49              	.LCFI0:
-  50              		.cfi_def_cfa_offset 8
-  51              		.cfi_offset 4, -8
-  52              		.cfi_offset 14, -4
-  26:Core/Src/main.c ****   bool system_ready_for_logging = false;
-  53              		.loc 1 26 3 view .LVU1
-  54              	.LVL0:
-  27:Core/Src/main.c **** 
-  28:Core/Src/main.c ****   // --- 1. Core System & Peripheral Initialization ---
-  29:Core/Src/main.c ****   AML_Init();             // Initializes HAL, Clocks, GPIO, UART, I2C, Timers.
-  55              		.loc 1 29 3 view .LVU2
-  56 0002 FFF7FEFF 		bl	AML_Init
-  57              	.LVL1:
-  30:Core/Src/main.c ****   BuiltinLED_Init();        // Initializes the software struct for the built-in LED.
-  58              		.loc 1 30 3 view .LVU3
-  59 0006 FFF7FEFF 		bl	BuiltinLED_Init
-  60              	.LVL2:
-  31:Core/Src/main.c ****   BuiltinPushButton_Init(); // Initializes the software struct and hardware for the user button int
-  61              		.loc 1 31 3 view .LVU4
-  62 000a FFF7FEFF 		bl	BuiltinPushButton_Init
-  63              	.LVL3:
-  32:Core/Src/main.c ****   CommandHandler_Init();    // Initializes timers or states needed by the command handler.
-  64              		.loc 1 32 3 view .LVU5
-  65 000e FFF7FEFF 		bl	CommandHandler_Init
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s 			page 3
+  15:Core/Src/main.c **** #include "gps_handler.h"
+  16:Core/Src/main.c **** #include <stdbool.h>
+  17:Core/Src/main.c **** 
+  18:Core/Src/main.c **** /* External Flags -----------------------------------------------------------*/
+  19:Core/Src/main.c **** extern volatile bool gps_data_ready_flag; // Declared in gps_handler.c
+  20:Core/Src/main.c **** 
+  21:Core/Src/main.c **** /* Private variables ---------------------------------------------------------*/
+  22:Core/Src/main.c **** bool i2c_ok = false;
+  23:Core/Src/main.c **** bool gps_ok = false;
+  24:Core/Src/main.c **** 
+  25:Core/Src/main.c **** /**
+  26:Core/Src/main.c ****   * @brief  The application entry point.
+  27:Core/Src/main.c ****   * @retval int
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc6xQ5xr.s 			page 3
 
 
-  66              	.LVL4:
-  33:Core/Src/main.c **** 
-  34:Core/Src/main.c ****   // --- 2. Startup Messaging and Diagnostics ---
-  35:Core/Src/main.c ****   HAL_Delay(100); // Give peripherals a moment to stabilize after power-on.
-  67              		.loc 1 35 3 view .LVU6
-  68 0012 6420     		movs	r0, #100
-  69 0014 FFF7FEFF 		bl	HAL_Delay
-  70              	.LVL5:
-  36:Core/Src/main.c ****   WriteUART_Blocking("---------------------------------------\r\n");
-  71              		.loc 1 36 3 view .LVU7
-  72 0018 184C     		ldr	r4, .L9
-  73 001a 2046     		mov	r0, r4
-  74 001c FFF7FEFF 		bl	WriteUART_Blocking
-  75              	.LVL6:
-  37:Core/Src/main.c ****   WriteUART_Blocking("System Boot: Hello from STM32 AML-BVAT!\r\n");
-  76              		.loc 1 37 3 view .LVU8
-  77 0020 1748     		ldr	r0, .L9+4
-  78 0022 FFF7FEFF 		bl	WriteUART_Blocking
-  79              	.LVL7:
-  38:Core/Src/main.c ****   WriteUART_Blocking("---------------------------------------\r\n");
-  80              		.loc 1 38 3 view .LVU9
-  81 0026 2046     		mov	r0, r4
-  82 0028 FFF7FEFF 		bl	WriteUART_Blocking
-  83              	.LVL8:
-  39:Core/Src/main.c **** 
-  40:Core/Src/main.c ****   // --- 3. I2C System Initialization and Sensor Verification ---
-  41:Core/Src/main.c ****   if (BVAT_I2C_Init()) { // This function initializes the I2C bus, pings the sensor, and enables it
-  84              		.loc 1 41 3 view .LVU10
-  85              		.loc 1 41 7 is_stmt 0 view .LVU11
-  86 002c FFF7FEFF 		bl	BVAT_I2C_Init
-  87              	.LVL9:
-  88              		.loc 1 41 6 discriminator 1 view .LVU12
-  89 0030 0446     		mov	r4, r0
-  90 0032 D0B9     		cbnz	r0, .L8
-  91              	.L2:
-  92              	.LVL10:
-  42:Core/Src/main.c ****                          // It prints its own detailed status messages.
-  43:Core/Src/main.c **** 
-  44:Core/Src/main.c ****       // Now, perform a detailed verification of the sensor's configuration.
-  45:Core/Src/main.c ****       if (Verify_LIS3DH_Sensor()) { // This new function is in command_handler.c
-  46:Core/Src/main.c ****           system_ready_for_logging = true;
+  28:Core/Src/main.c ****   */
+  29:Core/Src/main.c **** int main(void)
+  30:Core/Src/main.c **** {
+  56              		.loc 1 30 1 view -0
+  57              		.cfi_startproc
+  58              		@ args = 0, pretend = 0, frame = 0
+  59              		@ frame_needed = 0, uses_anonymous_args = 0
+  60 0000 10B5     		push	{r4, lr}
+  61              	.LCFI0:
+  62              		.cfi_def_cfa_offset 8
+  63              		.cfi_offset 4, -8
+  64              		.cfi_offset 14, -4
+  31:Core/Src/main.c ****   // --- 1. Core System & Peripheral Initialization ---
+  32:Core/Src/main.c ****   AML_Init();             // Initializes HAL, Clocks, all peripherals (GPIO, UARTs, I2C, Timers, GP
+  65              		.loc 1 32 3 view .LVU1
+  66 0002 FFF7FEFF 		bl	AML_Init
+  67              	.LVL0:
+  33:Core/Src/main.c ****   BuiltinLED_Init();
+  68              		.loc 1 33 3 view .LVU2
+  69 0006 FFF7FEFF 		bl	BuiltinLED_Init
+  70              	.LVL1:
+  34:Core/Src/main.c ****   BuiltinPushButton_Init();
+  71              		.loc 1 34 3 view .LVU3
+  72 000a FFF7FEFF 		bl	BuiltinPushButton_Init
+  73              	.LVL2:
+  35:Core/Src/main.c ****   CommandHandler_Init();
+  74              		.loc 1 35 3 view .LVU4
+  75 000e FFF7FEFF 		bl	CommandHandler_Init
+  76              	.LVL3:
+  36:Core/Src/main.c **** 
+  37:Core/Src/main.c ****   // --- 2. Startup Messaging ---
+  38:Core/Src/main.c ****   HAL_Delay(100); // Give peripherals a moment to stabilize after power-on.
+  77              		.loc 1 38 3 view .LVU5
+  78 0012 6420     		movs	r0, #100
+  79 0014 FFF7FEFF 		bl	HAL_Delay
+  80              	.LVL4:
+  39:Core/Src/main.c ****   WriteUART_Blocking("---------------------------------------\r\n");
+  81              		.loc 1 39 3 view .LVU6
+  82 0018 2E4C     		ldr	r4, .L18
+  83 001a 2046     		mov	r0, r4
+  84 001c FFF7FEFF 		bl	WriteUART_Blocking
+  85              	.LVL5:
+  40:Core/Src/main.c ****   WriteUART_Blocking("System Boot: Hello from STM32 AML-BVAT!\r\n");
+  86              		.loc 1 40 3 view .LVU7
+  87 0020 2D48     		ldr	r0, .L18+4
+  88 0022 FFF7FEFF 		bl	WriteUART_Blocking
+  89              	.LVL6:
+  41:Core/Src/main.c ****   WriteUART_Blocking("---------------------------------------\r\n");
+  90              		.loc 1 41 3 view .LVU8
+  91 0026 2046     		mov	r0, r4
+  92 0028 FFF7FEFF 		bl	WriteUART_Blocking
+  93              	.LVL7:
+  42:Core/Src/main.c **** 
+  43:Core/Src/main.c ****   // --- 3. I2C Accelerometer Verification ---
+  44:Core/Src/main.c ****   WriteUART_Blocking("--- Checking I2C Accelerometer ---\r\n");
+  94              		.loc 1 44 3 view .LVU9
+  95 002c 2B48     		ldr	r0, .L18+8
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc6xQ5xr.s 			page 4
+
+
+  96 002e FFF7FEFF 		bl	WriteUART_Blocking
+  97              	.LVL8:
+  45:Core/Src/main.c ****   if (BVAT_I2C_Init()) {
+  98              		.loc 1 45 3 view .LVU10
+  99              		.loc 1 45 7 is_stmt 0 view .LVU11
+ 100 0032 FFF7FEFF 		bl	BVAT_I2C_Init
+ 101              	.LVL9:
+ 102              		.loc 1 45 6 discriminator 1 view .LVU12
+ 103 0036 0028     		cmp	r0, #0
+ 104 0038 2FD1     		bne	.L12
+ 105              	.L2:
+  46:Core/Src/main.c ****       if (Verify_LIS3DH_Sensor()) {
+  47:Core/Src/main.c ****           i2c_ok = true;
+  48:Core/Src/main.c ****       }
+  49:Core/Src/main.c ****   }
+  50:Core/Src/main.c **** 
+  51:Core/Src/main.c ****   // --- 4. GPS Module Verification ---
+  52:Core/Src/main.c ****   WriteUART_Blocking("\r\n--- Checking GPS Module ---\r\n");
+ 106              		.loc 1 52 3 is_stmt 1 view .LVU13
+ 107 003a 2948     		ldr	r0, .L18+12
+ 108 003c FFF7FEFF 		bl	WriteUART_Blocking
+ 109              	.LVL10:
+  53:Core/Src/main.c ****   gps_ok = Check_GPS_Status();
+ 110              		.loc 1 53 3 view .LVU14
+ 111              		.loc 1 53 12 is_stmt 0 view .LVU15
+ 112 0040 FFF7FEFF 		bl	Check_GPS_Status
+ 113              	.LVL11:
+ 114              		.loc 1 53 10 discriminator 1 view .LVU16
+ 115 0044 274B     		ldr	r3, .L18+16
+ 116 0046 1870     		strb	r0, [r3]
+  54:Core/Src/main.c **** 
+  55:Core/Src/main.c ****   // --- 5. Final Setup Indication & Readiness Report ---
+  56:Core/Src/main.c ****   indicate_setup_with_blinks(3, 100);
+ 117              		.loc 1 56 3 is_stmt 1 view .LVU17
+ 118 0048 6421     		movs	r1, #100
+ 119 004a 0320     		movs	r0, #3
+ 120 004c FFF7FEFF 		bl	indicate_setup_with_blinks
+ 121              	.LVL12:
+  57:Core/Src/main.c ****   bool system_ready_for_logging = i2c_ok && gps_ok;
+ 122              		.loc 1 57 3 view .LVU18
+ 123              		.loc 1 57 35 is_stmt 0 view .LVU19
+ 124 0050 254B     		ldr	r3, .L18+20
+ 125 0052 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 126              		.loc 1 57 42 view .LVU20
+ 127 0054 13B1     		cbz	r3, .L3
+ 128              		.loc 1 57 42 discriminator 1 view .LVU21
+ 129 0056 234B     		ldr	r3, .L18+16
+ 130 0058 1C78     		ldrb	r4, [r3]	@ zero_extendqisi2
+ 131 005a 34BB     		cbnz	r4, .L13
+ 132              	.L3:
+ 133              	.LVL13:
+  58:Core/Src/main.c **** 
+  59:Core/Src/main.c ****   if (system_ready_for_logging) {
+ 134              		.loc 1 59 3 is_stmt 1 view .LVU22
+  60:Core/Src/main.c ****       WriteUART_Blocking("System ready. Press USER button to start/stop logging.\r\n");
+  61:Core/Src/main.c ****   } else {
+  62:Core/Src/main.c ****       WriteUART_Blocking("System setup complete, but SENSOR ISSUE DETECTED.\r\n");
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc6xQ5xr.s 			page 5
+
+
+ 135              		.loc 1 62 7 view .LVU23
+ 136 005c 2348     		ldr	r0, .L18+24
+ 137 005e FFF7FEFF 		bl	WriteUART_Blocking
+ 138              	.LVL14:
+  63:Core/Src/main.c ****       if (!i2c_ok) { WriteUART_Blocking("- Accelerometer (I2C) FAILED\r\n"); }
+ 139              		.loc 1 63 7 view .LVU24
+ 140              		.loc 1 63 11 is_stmt 0 view .LVU25
+ 141 0062 214B     		ldr	r3, .L18+20
+ 142 0064 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 143              		.loc 1 63 10 view .LVU26
+ 144 0066 23B3     		cbz	r3, .L14
+ 145              	.L5:
+  64:Core/Src/main.c ****       if (!gps_ok) { WriteUART_Blocking("- GPS FAILED (No fix or timeout)\r\n"); }
+ 146              		.loc 1 64 7 is_stmt 1 view .LVU27
+ 147              		.loc 1 64 11 is_stmt 0 view .LVU28
+ 148 0068 1E4B     		ldr	r3, .L18+16
+ 149 006a 1C78     		ldrb	r4, [r3]	@ zero_extendqisi2
+ 150              		.loc 1 64 10 view .LVU29
+ 151 006c 2CB3     		cbz	r4, .L15
+  57:Core/Src/main.c **** 
+ 152              		.loc 1 57 8 discriminator 6 view .LVU30
+ 153 006e 0024     		movs	r4, #0
+ 154              	.LVL15:
+ 155              	.L4:
+  65:Core/Src/main.c ****   }
+  66:Core/Src/main.c ****   WriteUART_Blocking("---------------------------------------\r\n");
+ 156              		.loc 1 66 3 is_stmt 1 view .LVU31
+ 157 0070 1848     		ldr	r0, .L18
+ 158 0072 FFF7FEFF 		bl	WriteUART_Blocking
+ 159              	.LVL16:
+ 160              	.L8:
+  67:Core/Src/main.c **** 
+  68:Core/Src/main.c ****   // --- 6. Main Execution Loop ---
+  69:Core/Src/main.c ****   while (1)
+ 161              		.loc 1 69 3 view .LVU32
+  70:Core/Src/main.c ****   {
+  71:Core/Src/main.c ****     // --- GPS Data Processing Triggered by DMA ISR ---
+  72:Core/Src/main.c ****     if (gps_data_ready_flag) {
+ 162              		.loc 1 72 5 view .LVU33
+ 163              		.loc 1 72 9 is_stmt 0 view .LVU34
+ 164 0076 1E4B     		ldr	r3, .L18+28
+ 165 0078 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 166              		.loc 1 72 8 view .LVU35
+ 167 007a 13BB     		cbnz	r3, .L16
+ 168              	.L6:
+  73:Core/Src/main.c ****         gps_data_ready_flag = false;
+  74:Core/Src/main.c ****         GPS_Process_Buffer();
+  75:Core/Src/main.c ****     }
+  76:Core/Src/main.c **** 
+  77:Core/Src/main.c ****     // --- Main Measurement ---
+  78:Core/Src/main.c ****     if (system_ready_for_logging) {
+ 169              		.loc 1 78 5 is_stmt 1 view .LVU36
+ 170              		.loc 1 78 8 is_stmt 0 view .LVU37
+ 171 007c 3CBB     		cbnz	r4, .L17
+ 172              	.L7:
+  79:Core/Src/main.c ****         measure_loop();
+  80:Core/Src/main.c ****     }
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc6xQ5xr.s 			page 6
+
+
+  81:Core/Src/main.c **** 
+  82:Core/Src/main.c ****     // --- Idle Heartbeat if Not Logging ---
+  83:Core/Src/main.c ****     if (!g_is_logging_active) {
+ 173              		.loc 1 83 5 is_stmt 1 view .LVU38
+ 174              		.loc 1 83 9 is_stmt 0 view .LVU39
+ 175 007e 1D4B     		ldr	r3, .L18+32
+ 176 0080 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 177              		.loc 1 83 8 view .LVU40
+ 178 0082 002B     		cmp	r3, #0
+ 179 0084 F7D1     		bne	.L8
+  84:Core/Src/main.c ****         HAL_GPIO_TogglePin(g_builtinLed.pin.port, g_builtinLed.pin.pin);
+ 180              		.loc 1 84 9 is_stmt 1 view .LVU41
+ 181 0086 1C4B     		ldr	r3, .L18+36
+ 182 0088 9988     		ldrh	r1, [r3, #4]
+ 183 008a 1868     		ldr	r0, [r3]
+ 184 008c FFF7FEFF 		bl	HAL_GPIO_TogglePin
+ 185              	.LVL17:
+  85:Core/Src/main.c ****         HAL_Delay(500);
+ 186              		.loc 1 85 9 view .LVU42
+ 187 0090 4FF4FA70 		mov	r0, #500
+ 188 0094 FFF7FEFF 		bl	HAL_Delay
+ 189              	.LVL18:
+ 190 0098 EDE7     		b	.L8
+ 191              	.L12:
+  46:Core/Src/main.c ****           i2c_ok = true;
+ 192              		.loc 1 46 7 view .LVU43
+  46:Core/Src/main.c ****           i2c_ok = true;
+ 193              		.loc 1 46 11 is_stmt 0 view .LVU44
+ 194 009a FFF7FEFF 		bl	Verify_LIS3DH_Sensor
+ 195              	.LVL19:
+  46:Core/Src/main.c ****           i2c_ok = true;
+ 196              		.loc 1 46 10 discriminator 1 view .LVU45
+ 197 009e 0028     		cmp	r0, #0
+ 198 00a0 CBD0     		beq	.L2
   47:Core/Src/main.c ****       }
-  48:Core/Src/main.c ****   }
-  49:Core/Src/main.c ****   
-  50:Core/Src/main.c ****   // --- 4. Final Setup Indication ---
-  51:Core/Src/main.c ****   indicate_setup_with_blinks(3, 100); // Visual cue that setup sequence is complete.
-  93              		.loc 1 51 3 is_stmt 1 view .LVU13
-  94 0034 6421     		movs	r1, #100
-  95 0036 0320     		movs	r0, #3
-  96 0038 FFF7FEFF 		bl	indicate_setup_with_blinks
-  97              	.LVL11:
-  52:Core/Src/main.c **** 
-  53:Core/Src/main.c ****   if (system_ready_for_logging) {
-  98              		.loc 1 53 3 view .LVU14
-  99              		.loc 1 53 6 is_stmt 0 view .LVU15
- 100 003c CCB1     		cbz	r4, .L3
-  54:Core/Src/main.c ****     WriteUART_Blocking("System ready. Press USER button to start/stop logging.\r\n");
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s 			page 4
+ 199              		.loc 1 47 11 is_stmt 1 view .LVU46
+  47:Core/Src/main.c ****       }
+ 200              		.loc 1 47 18 is_stmt 0 view .LVU47
+ 201 00a2 114B     		ldr	r3, .L18+20
+ 202 00a4 0122     		movs	r2, #1
+ 203 00a6 1A70     		strb	r2, [r3]
+ 204 00a8 C7E7     		b	.L2
+ 205              	.L13:
+ 206              	.LVL20:
+  59:Core/Src/main.c ****       WriteUART_Blocking("System ready. Press USER button to start/stop logging.\r\n");
+ 207              		.loc 1 59 3 is_stmt 1 view .LVU48
+  60:Core/Src/main.c ****   } else {
+ 208              		.loc 1 60 7 view .LVU49
+ 209 00aa 1448     		ldr	r0, .L18+40
+ 210 00ac FFF7FEFF 		bl	WriteUART_Blocking
+ 211              	.LVL21:
+ 212 00b0 DEE7     		b	.L4
+ 213              	.LVL22:
+ 214              	.L14:
+  63:Core/Src/main.c ****       if (!gps_ok) { WriteUART_Blocking("- GPS FAILED (No fix or timeout)\r\n"); }
+ 215              		.loc 1 63 22 discriminator 1 view .LVU50
+ 216 00b2 1348     		ldr	r0, .L18+44
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc6xQ5xr.s 			page 7
 
 
- 101              		.loc 1 54 5 is_stmt 1 view .LVU16
- 102 003e 1148     		ldr	r0, .L9+8
- 103 0040 FFF7FEFF 		bl	WriteUART_Blocking
- 104              	.LVL12:
- 105              	.L4:
-  55:Core/Src/main.c ****   } else {
-  56:Core/Src/main.c ****     WriteUART_Blocking("System setup complete, but I2C SENSOR ISSUE DETECTED.\r\n");
-  57:Core/Src/main.c ****   }
-  58:Core/Src/main.c ****   WriteUART_Blocking("---------------------------------------\r\n");
- 106              		.loc 1 58 3 view .LVU17
- 107 0044 0D48     		ldr	r0, .L9
- 108 0046 FFF7FEFF 		bl	WriteUART_Blocking
- 109              	.LVL13:
- 110              	.L5:
-  59:Core/Src/main.c **** 
-  60:Core/Src/main.c ****   // --- 5. Main Execution Loop ---
-  61:Core/Src/main.c ****   while (1)
- 111              		.loc 1 61 3 view .LVU18
-  62:Core/Src/main.c ****   {
-  63:Core/Src/main.c ****     // The main operational logic is now handled by measure_loop().
-  64:Core/Src/main.c ****     // It internally checks if logging is active.
-  65:Core/Src/main.c ****     measure_loop();
- 112              		.loc 1 65 5 view .LVU19
- 113 004a FFF7FEFF 		bl	measure_loop
- 114              	.LVL14:
-  66:Core/Src/main.c ****     
-  67:Core/Src/main.c ****     // If logging is NOT active, perform an idle "heartbeat" blink.
-  68:Core/Src/main.c ****     // This shows the system is alive and waiting for a button press.
-  69:Core/Src/main.c ****     if (!g_is_logging_active) {
- 115              		.loc 1 69 5 view .LVU20
- 116              		.loc 1 69 9 is_stmt 0 view .LVU21
- 117 004e 0E4B     		ldr	r3, .L9+12
- 118 0050 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 119              		.loc 1 69 8 view .LVU22
- 120 0052 002B     		cmp	r3, #0
- 121 0054 F9D1     		bne	.L5
-  70:Core/Src/main.c ****         HAL_GPIO_TogglePin(g_builtinLed.pin.port, g_builtinLed.pin.pin);
- 122              		.loc 1 70 9 is_stmt 1 view .LVU23
- 123 0056 0D4B     		ldr	r3, .L9+16
- 124 0058 9988     		ldrh	r1, [r3, #4]
- 125 005a 1868     		ldr	r0, [r3]
- 126 005c FFF7FEFF 		bl	HAL_GPIO_TogglePin
- 127              	.LVL15:
-  71:Core/Src/main.c ****         HAL_Delay(500); // Slow heartbeat blink
- 128              		.loc 1 71 9 view .LVU24
- 129 0060 4FF4FA70 		mov	r0, #500
- 130 0064 FFF7FEFF 		bl	HAL_Delay
- 131              	.LVL16:
- 132 0068 EFE7     		b	.L5
- 133              	.LVL17:
- 134              	.L8:
-  45:Core/Src/main.c ****           system_ready_for_logging = true;
- 135              		.loc 1 45 7 view .LVU25
-  45:Core/Src/main.c ****           system_ready_for_logging = true;
- 136              		.loc 1 45 11 is_stmt 0 view .LVU26
- 137 006a FFF7FEFF 		bl	Verify_LIS3DH_Sensor
- 138              	.LVL18:
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s 			page 5
+ 217 00b4 FFF7FEFF 		bl	WriteUART_Blocking
+ 218              	.LVL23:
+ 219 00b8 D6E7     		b	.L5
+ 220              	.L15:
+  64:Core/Src/main.c ****   }
+ 221              		.loc 1 64 22 discriminator 1 view .LVU51
+ 222 00ba 1248     		ldr	r0, .L18+48
+ 223 00bc FFF7FEFF 		bl	WriteUART_Blocking
+ 224              	.LVL24:
+ 225 00c0 D6E7     		b	.L4
+ 226              	.LVL25:
+ 227              	.L16:
+  73:Core/Src/main.c ****         GPS_Process_Buffer();
+ 228              		.loc 1 73 9 view .LVU52
+  73:Core/Src/main.c ****         GPS_Process_Buffer();
+ 229              		.loc 1 73 29 is_stmt 0 view .LVU53
+ 230 00c2 0B4B     		ldr	r3, .L18+28
+ 231 00c4 0022     		movs	r2, #0
+ 232 00c6 1A70     		strb	r2, [r3]
+  74:Core/Src/main.c ****     }
+ 233              		.loc 1 74 9 is_stmt 1 view .LVU54
+ 234 00c8 FFF7FEFF 		bl	GPS_Process_Buffer
+ 235              	.LVL26:
+ 236 00cc D6E7     		b	.L6
+ 237              	.L17:
+  79:Core/Src/main.c ****     }
+ 238              		.loc 1 79 9 view .LVU55
+ 239 00ce FFF7FEFF 		bl	measure_loop
+ 240              	.LVL27:
+ 241 00d2 D4E7     		b	.L7
+ 242              	.L19:
+ 243              		.align	2
+ 244              	.L18:
+ 245 00d4 00000000 		.word	.LC0
+ 246 00d8 2C000000 		.word	.LC1
+ 247 00dc 58000000 		.word	.LC2
+ 248 00e0 80000000 		.word	.LC3
+ 249 00e4 00000000 		.word	gps_ok
+ 250 00e8 00000000 		.word	i2c_ok
+ 251 00ec DC000000 		.word	.LC5
+ 252 00f0 00000000 		.word	gps_data_ready_flag
+ 253 00f4 00000000 		.word	g_is_logging_active
+ 254 00f8 00000000 		.word	g_builtinLed
+ 255 00fc A0000000 		.word	.LC4
+ 256 0100 10010000 		.word	.LC6
+ 257 0104 30010000 		.word	.LC7
+ 258              		.cfi_endproc
+ 259              	.LFE134:
+ 261              		.global	gps_ok
+ 262              		.section	.bss.gps_ok,"aw",%nobits
+ 265              	gps_ok:
+ 266 0000 00       		.space	1
+ 267              		.global	i2c_ok
+ 268              		.section	.bss.i2c_ok,"aw",%nobits
+ 271              	i2c_ok:
+ 272 0000 00       		.space	1
+ 273              		.text
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc6xQ5xr.s 			page 8
 
 
- 139 006e 0446     		mov	r4, r0
- 140 0070 E0E7     		b	.L2
- 141              	.LVL19:
- 142              	.L3:
-  56:Core/Src/main.c ****   }
- 143              		.loc 1 56 5 is_stmt 1 view .LVU27
- 144 0072 0748     		ldr	r0, .L9+20
- 145 0074 FFF7FEFF 		bl	WriteUART_Blocking
- 146              	.LVL20:
- 147 0078 E4E7     		b	.L4
- 148              	.L10:
- 149 007a 00BF     		.align	2
- 150              	.L9:
- 151 007c 00000000 		.word	.LC0
- 152 0080 2C000000 		.word	.LC1
- 153 0084 58000000 		.word	.LC2
- 154 0088 00000000 		.word	g_is_logging_active
- 155 008c 00000000 		.word	g_builtinLed
- 156 0090 94000000 		.word	.LC3
- 157              		.cfi_endproc
- 158              	.LFE137:
- 160              		.text
- 161              	.Letext0:
- 162              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
- 163              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
- 164              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
- 165              		.file 5 "Core/Src/library/aml_hal.h"
- 166              		.file 6 "Core/Src/gpio_handler/gpio_handler.h"
- 167              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
- 168              		.file 8 "Core/Src/command_handler/command_handler.h"
- 169              		.file 9 "Core/Src/i2c_handler/i2c_handler.h"
- 170              		.file 10 "Core/Src/uart_handler/uart_handler.h"
- 171              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
-ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s 			page 6
+ 274              	.Letext0:
+ 275              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+ 276              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 277              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
+ 278              		.file 5 "Core/Src/library/aml_hal.h"
+ 279              		.file 6 "Core/Src/gpio_handler/gpio_handler.h"
+ 280              		.file 7 "Core/Src/command_handler/command_handler.h"
+ 281              		.file 8 "Core/Src/gps_handler/gps_handler.h"
+ 282              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 283              		.file 10 "Core/Src/i2c_handler/i2c_handler.h"
+ 284              		.file 11 "Core/Src/uart_handler/uart_handler.h"
+ 285              		.file 12 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc6xQ5xr.s 			page 9
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s:21     .rodata.main.str1.4:00000000 $d
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s:36     .text.main:00000000 $t
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s:42     .text.main:00000000 main
-/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cctT7OzQ.s:151    .text.main:0000007c $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc6xQ5xr.s:21     .rodata.main.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc6xQ5xr.s:48     .text.main:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc6xQ5xr.s:54     .text.main:00000000 main
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc6xQ5xr.s:245    .text.main:000000d4 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc6xQ5xr.s:265    .bss.gps_ok:00000000 gps_ok
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc6xQ5xr.s:271    .bss.i2c_ok:00000000 i2c_ok
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc6xQ5xr.s:266    .bss.gps_ok:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cc6xQ5xr.s:272    .bss.i2c_ok:00000000 $d
 
 UNDEFINED SYMBOLS
 AML_Init
@@ -292,9 +455,12 @@ CommandHandler_Init
 HAL_Delay
 WriteUART_Blocking
 BVAT_I2C_Init
+Check_GPS_Status
 indicate_setup_with_blinks
-measure_loop
 HAL_GPIO_TogglePin
 Verify_LIS3DH_Sensor
+GPS_Process_Buffer
+measure_loop
+gps_data_ready_flag
 g_is_logging_active
 g_builtinLed

@@ -44,7 +44,7 @@ Core/Src/i2c_handler/i2c_handler.c \
 Core/Src/timer/timer.c \
 Core/Src/uart_handler/uart_handler.c \
 Core/Src/command_handler/command_handler.c \
-Core/Src/file_handler/file_handler.c \
+Core/Src/gps_handler/gps_handler.c \
 Core/Src/stm32f4xx_it.c \
 Core/Src/stm32f4xx_hal_msp.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c \
@@ -135,7 +135,7 @@ C_INCLUDES =  \
 -ICore/Src/timer \
 -ICore/Src/uart_handler \
 -ICore/Src/command_handler \
--ICore/Src/file_handler \
+-ICore/Src/gps_handler \
 -IDrivers/STM32F4xx_HAL_Driver/Inc \
 -IDrivers/STM32F4xx_HAL_Driver/Inc/Legacy \
 -IDrivers/CMSIS/Device/ST/STM32F4xx/Include \

@@ -31,7 +31,7 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  Core/Src/library/aml_hal.h Core/Src/gpio_handler/gpio_handler.h \
  Core/Src/uart_handler/uart_handler.h \
  Core/Src/command_handler/command_handler.h \
- Core/Src/i2c_handler/i2c_handler.h
+ Core/Src/i2c_handler/i2c_handler.h Core/Src/gps_handler/gps_handler.h
 Core/Inc/main.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 Core/Inc/stm32f4xx_hal_conf.h:
@@ -69,3 +69,4 @@ Core/Src/gpio_handler/gpio_handler.h:
 Core/Src/uart_handler/uart_handler.h:
 Core/Src/command_handler/command_handler.h:
 Core/Src/i2c_handler/i2c_handler.h:
+Core/Src/gps_handler/gps_handler.h:

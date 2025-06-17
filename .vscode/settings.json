@@ -4,7 +4,9 @@
         "uart.h": "c",
         "aml_hal.h": "c",
         "stm32f4xx_it.h": "c",
-        "uart_handler.h": "c"
+        "uart_handler.h": "c",
+        "__locale": "c",
+        "ios": "c"
     },
     "cmake.sourceDirectory": "/Users/doyungu/Documents/Aston_Martin/Project/aml-bvat-acc/Drivers/CMSIS/DSP/Source/MatrixFunctions"
 }

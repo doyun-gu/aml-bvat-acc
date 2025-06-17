@@ -275,3 +275,43 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c)
         WriteUART_Blocking(err_buf); // Use blocking for callback debug
     }
 }
+
+/**
+ * @brief Reads the raw accelerometer data and converts it to 'g's.
+ * @param x_g: Pointer to a float where the X-axis acceleration in 'g' will be stored.
+ * @param y_g: Pointer to a float where the Y-axis acceleration in 'g' will be stored.
+ * @param z_g: Pointer to a float where the Z-axis acceleration in 'g' will be stored.
+ * @retval bool: true on successful read, false on failure.
+ */
+bool LIS3DH_Read_Accel_Data(float* x_g, float* y_g, float* z_g)
+{
+    u8 data[6];
+    HAL_StatusTypeDef status;
+
+    // Read the 6 bytes of accelerometer data
+    status = HAL_I2C_Mem_Read(&hi2c1,
+                              ACC_I2C_ADDR,
+                              LIS3DH_DATA_START_MULTI_READ,
+                              I2C_MEMADD_SIZE_8BIT,
+                              data,
+                              6,
+                              1000);
+
+    if (status != HAL_OK) {
+        WriteUART_Blocking("I2C Accelerometer Read Failed.\r\n");
+        return false;
+    }
+
+    // Combine LSB and MSB, right-shift for 12-bit resolution, and scale
+    int16_t raw_x = (int16_t)((data[1] << 8) | data[0]) >> 4;
+    int16_t raw_y = (int16_t)((data[3] << 8) | data[2]) >> 4;
+    int16_t raw_z = (int16_t)((data[5] << 8) | data[4]) >> 4;
+
+    // Convert raw values to 'g'.
+    // Sensitivity for LIS3DH in HR mode at +/-2g is 1 mg/LSB. 1000 mg = 1 g.
+    *x_g = (float)raw_x / 1000.0f;
+    *y_g = (float)raw_y / 1000.0f;
+    *z_g = (float)raw_z / 1000.0f;
+
+    return true;
+}

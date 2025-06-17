@@ -1,0 +1,1406 @@
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"gps_handler.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/gps_handler/gps_handler.c"
+  20              		.global	__aeabi_d2f
+  21              		.section	.text.nmea_to_decimal_degrees,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	nmea_to_decimal_degrees:
+  28              	.LVL0:
+  29              	.LFB142:
+   1:Core/Src/gps_handler/gps_handler.c **** /* ============================== */
+   2:Core/Src/gps_handler/gps_handler.c **** /* gps_handler.c - FINAL VERSION */
+   3:Core/Src/gps_handler/gps_handler.c **** /* ============================== */
+   4:Core/Src/gps_handler/gps_handler.c **** 
+   5:Core/Src/gps_handler/gps_handler.c **** #include "gps_handler.h"
+   6:Core/Src/gps_handler/gps_handler.c **** #include "uart_handler.h"
+   7:Core/Src/gps_handler/gps_handler.c **** #include <string.h>
+   8:Core/Src/gps_handler/gps_handler.c **** #include <stdlib.h>
+   9:Core/Src/gps_handler/gps_handler.c **** #include <stdio.h>
+  10:Core/Src/gps_handler/gps_handler.c **** #include <stdbool.h>
+  11:Core/Src/gps_handler/gps_handler.c **** 
+  12:Core/Src/gps_handler/gps_handler.c **** #define GPS_DMA_BUFFER_SIZE 512
+  13:Core/Src/gps_handler/gps_handler.c **** #define NMEA_SENTENCE_BUFFER_SIZE 128
+  14:Core/Src/gps_handler/gps_handler.c **** 
+  15:Core/Src/gps_handler/gps_handler.c **** static GPS_Data_t s_gps_data;
+  16:Core/Src/gps_handler/gps_handler.c **** static uint8_t s_gps_dma_buffer[GPS_DMA_BUFFER_SIZE];
+  17:Core/Src/gps_handler/gps_handler.c **** static size_t old_dma_pos = 0;
+  18:Core/Src/gps_handler/gps_handler.c **** 
+  19:Core/Src/gps_handler/gps_handler.c **** extern UART_HandleTypeDef huart1;
+  20:Core/Src/gps_handler/gps_handler.c **** 
+  21:Core/Src/gps_handler/gps_handler.c **** // New global flag set in ISR
+  22:Core/Src/gps_handler/gps_handler.c **** volatile bool gps_data_ready_flag = false;
+  23:Core/Src/gps_handler/gps_handler.c **** 
+  24:Core/Src/gps_handler/gps_handler.c **** static void GPS_Parse_RMC_Sentence(char* rmc_sentence);
+  25:Core/Src/gps_handler/gps_handler.c **** static float nmea_to_decimal_degrees(const char* nmea_coord, char direction);
+  26:Core/Src/gps_handler/gps_handler.c **** 
+  27:Core/Src/gps_handler/gps_handler.c **** void GPS_Init(void) {
+  28:Core/Src/gps_handler/gps_handler.c ****     MX_USART1_UART_Init();
+  29:Core/Src/gps_handler/gps_handler.c ****     HAL_NVIC_SetPriority(DMA2_Stream5_IRQn, 0, 0);
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 2
+
+
+  30:Core/Src/gps_handler/gps_handler.c ****     HAL_NVIC_EnableIRQ(DMA2_Stream5_IRQn);
+  31:Core/Src/gps_handler/gps_handler.c ****     
+  32:Core/Src/gps_handler/gps_handler.c ****     memset(&s_gps_data, 0, sizeof(GPS_Data_t));
+  33:Core/Src/gps_handler/gps_handler.c ****     s_gps_data.is_valid_fix = false;
+  34:Core/Src/gps_handler/gps_handler.c ****     if (HAL_UART_Receive_DMA(&huart1, s_gps_dma_buffer, GPS_DMA_BUFFER_SIZE) != HAL_OK) {
+  35:Core/Src/gps_handler/gps_handler.c ****         WriteUART_Blocking("ERROR: GPS DMA Reception Start FAILED!\r\n");
+  36:Core/Src/gps_handler/gps_handler.c ****         Error_Handler();
+  37:Core/Src/gps_handler/gps_handler.c ****     }
+  38:Core/Src/gps_handler/gps_handler.c **** }
+  39:Core/Src/gps_handler/gps_handler.c **** 
+  40:Core/Src/gps_handler/gps_handler.c **** void GPS_Process_Buffer(void) {
+  41:Core/Src/gps_handler/gps_handler.c ****     size_t current_dma_pos = GPS_DMA_BUFFER_SIZE - __HAL_DMA_GET_COUNTER(huart1.hdmarx);
+  42:Core/Src/gps_handler/gps_handler.c ****     static char nmea_sentence_buffer[NMEA_SENTENCE_BUFFER_SIZE];
+  43:Core/Src/gps_handler/gps_handler.c ****     static uint8_t nmea_pos = 0;
+  44:Core/Src/gps_handler/gps_handler.c ****     static bool seen_dollar = false;
+  45:Core/Src/gps_handler/gps_handler.c **** 
+  46:Core/Src/gps_handler/gps_handler.c ****     while (old_dma_pos != current_dma_pos) {
+  47:Core/Src/gps_handler/gps_handler.c ****         char received_char = s_gps_dma_buffer[old_dma_pos];
+  48:Core/Src/gps_handler/gps_handler.c **** 
+  49:Core/Src/gps_handler/gps_handler.c ****         if (received_char == '$') {
+  50:Core/Src/gps_handler/gps_handler.c ****             nmea_pos = 0;
+  51:Core/Src/gps_handler/gps_handler.c ****             memset(nmea_sentence_buffer, 0, sizeof(nmea_sentence_buffer));
+  52:Core/Src/gps_handler/gps_handler.c ****             seen_dollar = true;
+  53:Core/Src/gps_handler/gps_handler.c ****         }
+  54:Core/Src/gps_handler/gps_handler.c **** 
+  55:Core/Src/gps_handler/gps_handler.c ****         if (seen_dollar && nmea_pos < sizeof(nmea_sentence_buffer) - 1) {
+  56:Core/Src/gps_handler/gps_handler.c ****             nmea_sentence_buffer[nmea_pos++] = received_char;
+  57:Core/Src/gps_handler/gps_handler.c ****         }
+  58:Core/Src/gps_handler/gps_handler.c **** 
+  59:Core/Src/gps_handler/gps_handler.c ****         if (received_char == '\n' && seen_dollar) {
+  60:Core/Src/gps_handler/gps_handler.c ****             nmea_sentence_buffer[nmea_pos] = '\0';
+  61:Core/Src/gps_handler/gps_handler.c ****             seen_dollar = false;
+  62:Core/Src/gps_handler/gps_handler.c ****             if (strstr(nmea_sentence_buffer, "RMC") != NULL) {
+  63:Core/Src/gps_handler/gps_handler.c ****                 GPS_Parse_RMC_Sentence(nmea_sentence_buffer);
+  64:Core/Src/gps_handler/gps_handler.c ****             }
+  65:Core/Src/gps_handler/gps_handler.c ****             nmea_pos = 0;
+  66:Core/Src/gps_handler/gps_handler.c ****         }
+  67:Core/Src/gps_handler/gps_handler.c **** 
+  68:Core/Src/gps_handler/gps_handler.c ****         old_dma_pos = (old_dma_pos + 1) % GPS_DMA_BUFFER_SIZE;
+  69:Core/Src/gps_handler/gps_handler.c ****     }
+  70:Core/Src/gps_handler/gps_handler.c **** }
+  71:Core/Src/gps_handler/gps_handler.c **** 
+  72:Core/Src/gps_handler/gps_handler.c **** bool GPS_Get_Latest_Data(GPS_Data_t *gps_data_out) {
+  73:Core/Src/gps_handler/gps_handler.c ****     if (gps_data_out != NULL) {
+  74:Core/Src/gps_handler/gps_handler.c ****         *gps_data_out = s_gps_data;
+  75:Core/Src/gps_handler/gps_handler.c ****     }
+  76:Core/Src/gps_handler/gps_handler.c ****     return s_gps_data.is_valid_fix;
+  77:Core/Src/gps_handler/gps_handler.c **** }
+  78:Core/Src/gps_handler/gps_handler.c **** 
+  79:Core/Src/gps_handler/gps_handler.c **** void Log_Latest_GPS_Data(void) {
+  80:Core/Src/gps_handler/gps_handler.c ****     GPS_Data_t gps_data;
+  81:Core/Src/gps_handler/gps_handler.c ****     if (GPS_Get_Latest_Data(&gps_data)) {
+  82:Core/Src/gps_handler/gps_handler.c ****         char log_buffer[128];
+  83:Core/Src/gps_handler/gps_handler.c ****         snprintf(log_buffer, sizeof(log_buffer),
+  84:Core/Src/gps_handler/gps_handler.c ****                  "GPS DATA, Speed: %.2f kmh, Fix: Valid, Lat: %.4f, Lon: %.4f\r\n",
+  85:Core/Src/gps_handler/gps_handler.c ****                  gps_data.speed_kmh, gps_data.latitude_dd, gps_data.longitude_dd);
+  86:Core/Src/gps_handler/gps_handler.c ****         WriteUART_Blocking(log_buffer);
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 3
+
+
+  87:Core/Src/gps_handler/gps_handler.c ****     } 
+  88:Core/Src/gps_handler/gps_handler.c ****     
+  89:Core/Src/gps_handler/gps_handler.c ****     else {
+  90:Core/Src/gps_handler/gps_handler.c ****         WriteUART_Blocking("GPS DATA, Fix: Invalid\r\n");
+  91:Core/Src/gps_handler/gps_handler.c ****     }
+  92:Core/Src/gps_handler/gps_handler.c **** }
+  93:Core/Src/gps_handler/gps_handler.c **** 
+  94:Core/Src/gps_handler/gps_handler.c **** static void GPS_Parse_RMC_Sentence(char* rmc_sentence) {
+  95:Core/Src/gps_handler/gps_handler.c ****     char* tokens[15];
+  96:Core/Src/gps_handler/gps_handler.c ****     int token_count = 0;
+  97:Core/Src/gps_handler/gps_handler.c ****     char sentence_copy[NMEA_SENTENCE_BUFFER_SIZE];
+  98:Core/Src/gps_handler/gps_handler.c **** 
+  99:Core/Src/gps_handler/gps_handler.c ****     strncpy(sentence_copy, rmc_sentence, sizeof(sentence_copy) - 1);
+ 100:Core/Src/gps_handler/gps_handler.c ****     sentence_copy[sizeof(sentence_copy) - 1] = '\0';
+ 101:Core/Src/gps_handler/gps_handler.c **** 
+ 102:Core/Src/gps_handler/gps_handler.c ****     char* token = strtok(sentence_copy, ",");
+ 103:Core/Src/gps_handler/gps_handler.c ****     while (token != NULL && token_count < 15) {
+ 104:Core/Src/gps_handler/gps_handler.c ****         tokens[token_count++] = token;
+ 105:Core/Src/gps_handler/gps_handler.c ****         token = strtok(NULL, ",");
+ 106:Core/Src/gps_handler/gps_handler.c ****     }
+ 107:Core/Src/gps_handler/gps_handler.c **** 
+ 108:Core/Src/gps_handler/gps_handler.c ****     if (token_count < 9) {
+ 109:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.is_valid_fix = false;
+ 110:Core/Src/gps_handler/gps_handler.c ****         return;
+ 111:Core/Src/gps_handler/gps_handler.c ****     }
+ 112:Core/Src/gps_handler/gps_handler.c **** 
+ 113:Core/Src/gps_handler/gps_handler.c ****     if (strlen(tokens[2]) > 0 && *tokens[2] == 'A') {
+ 114:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.is_valid_fix = true;
+ 115:Core/Src/gps_handler/gps_handler.c **** 
+ 116:Core/Src/gps_handler/gps_handler.c ****         if(strlen(tokens[1]) > 5) sscanf(tokens[1], "%2hhu%2hhu%2hhu", &s_gps_data.hour, &s_gps_dat
+ 117:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 4 && strlen(tokens[3]) > 0) s_gps_data.latitude_dd = nmea_to_decimal_degre
+ 118:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 6 && strlen(tokens[5]) > 0) s_gps_data.longitude_dd = nmea_to_decimal_degr
+ 119:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 7 && strlen(tokens[7]) > 0) s_gps_data.speed_knots = atof(tokens[7]);
+ 120:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.speed_kmh = s_gps_data.speed_knots * 1.852f;
+ 121:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 8 && strlen(tokens[8]) > 0) s_gps_data.course_deg = atof(tokens[8]);
+ 122:Core/Src/gps_handler/gps_handler.c **** 
+ 123:Core/Src/gps_handler/gps_handler.c ****     } else {
+ 124:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.is_valid_fix = false;
+ 125:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.speed_knots = 0.0f;
+ 126:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.speed_kmh = 0.0f;
+ 127:Core/Src/gps_handler/gps_handler.c ****     }
+ 128:Core/Src/gps_handler/gps_handler.c **** }
+ 129:Core/Src/gps_handler/gps_handler.c **** 
+ 130:Core/Src/gps_handler/gps_handler.c **** static float nmea_to_decimal_degrees(const char* nmea_coord, char direction) {
+  30              		.loc 1 130 78 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+ 131:Core/Src/gps_handler/gps_handler.c ****     if (nmea_coord == NULL || *nmea_coord == '\0') return 0.0f;
+  34              		.loc 1 131 5 view .LVU1
+  35              		.loc 1 131 8 is_stmt 0 view .LVU2
+  36 0000 38B3     		cbz	r0, .L4
+ 130:Core/Src/gps_handler/gps_handler.c ****     if (nmea_coord == NULL || *nmea_coord == '\0') return 0.0f;
+  37              		.loc 1 130 78 view .LVU3
+  38 0002 10B5     		push	{r4, lr}
+  39              	.LCFI0:
+  40              		.cfi_def_cfa_offset 8
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 4
+
+
+  41              		.cfi_offset 4, -8
+  42              		.cfi_offset 14, -4
+  43 0004 0C46     		mov	r4, r1
+  44              		.loc 1 131 31 discriminator 2 view .LVU4
+  45 0006 0278     		ldrb	r2, [r0]	@ zero_extendqisi2
+  46              		.loc 1 131 28 discriminator 2 view .LVU5
+  47 0008 12B9     		cbnz	r2, .L10
+  48              		.loc 1 131 59 discriminator 3 view .LVU6
+  49 000a 9FED130A 		vldr.32	s0, .L11
+  50              	.LVL1:
+  51              	.L1:
+ 132:Core/Src/gps_handler/gps_handler.c **** 
+ 133:Core/Src/gps_handler/gps_handler.c ****     float raw_value = atof(nmea_coord);
+ 134:Core/Src/gps_handler/gps_handler.c ****     int degrees = (int)(raw_value / 100.0f);
+ 135:Core/Src/gps_handler/gps_handler.c ****     float minutes = raw_value - (degrees * 100.0f);
+ 136:Core/Src/gps_handler/gps_handler.c ****     float decimal_degrees = degrees + (minutes / 60.0f);
+ 137:Core/Src/gps_handler/gps_handler.c **** 
+ 138:Core/Src/gps_handler/gps_handler.c ****     if (direction == 'S' || direction == 'W') decimal_degrees *= -1.0f;
+ 139:Core/Src/gps_handler/gps_handler.c **** 
+ 140:Core/Src/gps_handler/gps_handler.c ****     return decimal_degrees;
+ 141:Core/Src/gps_handler/gps_handler.c **** }
+  52              		.loc 1 141 1 view .LVU7
+  53 000e 10BD     		pop	{r4, pc}
+  54              	.LVL2:
+  55              	.L10:
+ 133:Core/Src/gps_handler/gps_handler.c ****     int degrees = (int)(raw_value / 100.0f);
+  56              		.loc 1 133 5 is_stmt 1 view .LVU8
+ 133:Core/Src/gps_handler/gps_handler.c ****     int degrees = (int)(raw_value / 100.0f);
+  57              		.loc 1 133 23 is_stmt 0 view .LVU9
+  58 0010 FFF7FEFF 		bl	atof
+  59              	.LVL3:
+ 133:Core/Src/gps_handler/gps_handler.c ****     int degrees = (int)(raw_value / 100.0f);
+  60              		.loc 1 133 23 view .LVU10
+  61 0014 51EC100B 		vmov	r0, r1, d0
+ 133:Core/Src/gps_handler/gps_handler.c ****     int degrees = (int)(raw_value / 100.0f);
+  62              		.loc 1 133 11 discriminator 1 view .LVU11
+  63 0018 FFF7FEFF 		bl	__aeabi_d2f
+  64              	.LVL4:
+  65 001c 07EE900A 		vmov	s15, r0
+  66              	.LVL5:
+ 134:Core/Src/gps_handler/gps_handler.c ****     float minutes = raw_value - (degrees * 100.0f);
+  67              		.loc 1 134 5 is_stmt 1 view .LVU12
+ 134:Core/Src/gps_handler/gps_handler.c ****     float minutes = raw_value - (degrees * 100.0f);
+  68              		.loc 1 134 35 is_stmt 0 view .LVU13
+  69 0020 9FED0E7A 		vldr.32	s14, .L11+4
+  70 0024 87EE870A 		vdiv.f32	s0, s15, s14
+ 134:Core/Src/gps_handler/gps_handler.c ****     float minutes = raw_value - (degrees * 100.0f);
+  71              		.loc 1 134 9 view .LVU14
+  72 0028 BDEEC00A 		vcvt.s32.f32	s0, s0
+  73              	.LVL6:
+ 135:Core/Src/gps_handler/gps_handler.c ****     float decimal_degrees = degrees + (minutes / 60.0f);
+  74              		.loc 1 135 5 is_stmt 1 view .LVU15
+ 135:Core/Src/gps_handler/gps_handler.c ****     float decimal_degrees = degrees + (minutes / 60.0f);
+  75              		.loc 1 135 42 is_stmt 0 view .LVU16
+  76 002c B8EEC00A 		vcvt.f32.s32	s0, s0
+  77              	.LVL7:
+ 135:Core/Src/gps_handler/gps_handler.c ****     float decimal_degrees = degrees + (minutes / 60.0f);
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 5
+
+
+  78              		.loc 1 135 42 view .LVU17
+  79 0030 20EE077A 		vmul.f32	s14, s0, s14
+  80              	.LVL8:
+ 135:Core/Src/gps_handler/gps_handler.c ****     float decimal_degrees = degrees + (minutes / 60.0f);
+  81              		.loc 1 135 11 view .LVU18
+  82 0034 77EEC77A 		vsub.f32	s15, s15, s14
+  83              	.LVL9:
+ 136:Core/Src/gps_handler/gps_handler.c **** 
+  84              		.loc 1 136 5 is_stmt 1 view .LVU19
+ 136:Core/Src/gps_handler/gps_handler.c **** 
+  85              		.loc 1 136 48 is_stmt 0 view .LVU20
+  86 0038 DFED096A 		vldr.32	s13, .L11+8
+  87 003c 87EEA67A 		vdiv.f32	s14, s15, s13
+ 136:Core/Src/gps_handler/gps_handler.c **** 
+  88              		.loc 1 136 11 view .LVU21
+  89 0040 30EE070A 		vadd.f32	s0, s0, s14
+  90              	.LVL10:
+ 138:Core/Src/gps_handler/gps_handler.c **** 
+  91              		.loc 1 138 5 is_stmt 1 view .LVU22
+ 138:Core/Src/gps_handler/gps_handler.c **** 
+  92              		.loc 1 138 8 is_stmt 0 view .LVU23
+  93 0044 532C     		cmp	r4, #83
+  94 0046 01D0     		beq	.L3
+ 138:Core/Src/gps_handler/gps_handler.c **** 
+  95              		.loc 1 138 26 discriminator 2 view .LVU24
+  96 0048 572C     		cmp	r4, #87
+  97 004a E0D1     		bne	.L1
+  98              	.L3:
+ 138:Core/Src/gps_handler/gps_handler.c **** 
+  99              		.loc 1 138 47 is_stmt 1 discriminator 3 view .LVU25
+ 138:Core/Src/gps_handler/gps_handler.c **** 
+ 100              		.loc 1 138 63 is_stmt 0 discriminator 3 view .LVU26
+ 101 004c B1EE400A 		vneg.f32	s0, s0
+ 102              	.LVL11:
+ 138:Core/Src/gps_handler/gps_handler.c **** 
+ 103              		.loc 1 138 63 discriminator 3 view .LVU27
+ 104 0050 DDE7     		b	.L1
+ 105              	.LVL12:
+ 106              	.L4:
+ 107              	.LCFI1:
+ 108              		.cfi_def_cfa_offset 0
+ 109              		.cfi_restore 4
+ 110              		.cfi_restore 14
+ 131:Core/Src/gps_handler/gps_handler.c **** 
+ 111              		.loc 1 131 59 discriminator 3 view .LVU28
+ 112 0052 9FED010A 		vldr.32	s0, .L11
+ 113              		.loc 1 141 1 view .LVU29
+ 114 0056 7047     		bx	lr
+ 115              	.L12:
+ 116              		.align	2
+ 117              	.L11:
+ 118 0058 00000000 		.word	0
+ 119 005c 0000C842 		.word	1120403456
+ 120 0060 00007042 		.word	1114636288
+ 121              		.cfi_endproc
+ 122              	.LFE142:
+ 124              		.section	.rodata.GPS_Parse_RMC_Sentence.str1.4,"aMS",%progbits,1
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 6
+
+
+ 125              		.align	2
+ 126              	.LC0:
+ 127 0000 2C00     		.ascii	",\000"
+ 128 0002 0000     		.align	2
+ 129              	.LC1:
+ 130 0004 25326868 		.ascii	"%2hhu%2hhu%2hhu\000"
+ 130      75253268 
+ 130      68752532 
+ 130      68687500 
+ 131              		.section	.text.GPS_Parse_RMC_Sentence,"ax",%progbits
+ 132              		.align	1
+ 133              		.syntax unified
+ 134              		.thumb
+ 135              		.thumb_func
+ 137              	GPS_Parse_RMC_Sentence:
+ 138              	.LVL13:
+ 139              	.LFB141:
+  94:Core/Src/gps_handler/gps_handler.c ****     char* tokens[15];
+ 140              		.loc 1 94 56 is_stmt 1 view -0
+ 141              		.cfi_startproc
+ 142              		@ args = 0, pretend = 0, frame = 192
+ 143              		@ frame_needed = 0, uses_anonymous_args = 0
+  94:Core/Src/gps_handler/gps_handler.c ****     char* tokens[15];
+ 144              		.loc 1 94 56 is_stmt 0 view .LVU31
+ 145 0000 30B5     		push	{r4, r5, lr}
+ 146              	.LCFI2:
+ 147              		.cfi_def_cfa_offset 12
+ 148              		.cfi_offset 4, -12
+ 149              		.cfi_offset 5, -8
+ 150              		.cfi_offset 14, -4
+ 151 0002 B3B0     		sub	sp, sp, #204
+ 152              	.LCFI3:
+ 153              		.cfi_def_cfa_offset 216
+ 154 0004 0146     		mov	r1, r0
+  95:Core/Src/gps_handler/gps_handler.c ****     int token_count = 0;
+ 155              		.loc 1 95 5 is_stmt 1 view .LVU32
+  96:Core/Src/gps_handler/gps_handler.c ****     char sentence_copy[NMEA_SENTENCE_BUFFER_SIZE];
+ 156              		.loc 1 96 5 view .LVU33
+ 157              	.LVL14:
+  97:Core/Src/gps_handler/gps_handler.c **** 
+ 158              		.loc 1 97 5 view .LVU34
+  99:Core/Src/gps_handler/gps_handler.c ****     sentence_copy[sizeof(sentence_copy) - 1] = '\0';
+ 159              		.loc 1 99 5 view .LVU35
+ 160 0006 7F22     		movs	r2, #127
+ 161 0008 03A8     		add	r0, sp, #12
+ 162              	.LVL15:
+  99:Core/Src/gps_handler/gps_handler.c ****     sentence_copy[sizeof(sentence_copy) - 1] = '\0';
+ 163              		.loc 1 99 5 is_stmt 0 view .LVU36
+ 164 000a FFF7FEFF 		bl	strncpy
+ 165              	.LVL16:
+ 100:Core/Src/gps_handler/gps_handler.c **** 
+ 166              		.loc 1 100 5 is_stmt 1 view .LVU37
+ 100:Core/Src/gps_handler/gps_handler.c **** 
+ 167              		.loc 1 100 46 is_stmt 0 view .LVU38
+ 168 000e 0024     		movs	r4, #0
+ 169 0010 8DF88B40 		strb	r4, [sp, #139]
+ 102:Core/Src/gps_handler/gps_handler.c ****     while (token != NULL && token_count < 15) {
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 7
+
+
+ 170              		.loc 1 102 5 is_stmt 1 view .LVU39
+ 102:Core/Src/gps_handler/gps_handler.c ****     while (token != NULL && token_count < 15) {
+ 171              		.loc 1 102 19 is_stmt 0 view .LVU40
+ 172 0014 3A49     		ldr	r1, .L32
+ 173 0016 03A8     		add	r0, sp, #12
+ 174 0018 FFF7FEFF 		bl	strtok
+ 175              	.LVL17:
+ 103:Core/Src/gps_handler/gps_handler.c ****         tokens[token_count++] = token;
+ 176              		.loc 1 103 5 is_stmt 1 view .LVU41
+ 103:Core/Src/gps_handler/gps_handler.c ****         tokens[token_count++] = token;
+ 177              		.loc 1 103 11 is_stmt 0 view .LVU42
+ 178 001c 0AE0     		b	.L14
+ 179              	.LVL18:
+ 180              	.L16:
+ 104:Core/Src/gps_handler/gps_handler.c ****         token = strtok(NULL, ",");
+ 181              		.loc 1 104 9 is_stmt 1 view .LVU43
+ 104:Core/Src/gps_handler/gps_handler.c ****         token = strtok(NULL, ",");
+ 182              		.loc 1 104 27 is_stmt 0 view .LVU44
+ 183 001e 651C     		adds	r5, r4, #1
+ 184              	.LVL19:
+ 104:Core/Src/gps_handler/gps_handler.c ****         token = strtok(NULL, ",");
+ 185              		.loc 1 104 31 view .LVU45
+ 186 0020 32AB     		add	r3, sp, #200
+ 187 0022 03EB8404 		add	r4, r3, r4, lsl #2
+ 188 0026 44F83C0C 		str	r0, [r4, #-60]
+ 105:Core/Src/gps_handler/gps_handler.c ****     }
+ 189              		.loc 1 105 9 is_stmt 1 view .LVU46
+ 105:Core/Src/gps_handler/gps_handler.c ****     }
+ 190              		.loc 1 105 17 is_stmt 0 view .LVU47
+ 191 002a 3549     		ldr	r1, .L32
+ 192 002c 0020     		movs	r0, #0
+ 193              	.LVL20:
+ 105:Core/Src/gps_handler/gps_handler.c ****     }
+ 194              		.loc 1 105 17 view .LVU48
+ 195 002e FFF7FEFF 		bl	strtok
+ 196              	.LVL21:
+ 104:Core/Src/gps_handler/gps_handler.c ****         token = strtok(NULL, ",");
+ 197              		.loc 1 104 27 view .LVU49
+ 198 0032 2C46     		mov	r4, r5
+ 199              	.LVL22:
+ 200              	.L14:
+ 103:Core/Src/gps_handler/gps_handler.c ****         tokens[token_count++] = token;
+ 201              		.loc 1 103 26 is_stmt 1 view .LVU50
+ 202 0034 08B1     		cbz	r0, .L15
+ 103:Core/Src/gps_handler/gps_handler.c ****         tokens[token_count++] = token;
+ 203              		.loc 1 103 26 is_stmt 0 discriminator 1 view .LVU51
+ 204 0036 0E2C     		cmp	r4, #14
+ 205 0038 F1DD     		ble	.L16
+ 206              	.L15:
+ 108:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.is_valid_fix = false;
+ 207              		.loc 1 108 5 is_stmt 1 view .LVU52
+ 108:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.is_valid_fix = false;
+ 208              		.loc 1 108 8 is_stmt 0 view .LVU53
+ 209 003a 082C     		cmp	r4, #8
+ 210 003c 0BDD     		ble	.L26
+ 113:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.is_valid_fix = true;
+ 211              		.loc 1 113 5 is_stmt 1 view .LVU54
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 8
+
+
+ 113:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.is_valid_fix = true;
+ 212              		.loc 1 113 22 is_stmt 0 view .LVU55
+ 213 003e 259B     		ldr	r3, [sp, #148]
+ 113:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.is_valid_fix = true;
+ 214              		.loc 1 113 27 view .LVU56
+ 215 0040 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 113:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.is_valid_fix = true;
+ 216              		.loc 1 113 8 view .LVU57
+ 217 0042 412B     		cmp	r3, #65
+ 218 0044 0BD0     		beq	.L27
+ 124:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.speed_knots = 0.0f;
+ 219              		.loc 1 124 9 is_stmt 1 view .LVU58
+ 124:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.speed_knots = 0.0f;
+ 220              		.loc 1 124 33 is_stmt 0 view .LVU59
+ 221 0046 2F4B     		ldr	r3, .L32+4
+ 222 0048 0022     		movs	r2, #0
+ 223 004a 1A75     		strb	r2, [r3, #20]
+ 125:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.speed_kmh = 0.0f;
+ 224              		.loc 1 125 9 is_stmt 1 view .LVU60
+ 125:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.speed_kmh = 0.0f;
+ 225              		.loc 1 125 32 is_stmt 0 view .LVU61
+ 226 004c 0022     		movs	r2, #0
+ 227 004e 9A60     		str	r2, [r3, #8]	@ float
+ 126:Core/Src/gps_handler/gps_handler.c ****     }
+ 228              		.loc 1 126 9 is_stmt 1 view .LVU62
+ 126:Core/Src/gps_handler/gps_handler.c ****     }
+ 229              		.loc 1 126 30 is_stmt 0 view .LVU63
+ 230 0050 DA60     		str	r2, [r3, #12]	@ float
+ 231              	.LVL23:
+ 232              	.L13:
+ 128:Core/Src/gps_handler/gps_handler.c **** 
+ 233              		.loc 1 128 1 view .LVU64
+ 234 0052 33B0     		add	sp, sp, #204
+ 235              	.LCFI4:
+ 236              		.cfi_remember_state
+ 237              		.cfi_def_cfa_offset 12
+ 238              		@ sp needed
+ 239 0054 30BD     		pop	{r4, r5, pc}
+ 240              	.LVL24:
+ 241              	.L26:
+ 242              	.LCFI5:
+ 243              		.cfi_restore_state
+ 109:Core/Src/gps_handler/gps_handler.c ****         return;
+ 244              		.loc 1 109 9 is_stmt 1 view .LVU65
+ 109:Core/Src/gps_handler/gps_handler.c ****         return;
+ 245              		.loc 1 109 33 is_stmt 0 view .LVU66
+ 246 0056 2B4B     		ldr	r3, .L32+4
+ 247 0058 0022     		movs	r2, #0
+ 248 005a 1A75     		strb	r2, [r3, #20]
+ 110:Core/Src/gps_handler/gps_handler.c ****     }
+ 249              		.loc 1 110 9 is_stmt 1 view .LVU67
+ 250 005c F9E7     		b	.L13
+ 251              	.L27:
+ 114:Core/Src/gps_handler/gps_handler.c **** 
+ 252              		.loc 1 114 9 view .LVU68
+ 114:Core/Src/gps_handler/gps_handler.c **** 
+ 253              		.loc 1 114 33 is_stmt 0 view .LVU69
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 9
+
+
+ 254 005e 294B     		ldr	r3, .L32+4
+ 255 0060 0122     		movs	r2, #1
+ 256 0062 1A75     		strb	r2, [r3, #20]
+ 116:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 4 && strlen(tokens[3]) > 0) s_gps_data.latitude_dd = nmea_to_decimal_degre
+ 257              		.loc 1 116 9 is_stmt 1 view .LVU70
+ 116:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 4 && strlen(tokens[3]) > 0) s_gps_data.latitude_dd = nmea_to_decimal_degre
+ 258              		.loc 1 116 25 is_stmt 0 view .LVU71
+ 259 0064 249D     		ldr	r5, [sp, #144]
+ 116:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 4 && strlen(tokens[3]) > 0) s_gps_data.latitude_dd = nmea_to_decimal_degre
+ 260              		.loc 1 116 12 view .LVU72
+ 261 0066 2846     		mov	r0, r5
+ 262              	.LVL25:
+ 116:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 4 && strlen(tokens[3]) > 0) s_gps_data.latitude_dd = nmea_to_decimal_degre
+ 263              		.loc 1 116 12 view .LVU73
+ 264 0068 FFF7FEFF 		bl	strlen
+ 265              	.LVL26:
+ 116:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 4 && strlen(tokens[3]) > 0) s_gps_data.latitude_dd = nmea_to_decimal_degre
+ 266              		.loc 1 116 11 discriminator 1 view .LVU74
+ 267 006c 0528     		cmp	r0, #5
+ 268 006e 24D8     		bhi	.L28
+ 269              	.L20:
+ 117:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 6 && strlen(tokens[5]) > 0) s_gps_data.longitude_dd = nmea_to_decimal_degr
+ 270              		.loc 1 117 9 is_stmt 1 view .LVU75
+ 117:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 6 && strlen(tokens[5]) > 0) s_gps_data.longitude_dd = nmea_to_decimal_degr
+ 271              		.loc 1 117 11 is_stmt 0 view .LVU76
+ 272 0070 042C     		cmp	r4, #4
+ 273 0072 07DD     		ble	.L21
+ 117:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 6 && strlen(tokens[5]) > 0) s_gps_data.longitude_dd = nmea_to_decimal_degr
+ 274              		.loc 1 117 44 discriminator 1 view .LVU77
+ 275 0074 2698     		ldr	r0, [sp, #152]
+ 117:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 6 && strlen(tokens[5]) > 0) s_gps_data.longitude_dd = nmea_to_decimal_degr
+ 276              		.loc 1 117 49 discriminator 1 view .LVU78
+ 277 0076 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 117:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 6 && strlen(tokens[5]) > 0) s_gps_data.longitude_dd = nmea_to_decimal_degr
+ 278              		.loc 1 117 28 discriminator 1 view .LVU79
+ 279 0078 43BB     		cbnz	r3, .L29
+ 280              	.L22:
+ 118:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 7 && strlen(tokens[7]) > 0) s_gps_data.speed_knots = atof(tokens[7]);
+ 281              		.loc 1 118 9 is_stmt 1 view .LVU80
+ 118:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 7 && strlen(tokens[7]) > 0) s_gps_data.speed_knots = atof(tokens[7]);
+ 282              		.loc 1 118 11 is_stmt 0 view .LVU81
+ 283 007a 062C     		cmp	r4, #6
+ 284 007c 07DD     		ble	.L23
+ 118:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 7 && strlen(tokens[7]) > 0) s_gps_data.speed_knots = atof(tokens[7]);
+ 285              		.loc 1 118 44 discriminator 1 view .LVU82
+ 286 007e 2898     		ldr	r0, [sp, #160]
+ 118:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 7 && strlen(tokens[7]) > 0) s_gps_data.speed_knots = atof(tokens[7]);
+ 287              		.loc 1 118 49 discriminator 1 view .LVU83
+ 288 0080 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 118:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 7 && strlen(tokens[7]) > 0) s_gps_data.speed_knots = atof(tokens[7]);
+ 289              		.loc 1 118 28 discriminator 1 view .LVU84
+ 290 0082 5BBB     		cbnz	r3, .L30
+ 291              	.L21:
+ 119:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.speed_kmh = s_gps_data.speed_knots * 1.852f;
+ 292              		.loc 1 119 9 is_stmt 1 view .LVU85
+ 119:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.speed_kmh = s_gps_data.speed_knots * 1.852f;
+ 293              		.loc 1 119 11 is_stmt 0 view .LVU86
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 10
+
+
+ 294 0084 072C     		cmp	r4, #7
+ 295 0086 02DD     		ble	.L23
+ 119:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.speed_kmh = s_gps_data.speed_knots * 1.852f;
+ 296              		.loc 1 119 44 discriminator 1 view .LVU87
+ 297 0088 2A98     		ldr	r0, [sp, #168]
+ 119:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.speed_kmh = s_gps_data.speed_knots * 1.852f;
+ 298              		.loc 1 119 49 discriminator 1 view .LVU88
+ 299 008a 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 119:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.speed_kmh = s_gps_data.speed_knots * 1.852f;
+ 300              		.loc 1 119 28 discriminator 1 view .LVU89
+ 301 008c 73BB     		cbnz	r3, .L31
+ 302              	.L23:
+ 120:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 8 && strlen(tokens[8]) > 0) s_gps_data.course_deg = atof(tokens[8]);
+ 303              		.loc 1 120 9 is_stmt 1 view .LVU90
+ 120:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 8 && strlen(tokens[8]) > 0) s_gps_data.course_deg = atof(tokens[8]);
+ 304              		.loc 1 120 42 is_stmt 0 view .LVU91
+ 305 008e 1D4B     		ldr	r3, .L32+4
+ 306 0090 D3ED027A 		vldr.32	s15, [r3, #8]
+ 120:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 8 && strlen(tokens[8]) > 0) s_gps_data.course_deg = atof(tokens[8]);
+ 307              		.loc 1 120 55 view .LVU92
+ 308 0094 9FED1C7A 		vldr.32	s14, .L32+8
+ 309 0098 67EE877A 		vmul.f32	s15, s15, s14
+ 120:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 8 && strlen(tokens[8]) > 0) s_gps_data.course_deg = atof(tokens[8]);
+ 310              		.loc 1 120 30 view .LVU93
+ 311 009c C3ED037A 		vstr.32	s15, [r3, #12]
+ 121:Core/Src/gps_handler/gps_handler.c **** 
+ 312              		.loc 1 121 9 is_stmt 1 view .LVU94
+ 121:Core/Src/gps_handler/gps_handler.c **** 
+ 313              		.loc 1 121 44 is_stmt 0 discriminator 1 view .LVU95
+ 314 00a0 2B98     		ldr	r0, [sp, #172]
+ 121:Core/Src/gps_handler/gps_handler.c **** 
+ 315              		.loc 1 121 49 discriminator 1 view .LVU96
+ 316 00a2 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 121:Core/Src/gps_handler/gps_handler.c **** 
+ 317              		.loc 1 121 28 discriminator 1 view .LVU97
+ 318 00a4 002B     		cmp	r3, #0
+ 319 00a6 D4D0     		beq	.L13
+ 121:Core/Src/gps_handler/gps_handler.c **** 
+ 320              		.loc 1 121 54 is_stmt 1 discriminator 2 view .LVU98
+ 121:Core/Src/gps_handler/gps_handler.c **** 
+ 321              		.loc 1 121 78 is_stmt 0 discriminator 2 view .LVU99
+ 322 00a8 FFF7FEFF 		bl	atof
+ 323              	.LVL27:
+ 324 00ac 51EC100B 		vmov	r0, r1, d0
+ 121:Core/Src/gps_handler/gps_handler.c **** 
+ 325              		.loc 1 121 78 discriminator 1 view .LVU100
+ 326 00b0 FFF7FEFF 		bl	__aeabi_d2f
+ 327              	.LVL28:
+ 121:Core/Src/gps_handler/gps_handler.c **** 
+ 328              		.loc 1 121 76 discriminator 1 view .LVU101
+ 329 00b4 134B     		ldr	r3, .L32+4
+ 330 00b6 1861     		str	r0, [r3, #16]	@ float
+ 331 00b8 CBE7     		b	.L13
+ 332              	.L28:
+ 116:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 4 && strlen(tokens[3]) > 0) s_gps_data.latitude_dd = nmea_to_decimal_degre
+ 333              		.loc 1 116 35 is_stmt 1 discriminator 1 view .LVU102
+ 334 00ba 144B     		ldr	r3, .L32+12
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 11
+
+
+ 335 00bc 5A1C     		adds	r2, r3, #1
+ 336 00be 0092     		str	r2, [sp]
+ 337 00c0 5A1E     		subs	r2, r3, #1
+ 338 00c2 1349     		ldr	r1, .L32+16
+ 339 00c4 2846     		mov	r0, r5
+ 340 00c6 FFF7FEFF 		bl	sscanf
+ 341              	.LVL29:
+ 342 00ca D1E7     		b	.L20
+ 343              	.L29:
+ 117:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 6 && strlen(tokens[5]) > 0) s_gps_data.longitude_dd = nmea_to_decimal_degr
+ 344              		.loc 1 117 54 discriminator 2 view .LVU103
+ 117:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 6 && strlen(tokens[5]) > 0) s_gps_data.longitude_dd = nmea_to_decimal_degr
+ 345              		.loc 1 117 79 is_stmt 0 discriminator 2 view .LVU104
+ 346 00cc 279B     		ldr	r3, [sp, #156]
+ 347 00ce 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 348 00d0 FFF7FEFF 		bl	nmea_to_decimal_degrees
+ 349              	.LVL30:
+ 117:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 6 && strlen(tokens[5]) > 0) s_gps_data.longitude_dd = nmea_to_decimal_degr
+ 350              		.loc 1 117 77 discriminator 1 view .LVU105
+ 351 00d4 0B4B     		ldr	r3, .L32+4
+ 352 00d6 83ED000A 		vstr.32	s0, [r3]
+ 353 00da CEE7     		b	.L22
+ 354              	.L30:
+ 118:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 7 && strlen(tokens[7]) > 0) s_gps_data.speed_knots = atof(tokens[7]);
+ 355              		.loc 1 118 54 is_stmt 1 discriminator 2 view .LVU106
+ 118:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 7 && strlen(tokens[7]) > 0) s_gps_data.speed_knots = atof(tokens[7]);
+ 356              		.loc 1 118 80 is_stmt 0 discriminator 2 view .LVU107
+ 357 00dc 299B     		ldr	r3, [sp, #164]
+ 358 00de 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 359 00e0 FFF7FEFF 		bl	nmea_to_decimal_degrees
+ 360              	.LVL31:
+ 118:Core/Src/gps_handler/gps_handler.c ****         if(token_count > 7 && strlen(tokens[7]) > 0) s_gps_data.speed_knots = atof(tokens[7]);
+ 361              		.loc 1 118 78 discriminator 1 view .LVU108
+ 362 00e4 074B     		ldr	r3, .L32+4
+ 363 00e6 83ED010A 		vstr.32	s0, [r3, #4]
+ 364 00ea CBE7     		b	.L21
+ 365              	.L31:
+ 119:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.speed_kmh = s_gps_data.speed_knots * 1.852f;
+ 366              		.loc 1 119 54 is_stmt 1 discriminator 2 view .LVU109
+ 119:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.speed_kmh = s_gps_data.speed_knots * 1.852f;
+ 367              		.loc 1 119 79 is_stmt 0 discriminator 2 view .LVU110
+ 368 00ec FFF7FEFF 		bl	atof
+ 369              	.LVL32:
+ 370 00f0 51EC100B 		vmov	r0, r1, d0
+ 119:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.speed_kmh = s_gps_data.speed_knots * 1.852f;
+ 371              		.loc 1 119 79 discriminator 1 view .LVU111
+ 372 00f4 FFF7FEFF 		bl	__aeabi_d2f
+ 373              	.LVL33:
+ 119:Core/Src/gps_handler/gps_handler.c ****         s_gps_data.speed_kmh = s_gps_data.speed_knots * 1.852f;
+ 374              		.loc 1 119 77 discriminator 1 view .LVU112
+ 375 00f8 024B     		ldr	r3, .L32+4
+ 376 00fa 9860     		str	r0, [r3, #8]	@ float
+ 377 00fc C7E7     		b	.L23
+ 378              	.L33:
+ 379 00fe 00BF     		.align	2
+ 380              	.L32:
+ 381 0100 00000000 		.word	.LC0
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 12
+
+
+ 382 0104 00000000 		.word	s_gps_data
+ 383 0108 560EED3F 		.word	1072500310
+ 384 010c 16000000 		.word	s_gps_data+22
+ 385 0110 04000000 		.word	.LC1
+ 386              		.cfi_endproc
+ 387              	.LFE141:
+ 389              		.section	.rodata.GPS_Init.str1.4,"aMS",%progbits,1
+ 390              		.align	2
+ 391              	.LC2:
+ 392 0000 4552524F 		.ascii	"ERROR: GPS DMA Reception Start FAILED!\015\012\000"
+ 392      523A2047 
+ 392      50532044 
+ 392      4D412052 
+ 392      65636570 
+ 393              		.section	.text.GPS_Init,"ax",%progbits
+ 394              		.align	1
+ 395              		.global	GPS_Init
+ 396              		.syntax unified
+ 397              		.thumb
+ 398              		.thumb_func
+ 400              	GPS_Init:
+ 401              	.LFB137:
+  27:Core/Src/gps_handler/gps_handler.c ****     MX_USART1_UART_Init();
+ 402              		.loc 1 27 21 is_stmt 1 view -0
+ 403              		.cfi_startproc
+ 404              		@ args = 0, pretend = 0, frame = 0
+ 405              		@ frame_needed = 0, uses_anonymous_args = 0
+ 406 0000 08B5     		push	{r3, lr}
+ 407              	.LCFI6:
+ 408              		.cfi_def_cfa_offset 8
+ 409              		.cfi_offset 3, -8
+ 410              		.cfi_offset 14, -4
+  28:Core/Src/gps_handler/gps_handler.c ****     HAL_NVIC_SetPriority(DMA2_Stream5_IRQn, 0, 0);
+ 411              		.loc 1 28 5 view .LVU114
+ 412 0002 FFF7FEFF 		bl	MX_USART1_UART_Init
+ 413              	.LVL34:
+  29:Core/Src/gps_handler/gps_handler.c ****     HAL_NVIC_EnableIRQ(DMA2_Stream5_IRQn);
+ 414              		.loc 1 29 5 view .LVU115
+ 415 0006 0022     		movs	r2, #0
+ 416 0008 1146     		mov	r1, r2
+ 417 000a 4420     		movs	r0, #68
+ 418 000c FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 419              	.LVL35:
+  30:Core/Src/gps_handler/gps_handler.c ****     
+ 420              		.loc 1 30 5 view .LVU116
+ 421 0010 4420     		movs	r0, #68
+ 422 0012 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 423              	.LVL36:
+  32:Core/Src/gps_handler/gps_handler.c ****     s_gps_data.is_valid_fix = false;
+ 424              		.loc 1 32 5 view .LVU117
+ 425 0016 0B4B     		ldr	r3, .L38
+ 426 0018 0022     		movs	r2, #0
+ 427 001a 1A60     		str	r2, [r3]
+ 428 001c 5A60     		str	r2, [r3, #4]
+ 429 001e 9A60     		str	r2, [r3, #8]
+ 430 0020 DA60     		str	r2, [r3, #12]
+ 431 0022 1A61     		str	r2, [r3, #16]
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 13
+
+
+ 432 0024 5A61     		str	r2, [r3, #20]
+  33:Core/Src/gps_handler/gps_handler.c ****     if (HAL_UART_Receive_DMA(&huart1, s_gps_dma_buffer, GPS_DMA_BUFFER_SIZE) != HAL_OK) {
+ 433              		.loc 1 33 5 view .LVU118
+  34:Core/Src/gps_handler/gps_handler.c ****         WriteUART_Blocking("ERROR: GPS DMA Reception Start FAILED!\r\n");
+ 434              		.loc 1 34 5 view .LVU119
+  34:Core/Src/gps_handler/gps_handler.c ****         WriteUART_Blocking("ERROR: GPS DMA Reception Start FAILED!\r\n");
+ 435              		.loc 1 34 9 is_stmt 0 view .LVU120
+ 436 0026 4FF40072 		mov	r2, #512
+ 437 002a 0749     		ldr	r1, .L38+4
+ 438 002c 0748     		ldr	r0, .L38+8
+ 439 002e FFF7FEFF 		bl	HAL_UART_Receive_DMA
+ 440              	.LVL37:
+  34:Core/Src/gps_handler/gps_handler.c ****         WriteUART_Blocking("ERROR: GPS DMA Reception Start FAILED!\r\n");
+ 441              		.loc 1 34 8 discriminator 1 view .LVU121
+ 442 0032 00B9     		cbnz	r0, .L37
+ 443              	.L34:
+  38:Core/Src/gps_handler/gps_handler.c **** 
+ 444              		.loc 1 38 1 view .LVU122
+ 445 0034 08BD     		pop	{r3, pc}
+ 446              	.L37:
+  35:Core/Src/gps_handler/gps_handler.c ****         Error_Handler();
+ 447              		.loc 1 35 9 is_stmt 1 view .LVU123
+ 448 0036 0648     		ldr	r0, .L38+12
+ 449 0038 FFF7FEFF 		bl	WriteUART_Blocking
+ 450              	.LVL38:
+  36:Core/Src/gps_handler/gps_handler.c ****     }
+ 451              		.loc 1 36 9 view .LVU124
+ 452 003c FFF7FEFF 		bl	Error_Handler
+ 453              	.LVL39:
+  38:Core/Src/gps_handler/gps_handler.c **** 
+ 454              		.loc 1 38 1 is_stmt 0 view .LVU125
+ 455 0040 F8E7     		b	.L34
+ 456              	.L39:
+ 457 0042 00BF     		.align	2
+ 458              	.L38:
+ 459 0044 00000000 		.word	s_gps_data
+ 460 0048 00000000 		.word	s_gps_dma_buffer
+ 461 004c 00000000 		.word	huart1
+ 462 0050 00000000 		.word	.LC2
+ 463              		.cfi_endproc
+ 464              	.LFE137:
+ 466              		.section	.rodata.GPS_Process_Buffer.str1.4,"aMS",%progbits,1
+ 467              		.align	2
+ 468              	.LC3:
+ 469 0000 524D4300 		.ascii	"RMC\000"
+ 470              		.section	.text.GPS_Process_Buffer,"ax",%progbits
+ 471              		.align	1
+ 472              		.global	GPS_Process_Buffer
+ 473              		.syntax unified
+ 474              		.thumb
+ 475              		.thumb_func
+ 477              	GPS_Process_Buffer:
+ 478              	.LFB138:
+  40:Core/Src/gps_handler/gps_handler.c ****     size_t current_dma_pos = GPS_DMA_BUFFER_SIZE - __HAL_DMA_GET_COUNTER(huart1.hdmarx);
+ 479              		.loc 1 40 31 is_stmt 1 view -0
+ 480              		.cfi_startproc
+ 481              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 14
+
+
+ 482              		@ frame_needed = 0, uses_anonymous_args = 0
+ 483 0000 38B5     		push	{r3, r4, r5, lr}
+ 484              	.LCFI7:
+ 485              		.cfi_def_cfa_offset 16
+ 486              		.cfi_offset 3, -16
+ 487              		.cfi_offset 4, -12
+ 488              		.cfi_offset 5, -8
+ 489              		.cfi_offset 14, -4
+  41:Core/Src/gps_handler/gps_handler.c ****     static char nmea_sentence_buffer[NMEA_SENTENCE_BUFFER_SIZE];
+ 490              		.loc 1 41 5 view .LVU127
+  41:Core/Src/gps_handler/gps_handler.c ****     static char nmea_sentence_buffer[NMEA_SENTENCE_BUFFER_SIZE];
+ 491              		.loc 1 41 52 is_stmt 0 view .LVU128
+ 492 0002 224B     		ldr	r3, .L51
+ 493 0004 DB6B     		ldr	r3, [r3, #60]
+ 494 0006 1B68     		ldr	r3, [r3]
+ 495 0008 5D68     		ldr	r5, [r3, #4]
+  41:Core/Src/gps_handler/gps_handler.c ****     static char nmea_sentence_buffer[NMEA_SENTENCE_BUFFER_SIZE];
+ 496              		.loc 1 41 12 view .LVU129
+ 497 000a C5F50075 		rsb	r5, r5, #512
+ 498              	.LVL40:
+  42:Core/Src/gps_handler/gps_handler.c ****     static uint8_t nmea_pos = 0;
+ 499              		.loc 1 42 5 is_stmt 1 view .LVU130
+  43:Core/Src/gps_handler/gps_handler.c ****     static bool seen_dollar = false;
+ 500              		.loc 1 43 5 view .LVU131
+  44:Core/Src/gps_handler/gps_handler.c **** 
+ 501              		.loc 1 44 5 view .LVU132
+  46:Core/Src/gps_handler/gps_handler.c ****         char received_char = s_gps_dma_buffer[old_dma_pos];
+ 502              		.loc 1 46 5 view .LVU133
+  46:Core/Src/gps_handler/gps_handler.c ****         char received_char = s_gps_dma_buffer[old_dma_pos];
+ 503              		.loc 1 46 11 is_stmt 0 view .LVU134
+ 504 000e 12E0     		b	.L41
+ 505              	.LVL41:
+ 506              	.L50:
+ 507              	.LBB2:
+  50:Core/Src/gps_handler/gps_handler.c ****             memset(nmea_sentence_buffer, 0, sizeof(nmea_sentence_buffer));
+ 508              		.loc 1 50 13 is_stmt 1 view .LVU135
+  50:Core/Src/gps_handler/gps_handler.c ****             memset(nmea_sentence_buffer, 0, sizeof(nmea_sentence_buffer));
+ 509              		.loc 1 50 22 is_stmt 0 view .LVU136
+ 510 0010 0021     		movs	r1, #0
+ 511 0012 1F4B     		ldr	r3, .L51+4
+ 512 0014 1970     		strb	r1, [r3]
+  51:Core/Src/gps_handler/gps_handler.c ****             seen_dollar = true;
+ 513              		.loc 1 51 13 is_stmt 1 view .LVU137
+ 514 0016 8022     		movs	r2, #128
+ 515 0018 1E48     		ldr	r0, .L51+8
+ 516 001a FFF7FEFF 		bl	memset
+ 517              	.LVL42:
+  52:Core/Src/gps_handler/gps_handler.c ****         }
+ 518              		.loc 1 52 13 view .LVU138
+  52:Core/Src/gps_handler/gps_handler.c ****         }
+ 519              		.loc 1 52 25 is_stmt 0 view .LVU139
+ 520 001e 1E4B     		ldr	r3, .L51+12
+ 521 0020 0122     		movs	r2, #1
+ 522 0022 1A70     		strb	r2, [r3]
+ 523 0024 0FE0     		b	.L42
+ 524              	.L43:
+  59:Core/Src/gps_handler/gps_handler.c ****             nmea_sentence_buffer[nmea_pos] = '\0';
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 15
+
+
+ 525              		.loc 1 59 9 is_stmt 1 view .LVU140
+  59:Core/Src/gps_handler/gps_handler.c ****             nmea_sentence_buffer[nmea_pos] = '\0';
+ 526              		.loc 1 59 12 is_stmt 0 view .LVU141
+ 527 0026 0A2C     		cmp	r4, #10
+ 528 0028 1BD0     		beq	.L48
+ 529              	.L44:
+  68:Core/Src/gps_handler/gps_handler.c ****     }
+ 530              		.loc 1 68 9 is_stmt 1 view .LVU142
+  68:Core/Src/gps_handler/gps_handler.c ****     }
+ 531              		.loc 1 68 36 is_stmt 0 view .LVU143
+ 532 002a 1C4A     		ldr	r2, .L51+16
+ 533 002c 1368     		ldr	r3, [r2]
+ 534 002e 0133     		adds	r3, r3, #1
+  68:Core/Src/gps_handler/gps_handler.c ****     }
+ 535              		.loc 1 68 41 view .LVU144
+ 536 0030 C3F30803 		ubfx	r3, r3, #0, #9
+  68:Core/Src/gps_handler/gps_handler.c ****     }
+ 537              		.loc 1 68 21 view .LVU145
+ 538 0034 1360     		str	r3, [r2]
+ 539              	.LVL43:
+ 540              	.L41:
+  68:Core/Src/gps_handler/gps_handler.c ****     }
+ 541              		.loc 1 68 21 view .LVU146
+ 542              	.LBE2:
+  46:Core/Src/gps_handler/gps_handler.c ****         char received_char = s_gps_dma_buffer[old_dma_pos];
+ 543              		.loc 1 46 24 is_stmt 1 view .LVU147
+ 544 0036 194B     		ldr	r3, .L51+16
+ 545 0038 1B68     		ldr	r3, [r3]
+ 546 003a AB42     		cmp	r3, r5
+ 547 003c 25D0     		beq	.L49
+ 548              	.LBB3:
+  47:Core/Src/gps_handler/gps_handler.c **** 
+ 549              		.loc 1 47 9 view .LVU148
+  47:Core/Src/gps_handler/gps_handler.c **** 
+ 550              		.loc 1 47 14 is_stmt 0 view .LVU149
+ 551 003e 184A     		ldr	r2, .L51+20
+ 552 0040 D45C     		ldrb	r4, [r2, r3]	@ zero_extendqisi2
+ 553              	.LVL44:
+  49:Core/Src/gps_handler/gps_handler.c ****             nmea_pos = 0;
+ 554              		.loc 1 49 9 is_stmt 1 view .LVU150
+  49:Core/Src/gps_handler/gps_handler.c ****             nmea_pos = 0;
+ 555              		.loc 1 49 12 is_stmt 0 view .LVU151
+ 556 0042 242C     		cmp	r4, #36
+ 557 0044 E4D0     		beq	.L50
+ 558              	.L42:
+  55:Core/Src/gps_handler/gps_handler.c ****             nmea_sentence_buffer[nmea_pos++] = received_char;
+ 559              		.loc 1 55 9 is_stmt 1 view .LVU152
+  55:Core/Src/gps_handler/gps_handler.c ****             nmea_sentence_buffer[nmea_pos++] = received_char;
+ 560              		.loc 1 55 13 is_stmt 0 view .LVU153
+ 561 0046 144B     		ldr	r3, .L51+12
+ 562 0048 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  55:Core/Src/gps_handler/gps_handler.c ****             nmea_sentence_buffer[nmea_pos++] = received_char;
+ 563              		.loc 1 55 12 view .LVU154
+ 564 004a 002B     		cmp	r3, #0
+ 565 004c EBD0     		beq	.L43
+  55:Core/Src/gps_handler/gps_handler.c ****             nmea_sentence_buffer[nmea_pos++] = received_char;
+ 566              		.loc 1 55 37 discriminator 1 view .LVU155
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 16
+
+
+ 567 004e 104A     		ldr	r2, .L51+4
+ 568 0050 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+  55:Core/Src/gps_handler/gps_handler.c ****             nmea_sentence_buffer[nmea_pos++] = received_char;
+ 569              		.loc 1 55 25 discriminator 1 view .LVU156
+ 570 0052 7E2A     		cmp	r2, #126
+ 571 0054 E7D8     		bhi	.L43
+  56:Core/Src/gps_handler/gps_handler.c ****         }
+ 572              		.loc 1 56 13 is_stmt 1 view .LVU157
+  56:Core/Src/gps_handler/gps_handler.c ****         }
+ 573              		.loc 1 56 42 is_stmt 0 view .LVU158
+ 574 0056 501C     		adds	r0, r2, #1
+ 575 0058 0D49     		ldr	r1, .L51+4
+ 576 005a 0870     		strb	r0, [r1]
+  56:Core/Src/gps_handler/gps_handler.c ****         }
+ 577              		.loc 1 56 46 view .LVU159
+ 578 005c 0D49     		ldr	r1, .L51+8
+ 579 005e 8C54     		strb	r4, [r1, r2]
+ 580 0060 E1E7     		b	.L43
+ 581              	.L48:
+  59:Core/Src/gps_handler/gps_handler.c ****             nmea_sentence_buffer[nmea_pos] = '\0';
+ 582              		.loc 1 59 35 discriminator 1 view .LVU160
+ 583 0062 002B     		cmp	r3, #0
+ 584 0064 E1D0     		beq	.L44
+  60:Core/Src/gps_handler/gps_handler.c ****             seen_dollar = false;
+ 585              		.loc 1 60 13 is_stmt 1 view .LVU161
+  60:Core/Src/gps_handler/gps_handler.c ****             seen_dollar = false;
+ 586              		.loc 1 60 33 is_stmt 0 view .LVU162
+ 587 0066 0A4B     		ldr	r3, .L51+4
+ 588 0068 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+  60:Core/Src/gps_handler/gps_handler.c ****             seen_dollar = false;
+ 589              		.loc 1 60 44 view .LVU163
+ 590 006a 0A48     		ldr	r0, .L51+8
+ 591 006c 0023     		movs	r3, #0
+ 592 006e 8354     		strb	r3, [r0, r2]
+  61:Core/Src/gps_handler/gps_handler.c ****             if (strstr(nmea_sentence_buffer, "RMC") != NULL) {
+ 593              		.loc 1 61 13 is_stmt 1 view .LVU164
+  61:Core/Src/gps_handler/gps_handler.c ****             if (strstr(nmea_sentence_buffer, "RMC") != NULL) {
+ 594              		.loc 1 61 25 is_stmt 0 view .LVU165
+ 595 0070 094A     		ldr	r2, .L51+12
+ 596 0072 1370     		strb	r3, [r2]
+  62:Core/Src/gps_handler/gps_handler.c ****                 GPS_Parse_RMC_Sentence(nmea_sentence_buffer);
+ 597              		.loc 1 62 13 is_stmt 1 view .LVU166
+  62:Core/Src/gps_handler/gps_handler.c ****                 GPS_Parse_RMC_Sentence(nmea_sentence_buffer);
+ 598              		.loc 1 62 17 is_stmt 0 view .LVU167
+ 599 0074 0B49     		ldr	r1, .L51+24
+ 600 0076 FFF7FEFF 		bl	strstr
+ 601              	.LVL45:
+  62:Core/Src/gps_handler/gps_handler.c ****                 GPS_Parse_RMC_Sentence(nmea_sentence_buffer);
+ 602              		.loc 1 62 16 discriminator 1 view .LVU168
+ 603 007a 10B1     		cbz	r0, .L45
+  63:Core/Src/gps_handler/gps_handler.c ****             }
+ 604              		.loc 1 63 17 is_stmt 1 view .LVU169
+ 605 007c 0548     		ldr	r0, .L51+8
+ 606 007e FFF7FEFF 		bl	GPS_Parse_RMC_Sentence
+ 607              	.LVL46:
+ 608              	.L45:
+  65:Core/Src/gps_handler/gps_handler.c ****         }
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 17
+
+
+ 609              		.loc 1 65 13 view .LVU170
+  65:Core/Src/gps_handler/gps_handler.c ****         }
+ 610              		.loc 1 65 22 is_stmt 0 view .LVU171
+ 611 0082 034B     		ldr	r3, .L51+4
+ 612 0084 0022     		movs	r2, #0
+ 613 0086 1A70     		strb	r2, [r3]
+ 614 0088 CFE7     		b	.L44
+ 615              	.LVL47:
+ 616              	.L49:
+  65:Core/Src/gps_handler/gps_handler.c ****         }
+ 617              		.loc 1 65 22 view .LVU172
+ 618              	.LBE3:
+  70:Core/Src/gps_handler/gps_handler.c **** 
+ 619              		.loc 1 70 1 view .LVU173
+ 620 008a 38BD     		pop	{r3, r4, r5, pc}
+ 621              	.LVL48:
+ 622              	.L52:
+  70:Core/Src/gps_handler/gps_handler.c **** 
+ 623              		.loc 1 70 1 view .LVU174
+ 624              		.align	2
+ 625              	.L51:
+ 626 008c 00000000 		.word	huart1
+ 627 0090 00000000 		.word	nmea_pos.2
+ 628 0094 00000000 		.word	nmea_sentence_buffer.1
+ 629 0098 00000000 		.word	seen_dollar.0
+ 630 009c 00000000 		.word	old_dma_pos
+ 631 00a0 00000000 		.word	s_gps_dma_buffer
+ 632 00a4 00000000 		.word	.LC3
+ 633              		.cfi_endproc
+ 634              	.LFE138:
+ 636              		.section	.text.GPS_Get_Latest_Data,"ax",%progbits
+ 637              		.align	1
+ 638              		.global	GPS_Get_Latest_Data
+ 639              		.syntax unified
+ 640              		.thumb
+ 641              		.thumb_func
+ 643              	GPS_Get_Latest_Data:
+ 644              	.LVL49:
+ 645              	.LFB139:
+  72:Core/Src/gps_handler/gps_handler.c ****     if (gps_data_out != NULL) {
+ 646              		.loc 1 72 52 is_stmt 1 view -0
+ 647              		.cfi_startproc
+ 648              		@ args = 0, pretend = 0, frame = 0
+ 649              		@ frame_needed = 0, uses_anonymous_args = 0
+ 650              		@ link register save eliminated.
+  73:Core/Src/gps_handler/gps_handler.c ****         *gps_data_out = s_gps_data;
+ 651              		.loc 1 73 5 view .LVU176
+  73:Core/Src/gps_handler/gps_handler.c ****         *gps_data_out = s_gps_data;
+ 652              		.loc 1 73 8 is_stmt 0 view .LVU177
+ 653 0000 70B1     		cbz	r0, .L56
+  72:Core/Src/gps_handler/gps_handler.c ****     if (gps_data_out != NULL) {
+ 654              		.loc 1 72 52 view .LVU178
+ 655 0002 10B4     		push	{r4}
+ 656              	.LCFI8:
+ 657              		.cfi_def_cfa_offset 4
+ 658              		.cfi_offset 4, -4
+ 659 0004 8446     		mov	ip, r0
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 18
+
+
+  74:Core/Src/gps_handler/gps_handler.c ****     }
+ 660              		.loc 1 74 9 is_stmt 1 view .LVU179
+  74:Core/Src/gps_handler/gps_handler.c ****     }
+ 661              		.loc 1 74 23 is_stmt 0 view .LVU180
+ 662 0006 084C     		ldr	r4, .L59
+ 663 0008 0FCC     		ldmia	r4!, {r0, r1, r2, r3}
+ 664              	.LVL50:
+  74:Core/Src/gps_handler/gps_handler.c ****     }
+ 665              		.loc 1 74 23 view .LVU181
+ 666 000a ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
+ 667              	.LVL51:
+  74:Core/Src/gps_handler/gps_handler.c ****     }
+ 668              		.loc 1 74 23 view .LVU182
+ 669 000e 94E80300 		ldm	r4, {r0, r1}
+ 670 0012 8CE80300 		stm	ip, {r0, r1}
+  76:Core/Src/gps_handler/gps_handler.c **** }
+ 671              		.loc 1 76 5 is_stmt 1 view .LVU183
+  77:Core/Src/gps_handler/gps_handler.c **** 
+ 672              		.loc 1 77 1 is_stmt 0 view .LVU184
+ 673 0016 044B     		ldr	r3, .L59
+ 674 0018 187D     		ldrb	r0, [r3, #20]	@ zero_extendqisi2
+ 675 001a 5DF8044B 		ldr	r4, [sp], #4
+ 676              	.LCFI9:
+ 677              		.cfi_restore 4
+ 678              		.cfi_def_cfa_offset 0
+ 679 001e 7047     		bx	lr
+ 680              	.LVL52:
+ 681              	.L56:
+  76:Core/Src/gps_handler/gps_handler.c **** }
+ 682              		.loc 1 76 5 is_stmt 1 view .LVU185
+  77:Core/Src/gps_handler/gps_handler.c **** 
+ 683              		.loc 1 77 1 is_stmt 0 view .LVU186
+ 684 0020 014B     		ldr	r3, .L59
+ 685 0022 187D     		ldrb	r0, [r3, #20]	@ zero_extendqisi2
+ 686              	.LVL53:
+  77:Core/Src/gps_handler/gps_handler.c **** 
+ 687              		.loc 1 77 1 view .LVU187
+ 688 0024 7047     		bx	lr
+ 689              	.L60:
+ 690 0026 00BF     		.align	2
+ 691              	.L59:
+ 692 0028 00000000 		.word	s_gps_data
+ 693              		.cfi_endproc
+ 694              	.LFE139:
+ 696              		.section	.rodata.Log_Latest_GPS_Data.str1.4,"aMS",%progbits,1
+ 697              		.align	2
+ 698              	.LC4:
+ 699 0000 47505320 		.ascii	"GPS DATA, Speed: %.2f kmh, Fix: Valid, Lat: %.4f, L"
+ 699      44415441 
+ 699      2C205370 
+ 699      6565643A 
+ 699      20252E32 
+ 700 0033 6F6E3A20 		.ascii	"on: %.4f\015\012\000"
+ 700      252E3466 
+ 700      0D0A00
+ 701              		.global	__aeabi_f2d
+ 702 003e 0000     		.align	2
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 19
+
+
+ 703              	.LC5:
+ 704 0040 47505320 		.ascii	"GPS DATA, Fix: Invalid\015\012\000"
+ 704      44415441 
+ 704      2C204669 
+ 704      783A2049 
+ 704      6E76616C 
+ 705              		.section	.text.Log_Latest_GPS_Data,"ax",%progbits
+ 706              		.align	1
+ 707              		.global	Log_Latest_GPS_Data
+ 708              		.syntax unified
+ 709              		.thumb
+ 710              		.thumb_func
+ 712              	Log_Latest_GPS_Data:
+ 713              	.LFB140:
+  79:Core/Src/gps_handler/gps_handler.c ****     GPS_Data_t gps_data;
+ 714              		.loc 1 79 32 is_stmt 1 view -0
+ 715              		.cfi_startproc
+ 716              		@ args = 0, pretend = 0, frame = 152
+ 717              		@ frame_needed = 0, uses_anonymous_args = 0
+ 718 0000 00B5     		push	{lr}
+ 719              	.LCFI10:
+ 720              		.cfi_def_cfa_offset 4
+ 721              		.cfi_offset 14, -4
+ 722 0002 ADB0     		sub	sp, sp, #180
+ 723              	.LCFI11:
+ 724              		.cfi_def_cfa_offset 184
+  80:Core/Src/gps_handler/gps_handler.c ****     if (GPS_Get_Latest_Data(&gps_data)) {
+ 725              		.loc 1 80 5 view .LVU189
+  81:Core/Src/gps_handler/gps_handler.c ****         char log_buffer[128];
+ 726              		.loc 1 81 5 view .LVU190
+  81:Core/Src/gps_handler/gps_handler.c ****         char log_buffer[128];
+ 727              		.loc 1 81 9 is_stmt 0 view .LVU191
+ 728 0004 26A8     		add	r0, sp, #152
+ 729 0006 FFF7FEFF 		bl	GPS_Get_Latest_Data
+ 730              	.LVL54:
+  81:Core/Src/gps_handler/gps_handler.c ****         char log_buffer[128];
+ 731              		.loc 1 81 8 discriminator 1 view .LVU192
+ 732 000a C8B1     		cbz	r0, .L62
+ 733              	.LBB4:
+  82:Core/Src/gps_handler/gps_handler.c ****         snprintf(log_buffer, sizeof(log_buffer),
+ 734              		.loc 1 82 9 is_stmt 1 view .LVU193
+  83:Core/Src/gps_handler/gps_handler.c ****                  "GPS DATA, Speed: %.2f kmh, Fix: Valid, Lat: %.4f, Lon: %.4f\r\n",
+ 735              		.loc 1 83 9 view .LVU194
+ 736 000c 2798     		ldr	r0, [sp, #156]	@ float
+ 737 000e FFF7FEFF 		bl	__aeabi_f2d
+ 738              	.LVL55:
+ 739 0012 CDE90401 		strd	r0, [sp, #16]
+ 740 0016 2698     		ldr	r0, [sp, #152]	@ float
+ 741 0018 FFF7FEFF 		bl	__aeabi_f2d
+ 742              	.LVL56:
+ 743 001c CDE90201 		strd	r0, [sp, #8]
+ 744 0020 2998     		ldr	r0, [sp, #164]	@ float
+ 745 0022 FFF7FEFF 		bl	__aeabi_f2d
+ 746              	.LVL57:
+ 747 0026 CDE90001 		strd	r0, [sp]
+ 748 002a 074A     		ldr	r2, .L65
+ 749 002c 8021     		movs	r1, #128
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 20
+
+
+ 750 002e 06A8     		add	r0, sp, #24
+ 751 0030 FFF7FEFF 		bl	snprintf
+ 752              	.LVL58:
+  86:Core/Src/gps_handler/gps_handler.c ****     } 
+ 753              		.loc 1 86 9 view .LVU195
+ 754 0034 06A8     		add	r0, sp, #24
+ 755 0036 FFF7FEFF 		bl	WriteUART_Blocking
+ 756              	.LVL59:
+ 757              	.L61:
+ 758              	.LBE4:
+  92:Core/Src/gps_handler/gps_handler.c **** 
+ 759              		.loc 1 92 1 is_stmt 0 view .LVU196
+ 760 003a 2DB0     		add	sp, sp, #180
+ 761              	.LCFI12:
+ 762              		.cfi_remember_state
+ 763              		.cfi_def_cfa_offset 4
+ 764              		@ sp needed
+ 765 003c 5DF804FB 		ldr	pc, [sp], #4
+ 766              	.L62:
+ 767              	.LCFI13:
+ 768              		.cfi_restore_state
+  90:Core/Src/gps_handler/gps_handler.c ****     }
+ 769              		.loc 1 90 9 is_stmt 1 view .LVU197
+ 770 0040 0248     		ldr	r0, .L65+4
+ 771 0042 FFF7FEFF 		bl	WriteUART_Blocking
+ 772              	.LVL60:
+  92:Core/Src/gps_handler/gps_handler.c **** 
+ 773              		.loc 1 92 1 is_stmt 0 view .LVU198
+ 774 0046 F8E7     		b	.L61
+ 775              	.L66:
+ 776              		.align	2
+ 777              	.L65:
+ 778 0048 00000000 		.word	.LC4
+ 779 004c 40000000 		.word	.LC5
+ 780              		.cfi_endproc
+ 781              	.LFE140:
+ 783              		.section	.text.HAL_UART_RxCpltCallback,"ax",%progbits
+ 784              		.align	1
+ 785              		.global	HAL_UART_RxCpltCallback
+ 786              		.syntax unified
+ 787              		.thumb
+ 788              		.thumb_func
+ 790              	HAL_UART_RxCpltCallback:
+ 791              	.LVL61:
+ 792              	.LFB143:
+ 142:Core/Src/gps_handler/gps_handler.c **** 
+ 143:Core/Src/gps_handler/gps_handler.c **** void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+ 793              		.loc 1 143 57 is_stmt 1 view -0
+ 794              		.cfi_startproc
+ 795              		@ args = 0, pretend = 0, frame = 0
+ 796              		@ frame_needed = 0, uses_anonymous_args = 0
+ 797              		@ link register save eliminated.
+ 144:Core/Src/gps_handler/gps_handler.c ****     if (huart->Instance == USART1) {
+ 798              		.loc 1 144 5 view .LVU200
+ 799              		.loc 1 144 14 is_stmt 0 view .LVU201
+ 800 0000 0268     		ldr	r2, [r0]
+ 801              		.loc 1 144 8 view .LVU202
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 21
+
+
+ 802 0002 044B     		ldr	r3, .L70
+ 803 0004 9A42     		cmp	r2, r3
+ 804 0006 00D0     		beq	.L69
+ 805              	.L67:
+ 145:Core/Src/gps_handler/gps_handler.c ****         gps_data_ready_flag = true;
+ 146:Core/Src/gps_handler/gps_handler.c ****     }
+ 147:Core/Src/gps_handler/gps_handler.c **** }
+ 806              		.loc 1 147 1 view .LVU203
+ 807 0008 7047     		bx	lr
+ 808              	.L69:
+ 145:Core/Src/gps_handler/gps_handler.c ****         gps_data_ready_flag = true;
+ 809              		.loc 1 145 9 is_stmt 1 view .LVU204
+ 145:Core/Src/gps_handler/gps_handler.c ****         gps_data_ready_flag = true;
+ 810              		.loc 1 145 29 is_stmt 0 view .LVU205
+ 811 000a 034B     		ldr	r3, .L70+4
+ 812 000c 0122     		movs	r2, #1
+ 813 000e 1A70     		strb	r2, [r3]
+ 814              		.loc 1 147 1 view .LVU206
+ 815 0010 FAE7     		b	.L67
+ 816              	.L71:
+ 817 0012 00BF     		.align	2
+ 818              	.L70:
+ 819 0014 00100140 		.word	1073811456
+ 820 0018 00000000 		.word	gps_data_ready_flag
+ 821              		.cfi_endproc
+ 822              	.LFE143:
+ 824              		.section	.text.HAL_UART_RxHalfCpltCallback,"ax",%progbits
+ 825              		.align	1
+ 826              		.global	HAL_UART_RxHalfCpltCallback
+ 827              		.syntax unified
+ 828              		.thumb
+ 829              		.thumb_func
+ 831              	HAL_UART_RxHalfCpltCallback:
+ 832              	.LVL62:
+ 833              	.LFB144:
+ 148:Core/Src/gps_handler/gps_handler.c **** 
+ 149:Core/Src/gps_handler/gps_handler.c **** void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart) {
+ 834              		.loc 1 149 61 is_stmt 1 view -0
+ 835              		.cfi_startproc
+ 836              		@ args = 0, pretend = 0, frame = 0
+ 837              		@ frame_needed = 0, uses_anonymous_args = 0
+ 838              		@ link register save eliminated.
+ 150:Core/Src/gps_handler/gps_handler.c ****     if (huart->Instance == USART1) {
+ 839              		.loc 1 150 5 view .LVU208
+ 840              		.loc 1 150 14 is_stmt 0 view .LVU209
+ 841 0000 0268     		ldr	r2, [r0]
+ 842              		.loc 1 150 8 view .LVU210
+ 843 0002 044B     		ldr	r3, .L75
+ 844 0004 9A42     		cmp	r2, r3
+ 845 0006 00D0     		beq	.L74
+ 846              	.L72:
+ 151:Core/Src/gps_handler/gps_handler.c ****         gps_data_ready_flag = true;
+ 152:Core/Src/gps_handler/gps_handler.c ****     }
+ 153:Core/Src/gps_handler/gps_handler.c **** }...
+ 847              		.loc 1 153 1 view .LVU211
+ 848 0008 7047     		bx	lr
+ 849              	.L74:
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 22
+
+
+ 151:Core/Src/gps_handler/gps_handler.c ****         gps_data_ready_flag = true;
+ 850              		.loc 1 151 9 is_stmt 1 view .LVU212
+ 151:Core/Src/gps_handler/gps_handler.c ****         gps_data_ready_flag = true;
+ 851              		.loc 1 151 29 is_stmt 0 view .LVU213
+ 852 000a 034B     		ldr	r3, .L75+4
+ 853 000c 0122     		movs	r2, #1
+ 854 000e 1A70     		strb	r2, [r3]
+ 855              		.loc 1 153 1 view .LVU214
+ 856 0010 FAE7     		b	.L72
+ 857              	.L76:
+ 858 0012 00BF     		.align	2
+ 859              	.L75:
+ 860 0014 00100140 		.word	1073811456
+ 861 0018 00000000 		.word	gps_data_ready_flag
+ 862              		.cfi_endproc
+ 863              	.LFE144:
+ 865              		.section	.bss.seen_dollar.0,"aw",%nobits
+ 868              	seen_dollar.0:
+ 869 0000 00       		.space	1
+ 870              		.section	.bss.nmea_sentence_buffer.1,"aw",%nobits
+ 871              		.align	2
+ 874              	nmea_sentence_buffer.1:
+ 875 0000 00000000 		.space	128
+ 875      00000000 
+ 875      00000000 
+ 875      00000000 
+ 875      00000000 
+ 876              		.section	.bss.nmea_pos.2,"aw",%nobits
+ 879              	nmea_pos.2:
+ 880 0000 00       		.space	1
+ 881              		.global	gps_data_ready_flag
+ 882              		.section	.bss.gps_data_ready_flag,"aw",%nobits
+ 885              	gps_data_ready_flag:
+ 886 0000 00       		.space	1
+ 887              		.section	.bss.old_dma_pos,"aw",%nobits
+ 888              		.align	2
+ 891              	old_dma_pos:
+ 892 0000 00000000 		.space	4
+ 893              		.section	.bss.s_gps_dma_buffer,"aw",%nobits
+ 894              		.align	2
+ 897              	s_gps_dma_buffer:
+ 898 0000 00000000 		.space	512
+ 898      00000000 
+ 898      00000000 
+ 898      00000000 
+ 898      00000000 
+ 899              		.section	.bss.s_gps_data,"aw",%nobits
+ 900              		.align	2
+ 903              	s_gps_data:
+ 904 0000 00000000 		.space	24
+ 904      00000000 
+ 904      00000000 
+ 904      00000000 
+ 904      00000000 
+ 905              		.text
+ 906              	.Letext0:
+ 907              		.file 2 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 23
+
+
+ 908              		.file 3 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 909              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
+ 910              		.file 5 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/13.3.1/includ
+ 911              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 912              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 913              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 914              		.file 9 "Core/Src/gps_handler/gps_handler.h"
+ 915              		.file 10 "Core/Src/uart_handler/uart_handler.h"
+ 916              		.file 11 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdio.h"
+ 917              		.file 12 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdlib.h"
+ 918              		.file 13 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/string.h"
+ 919              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h"
+ 920              		.file 15 "Core/Src/library/aml_hal.h"
+ 921              		.file 16 "<built-in>"
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 24
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 gps_handler.c
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:22     .text.nmea_to_decimal_degrees:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:27     .text.nmea_to_decimal_degrees:00000000 nmea_to_decimal_degrees
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:118    .text.nmea_to_decimal_degrees:00000058 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:125    .rodata.GPS_Parse_RMC_Sentence.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:132    .text.GPS_Parse_RMC_Sentence:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:137    .text.GPS_Parse_RMC_Sentence:00000000 GPS_Parse_RMC_Sentence
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:381    .text.GPS_Parse_RMC_Sentence:00000100 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:903    .bss.s_gps_data:00000000 s_gps_data
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:390    .rodata.GPS_Init.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:394    .text.GPS_Init:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:400    .text.GPS_Init:00000000 GPS_Init
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:459    .text.GPS_Init:00000044 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:897    .bss.s_gps_dma_buffer:00000000 s_gps_dma_buffer
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:467    .rodata.GPS_Process_Buffer.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:471    .text.GPS_Process_Buffer:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:477    .text.GPS_Process_Buffer:00000000 GPS_Process_Buffer
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:626    .text.GPS_Process_Buffer:0000008c $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:879    .bss.nmea_pos.2:00000000 nmea_pos.2
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:874    .bss.nmea_sentence_buffer.1:00000000 nmea_sentence_buffer.1
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:868    .bss.seen_dollar.0:00000000 seen_dollar.0
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:891    .bss.old_dma_pos:00000000 old_dma_pos
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:637    .text.GPS_Get_Latest_Data:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:643    .text.GPS_Get_Latest_Data:00000000 GPS_Get_Latest_Data
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:692    .text.GPS_Get_Latest_Data:00000028 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:697    .rodata.Log_Latest_GPS_Data.str1.4:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:706    .text.Log_Latest_GPS_Data:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:712    .text.Log_Latest_GPS_Data:00000000 Log_Latest_GPS_Data
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:778    .text.Log_Latest_GPS_Data:00000048 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:784    .text.HAL_UART_RxCpltCallback:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:790    .text.HAL_UART_RxCpltCallback:00000000 HAL_UART_RxCpltCallback
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:819    .text.HAL_UART_RxCpltCallback:00000014 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:885    .bss.gps_data_ready_flag:00000000 gps_data_ready_flag
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:825    .text.HAL_UART_RxHalfCpltCallback:00000000 $t
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:831    .text.HAL_UART_RxHalfCpltCallback:00000000 HAL_UART_RxHalfCpltCallback
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:860    .text.HAL_UART_RxHalfCpltCallback:00000014 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:869    .bss.seen_dollar.0:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:871    .bss.nmea_sentence_buffer.1:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:880    .bss.nmea_pos.2:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:886    .bss.gps_data_ready_flag:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:888    .bss.old_dma_pos:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:894    .bss.s_gps_dma_buffer:00000000 $d
+/var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s:900    .bss.s_gps_data:00000000 $d
+
+UNDEFINED SYMBOLS
+__aeabi_d2f
+atof
+strncpy
+strtok
+strlen
+sscanf
+MX_USART1_UART_Init
+HAL_NVIC_SetPriority
+HAL_NVIC_EnableIRQ
+HAL_UART_Receive_DMA
+WriteUART_Blocking
+ARM GAS  /var/folders/25/vg8ydb454_z3v37m53jqj5280000gn/T//cceJEmsz.s 			page 25
+
+
+Error_Handler
+huart1
+memset
+strstr
+__aeabi_f2d
+snprintf

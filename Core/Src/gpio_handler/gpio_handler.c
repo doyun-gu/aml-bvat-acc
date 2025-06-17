@@ -12,22 +12,26 @@ volatile bool g_is_logging_active = false; // Definition for the global flag
   */
 void MX_GPIO_Init(void)
 {
-    // GPIO Ports Clock Enable
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+    /* GPIO Ports Clock Enable */
     __HAL_RCC_GPIOA_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
     __HAL_RCC_GPIOC_CLK_ENABLE();
     __HAL_RCC_GPIOH_CLK_ENABLE();
 
-    // NOTE: The interrupt configuration for the USER button (PC13)
-    // should be done here as it's a static part of the hardware setup.
-    // This was added in a previous step but is reiterated for clarity.
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    /* --- Configure PC13 (USER Button) as an interrupt on the rising edge --- */
     GPIO_InitStruct.Pin = GPIO_PIN_13;
-    GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING; // Trigger on rising edge (when button is pressed)
+    
+    // **** THIS IS THE FIX ****
+    // Enable the internal pull-down resistor. This ensures the pin is held LOW when
+    // the button is not pressed, preventing it from floating and triggering false interrupts.
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-    HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+    /* EXTI interrupt init for Line 13 (which is part of 15_10) */
+    HAL_NVIC_SetPriority(EXTI15_10_IRQn, 2, 0); // Using a lower priority (e.g., 2) is good practice
     HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 }
 
@@ -64,7 +68,8 @@ void ToggleDigitalOut(DigitalOut *digital_out) {
 }
 
 void BuiltinLED_Init(void) {
-    g_builtinLed = AssignDigitalOut((Pin_t){D13_PORT, D13_PIN});
+    // Note: D13 is PA5 on the Nucleo-F411RE
+    g_builtinLed = AssignDigitalOut((Pin_t){GPIOA, GPIO_PIN_5});
 }
 
 void indicate_setup_with_blinks(int num_blinks, u32 delay_ms) {
@@ -81,31 +86,23 @@ void ToggleLED(DigitalOut *led, u32 interval, u32 *last_tick_timer) {
     }
 }
 
-
 // --- Digital Input Functions ---
 
-DigitalIn AssignDigitalIn(Pin_t pin) {
-    DigitalIn digital_in;
-    DigitalIn_Init(&digital_in, pin); // Use the helper function
-
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
-    GPIO_InitStruct.Pin = digital_in.pin.pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_PULLUP; // Changed to PULLUP for more stability
-    HAL_GPIO_Init(digital_in.pin.port, &GPIO_InitStruct);
-
-    return digital_in;
-}
-
+/**
+ * @brief  Configures a GPIO pin as an interrupt and enables its corresponding NVIC line.
+ * @note   This function is intended for dynamic configuration. Static hardware like the
+ * on-board button is best configured directly in MX_GPIO_Init().
+ */
 void AssignDigitalIn_IT(Pin_t pin) {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
     IRQn_Type EXTI_IRQn;
 
     GPIO_InitStruct.Pin = pin.pin;
     GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN; // Set to pull-down for a button connected to 3.3V
     HAL_GPIO_Init(pin.port, &GPIO_InitStruct);
 
+    // Determine the correct EXTI IRQn based on the pin number
     switch (pin.pin) {
         case GPIO_PIN_0:  EXTI_IRQn = EXTI0_IRQn; break;
         case GPIO_PIN_1:  EXTI_IRQn = EXTI1_IRQn; break;
@@ -116,13 +113,16 @@ void AssignDigitalIn_IT(Pin_t pin) {
             EXTI_IRQn = EXTI9_5_IRQn; break;
         case GPIO_PIN_10: case GPIO_PIN_11: case GPIO_PIN_12: case GPIO_PIN_13: case GPIO_PIN_14: case GPIO_PIN_15:
             EXTI_IRQn = EXTI15_10_IRQn; break;
-        default: return; // No return value as function is void
+        default: return;
     }
 
-    HAL_NVIC_SetPriority(EXTI_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(EXTI_IRQn, 2, 0);
     HAL_NVIC_EnableIRQ(EXTI_IRQn);
 }
 
+/**
+ * @brief Initializes the fields of a DigitalIn software struct.
+ */
 void DigitalIn_Init(DigitalIn* digital_in, Pin_t pin) {
     if (digital_in == NULL) return;
     digital_in->pin = pin;
@@ -132,19 +132,10 @@ void DigitalIn_Init(DigitalIn* digital_in, Pin_t pin) {
     digital_in->last_debounce_time = 0;
 }
 
-void ReadDigitalIn(DigitalIn *digital_in) {
-    u8 current_reading = HAL_GPIO_ReadPin(digital_in->pin.port, digital_in->pin.pin);
-    if (current_reading != digital_in->reading) {
-        digital_in->last_debounce_time = HAL_GetTick();
-    }
-    digital_in->reading = current_reading;
-    if ((HAL_GetTick() - digital_in->last_debounce_time) > DEBOUNCE_DELAY_MS) {
-        if (digital_in->state != digital_in->reading) {
-            digital_in->state = digital_in->reading;
-        }
-    }
-}
 
+/**
+ * @brief Initializes the hardware and software state for the built-in push button.
+ */
 void BuiltinPushButton_Init(void) {
     Pin_t button_pin = {GPIOC, GPIO_PIN_13};
     // The hardware part (setting pin to IT mode) is now done in MX_GPIO_Init()
@@ -154,7 +145,11 @@ void BuiltinPushButton_Init(void) {
 
 
 // --- HAL GPIO Callback ---
-
+/**
+  * @brief  EXTI line detection callbacks.
+  * @param  GPIO_Pin: Specifies the pins connected to the EXTI line.
+  * @retval None
+  */
 void HAL_GPIO_EXTI_Callback(u16 GPIO_Pin)
 {
     static u32 last_accepted_press_time = 0;

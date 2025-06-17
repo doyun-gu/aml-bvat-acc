@@ -12,10 +12,15 @@
 #include "uart_handler.h"
 #include "command_handler.h"
 #include "i2c_handler.h"
+#include "gps_handler.h"
+#include <stdbool.h>
+
+/* External Flags -----------------------------------------------------------*/
+extern volatile bool gps_data_ready_flag; // Declared in gps_handler.c
 
 /* Private variables ---------------------------------------------------------*/
-// Global state variables like g_builtinLed, g_is_logging_active, etc. are
-// defined in their respective handler files and declared 'extern' in their headers.
+bool i2c_ok = false;
+bool gps_ok = false;
 
 /**
   * @brief  The application entry point.
@@ -23,52 +28,61 @@
   */
 int main(void)
 {
-  bool system_ready_for_logging = false;
-
   // --- 1. Core System & Peripheral Initialization ---
-  AML_Init();             // Initializes HAL, Clocks, GPIO, UART, I2C, Timers.
-  BuiltinLED_Init();        // Initializes the software struct for the built-in LED.
-  BuiltinPushButton_Init(); // Initializes the software struct and hardware for the user button interrupt.
-  CommandHandler_Init();    // Initializes timers or states needed by the command handler.
+  AML_Init();             // Initializes HAL, Clocks, all peripherals (GPIO, UARTs, I2C, Timers, GPS DMA).
+  BuiltinLED_Init();
+  BuiltinPushButton_Init();
+  CommandHandler_Init();
 
-  // --- 2. Startup Messaging and Diagnostics ---
+  // --- 2. Startup Messaging ---
   HAL_Delay(100); // Give peripherals a moment to stabilize after power-on.
   WriteUART_Blocking("---------------------------------------\r\n");
   WriteUART_Blocking("System Boot: Hello from STM32 AML-BVAT!\r\n");
   WriteUART_Blocking("---------------------------------------\r\n");
 
-  // --- 3. I2C System Initialization and Sensor Verification ---
-  if (BVAT_I2C_Init()) { // This function initializes the I2C bus, pings the sensor, and enables it.
-                         // It prints its own detailed status messages.
-
-      // Now, perform a detailed verification of the sensor's configuration.
-      if (Verify_LIS3DH_Sensor()) { // This new function is in command_handler.c
-          system_ready_for_logging = true;
+  // --- 3. I2C Accelerometer Verification ---
+  WriteUART_Blocking("--- Checking I2C Accelerometer ---\r\n");
+  if (BVAT_I2C_Init()) {
+      if (Verify_LIS3DH_Sensor()) {
+          i2c_ok = true;
       }
   }
-  
-  // --- 4. Final Setup Indication ---
-  indicate_setup_with_blinks(3, 100); // Visual cue that setup sequence is complete.
+
+  // --- 4. GPS Module Verification ---
+  WriteUART_Blocking("\r\n--- Checking GPS Module ---\r\n");
+  gps_ok = Check_GPS_Status();
+
+  // --- 5. Final Setup Indication & Readiness Report ---
+  indicate_setup_with_blinks(3, 100);
+  bool system_ready_for_logging = i2c_ok && gps_ok;
 
   if (system_ready_for_logging) {
-    WriteUART_Blocking("System ready. Press USER button to start/stop logging.\r\n");
+      WriteUART_Blocking("System ready. Press USER button to start/stop logging.\r\n");
   } else {
-    WriteUART_Blocking("System setup complete, but I2C SENSOR ISSUE DETECTED.\r\n");
+      WriteUART_Blocking("System setup complete, but SENSOR ISSUE DETECTED.\r\n");
+      if (!i2c_ok) { WriteUART_Blocking("- Accelerometer (I2C) FAILED\r\n"); }
+      if (!gps_ok) { WriteUART_Blocking("- GPS FAILED (No fix or timeout)\r\n"); }
   }
   WriteUART_Blocking("---------------------------------------\r\n");
 
-  // --- 5. Main Execution Loop ---
+  // --- 6. Main Execution Loop ---
   while (1)
   {
-    // The main operational logic is now handled by measure_loop().
-    // It internally checks if logging is active.
-    measure_loop();
-    
-    // If logging is NOT active, perform an idle "heartbeat" blink.
-    // This shows the system is alive and waiting for a button press.
+    // --- GPS Data Processing Triggered by DMA ISR ---
+    if (gps_data_ready_flag) {
+        gps_data_ready_flag = false;
+        GPS_Process_Buffer();
+    }
+
+    // --- Main Measurement ---
+    if (system_ready_for_logging) {
+        measure_loop();
+    }
+
+    // --- Idle Heartbeat if Not Logging ---
     if (!g_is_logging_active) {
         HAL_GPIO_TogglePin(g_builtinLed.pin.port, g_builtinLed.pin.pin);
-        HAL_Delay(500); // Slow heartbeat blink
+        HAL_Delay(500);
     }
   }
 }

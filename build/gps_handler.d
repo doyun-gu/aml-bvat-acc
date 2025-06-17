@@ -1,4 +1,5 @@
-build/stm32f4xx_hal_msp.o: Core/Src/stm32f4xx_hal_msp.c Core/Inc/main.h \
+build/gps_handler.o: Core/Src/gps_handler/gps_handler.c \
+ Core/Src/gps_handler/gps_handler.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  Core/Inc/stm32f4xx_hal_conf.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -28,8 +29,8 @@ build/stm32f4xx_hal_msp.o: Core/Src/stm32f4xx_hal_msp.c Core/Inc/main.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_usart.h \
- Core/Src/uart_handler/uart_handler.h Core/Src/library/aml_hal.h
-Core/Inc/main.h:
+ Core/Src/library/aml_hal.h Core/Src/uart_handler/uart_handler.h
+Core/Src/gps_handler/gps_handler.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 Core/Inc/stm32f4xx_hal_conf.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h:
@@ -61,5 +62,5 @@ Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_usart.h:
-Core/Src/uart_handler/uart_handler.h:
 Core/Src/library/aml_hal.h:
+Core/Src/uart_handler/uart_handler.h:
